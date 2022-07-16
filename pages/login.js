@@ -17,13 +17,13 @@ const Login = () => {
   };
 
   return (
-    <section className="flex flex-col  h-screen w-screen bg-slate-100">
+    <section className="flex flex-col h-screen w-screen bg-slate-100">
       <div className="p-20">
         <h1>
           <Link href="/">TreeOfLinks</Link>
         </h1>
       </div>
-      <div className="flex flex-col gap-5 justify-center items-center mx-auto w-full max-w-[30%]">
+      <div className="flex flex-col gap-5 justify-center items-center mx-auto w-full max-w-[640px] min-w-[30%]">
         <h1 className="text-5xl font-extrabold">Log in to your TreeofLinks</h1>
         <div className="flex flex-col gap-4 my-5 w-full">
           <div

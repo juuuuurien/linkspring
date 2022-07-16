@@ -1,10 +1,13 @@
-import NextAuth, { MongoDBAdapter } from "next-auth";
+import NextAuth from "next-auth";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GithubProvider from "next-auth/providers/github";
-import { verifyPassword } from "../../../util/auth";
+import clientPromise from "../../../util/mongodb";
+import dbConnect from "../../../util/mongoose";
+
+import User from "../../../models/User";
 
 export default NextAuth({
-  adapter: MongoDBAdapter,
+  adapter: MongoDBAdapter(clientPromise),
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
@@ -20,11 +23,27 @@ export default NextAuth({
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-        const user = { id: 1, name: "J Smith", email: "jsmith@example.com" };
+
+        // console.log(credentials, "=====");
+        // console.log(req, "+++++");
+        const { username, password } = credentials;
+
+        console.log(credentials, "=-0=-0=-0");
+        // make db call here
+        await dbConnect();
+
+        const user = await User.exists({ username: username });
+        console.log("User: ", user);
+        if (!user)
+          throw new Error("There exists no profile with this username!");
 
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
-          return user;
+          const data = await User.findById(user);
+
+          console.log("Data", data);
+
+          return data;
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
           return null;
@@ -34,4 +53,8 @@ export default NextAuth({
       },
     }),
   ],
+  secret: process.env.SECRET,
+  session: {
+    strategy: "jwt",
+  },
 });
