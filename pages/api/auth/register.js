@@ -1,6 +1,7 @@
-import bcrypt from "bcryptjs";
 import User from "../../../models/User";
 import dbConnect from "../../../util/mongodb";
+
+import { createHash } from "../../../util/bcrypt";
 
 export default async function handler(req, res) {
   const { username, email, password } = JSON.parse(req.body);
@@ -9,8 +10,6 @@ export default async function handler(req, res) {
 
   const usernameExists = await User.exists({ username: username });
   const emailExists = await User.exists({ email: email });
-
-  console.log(usernameExists);
 
   if (!email || !username || !password) {
     res.status(500).send({ error: "Please enter all fields" });
@@ -22,11 +21,8 @@ export default async function handler(req, res) {
       .send({ error: "There exists a user with this email or username" });
   } else {
     // create if no existing user
-    bcrypt.hash(password, 10).then((hash) => {
-      User.create({ username, email, password: hash });
-      res.status(201).json({ success: true });
-    });
+    const hash = await createHash(password);
+    User.create({ username, email, password: hash });
+    res.status(201).json({ success: true });
   }
-
-  // res.send({ message: username });
 }

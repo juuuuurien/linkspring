@@ -21,7 +21,7 @@ const Signup = () => {
   };
 
   const handlePasswordChange = (val) => {
-    setEmail(val);
+    setPassword(val);
   };
 
   const handleSignup = async ({ username, email, password }) => {
@@ -32,22 +32,22 @@ const Signup = () => {
         body: JSON.stringify({ username, email, password })
       })
     ).json();
-
-    console.log(data);
-
     if (data.error) throw new Error(data.error);
 
     return data;
   };
 
-  const { mutate, isLoading, isError, error } = useMutation(handleSignup, {
-    onSuccess: () => {
-      console.log("suck sess");
-    },
-    onError: (err) => {
-      console.log(err);
+  const { mutate, isLoading, isError, isSuccess, error } = useMutation(
+    handleSignup,
+    {
+      onSuccess: () => {
+        router.replace("/dashboard");
+      },
+      onError: (err) => {
+        console.log(err);
+      }
     }
-  });
+  );
 
   return (
     <section className="flex flex-col  h-screen w-screen bg-slate-100">
@@ -109,6 +109,9 @@ const Signup = () => {
             {isLoading ? <Spinner /> : "Sign Up With Email"}
           </button>
           <span className="text-red-700">{isError ? `${error}` : null}</span>
+          <span className="text-gray-500">
+            {isSuccess ? `Account created!` : null}
+          </span>
         </div>
         <p>
           {" Already have an account? "}
