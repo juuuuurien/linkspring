@@ -1,4 +1,5 @@
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
+import { TextInput } from "flowbite-react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -11,12 +12,8 @@ const Login = () => {
     setUsername(val);
   };
 
-  const handleEmailChange = (val) => {
-    setEmail(val);
-  };
-
   const handlePasswordChange = (val) => {
-    setEmail(val);
+    setPassword(val);
   };
 
   return (
@@ -28,7 +25,7 @@ const Login = () => {
       </div>
       <div className="flex flex-col gap-5 justify-center items-center mx-auto w-full max-w-[30%]">
         <h1 className="text-5xl font-extrabold">Log in to your TreeofLinks</h1>
-        <form className="flex flex-col gap-4 my-5 w-full">
+        <div className="flex flex-col gap-4 my-5 w-full">
           <div
             className={`block w-full border disabled:cursor-not-allowed disabled:opacity-50 px-2.5 bg-gray-50 text-gray-900 rounded-lg text-sm ${
               usernameFocus
@@ -61,13 +58,16 @@ const Login = () => {
             <Checkbox id="remember" />
             <Label htmlFor="remember">Remember me</Label>
           </div> */}
-          <button className="bg-purple-600 text-white rounded-[10000px] p-3">
+          <button
+            className="bg-purple-600 text-white rounded-[10000px] p-3"
+            onClick={() => signIn("credentials", { username, password })}
+          >
             Log In
           </button>
-        </form>
+        </div>
         <section className="flex flex-col justify-center items-center gap-10">
           <p className="underline">
-            <Link href="/">Forgot your password? </Link>
+            <Link href="/">Forgot your password?</Link>
           </p>
           <p>
             {" Don't have a Linktree account? "}
@@ -79,6 +79,14 @@ const Login = () => {
       </div>
     </section>
   );
+};
+
+const getServerSideProps = async (ctx) => {
+  return {
+    props: {
+      providers: await providers(ctx),
+    },
+  };
 };
 
 export default Login;

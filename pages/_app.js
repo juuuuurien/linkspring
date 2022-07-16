@@ -4,9 +4,11 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+  const getLayout = Component.getLayout || ((page) => page);
+
   const queryCLient = new QueryClient();
 
-  return (
+  return getLayout(
     <QueryClientProvider client={queryCLient}>
       <SessionProvider session={session}>
         <Component {...pageProps} />

@@ -1,16 +1,25 @@
 import React from "react";
+import { unstable_getServerSession, useSession } from "next-auth/react";
 import MainContent from "../../components/dashboard/MainContent";
 import RightPreview from "../../components/dashboard/RightPreview";
 import Sidebar from "../../components/dashboard/Sidebar";
+import DashboardLayout from "../../components/layouts/DashboardLayout";
 
-const Dashboard = () => {
-  return (
-    <div className="main-wrapper flex flex-row h-screen w-screen">
-      <Sidebar />
-      <MainContent />
-      <RightPreview />
-    </div>
-  );
+export default function Dashboard() {
+  const { data: session } = useSession();
+
+  if (session) {
+    return (
+      <>
+        <h1>Protected Page</h1>
+        <p>You can view this page because you are signed in.</p>
+      </>
+    );
+  }
+
+  return <MainContent />;
+}
+
+Dashboard.getLayout = (page) => {
+  return <DashboardLayout>{page}</DashboardLayout>;
 };
-
-export default Dashboard;

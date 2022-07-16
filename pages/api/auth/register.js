@@ -1,5 +1,5 @@
 import User from "../../../models/User";
-import dbConnect from "../../../util/mongodb";
+import dbConnect from "../../../util/mongoose";
 
 import { createHash } from "../../../util/bcrypt";
 
