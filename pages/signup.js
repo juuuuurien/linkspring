@@ -25,12 +25,19 @@ const Signup = () => {
   };
 
   const handleSignup = async ({ username, email, password }) => {
-    return await (
-      await fetch("http://localhost:3000/api/auth/register", {
+    console.log(JSON.stringify({ username, email, password }));
+    const data = await (
+      await fetch("https://pzet0c.sse.codesandbox.io/api/auth/register", {
         method: "POST",
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password })
       })
     ).json();
+
+    console.log(data);
+
+    if (data.error) throw new Error(data.error);
+
+    return data;
   };
 
   const { mutate, isLoading, isError, error } = useMutation(handleSignup, {
@@ -39,7 +46,7 @@ const Signup = () => {
     },
     onError: (err) => {
       console.log(err);
-    },
+    }
   });
 
   return (
@@ -101,9 +108,7 @@ const Signup = () => {
           >
             {isLoading ? <Spinner /> : "Sign Up With Email"}
           </button>
-          <span className="text-red-700">
-            {isError ? `error: ${error}` : null}
-          </span>
+          <span className="text-red-700">{isError ? `${error}` : null}</span>
         </div>
         <p>
           {" Already have an account? "}
