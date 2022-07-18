@@ -31,6 +31,7 @@ async function dbConnect() {
     const opts = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      dbName: "treeoflinks"
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {

@@ -7,6 +7,7 @@ import dbConnect from "../../../util/mongoose";
 import User from "../../../models/User";
 
 export default NextAuth({
+  site: process.env.NEXTAUTH_URL,
   adapter: MongoDBAdapter(clientPromise),
   // Configure one or more authentication providers
   providers: [
@@ -19,7 +20,7 @@ export default NextAuth({
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" },
+        password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
@@ -50,11 +51,18 @@ export default NextAuth({
 
           // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
         }
-      },
-    }),
+      }
+    })
   ],
-  secret: process.env.SECRET,
+  // callbacks: {
+  //   async signIn({ user, account, profile, email, credentials, authorize }) {
+  //     console.log(user, "this is user returned from authorize");
+  //     if (user !== null) return "/dashboard";
+  //     return "/login";
+  //   }
+  // },
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: "jwt",
-  },
+    strategy: "jwt"
+  }
 });

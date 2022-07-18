@@ -3,6 +3,16 @@ import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
+// if you're encountering any error concerning .env,
+// please make sure you have:
+
+// MONGODB_DB
+// MONGODB_URI
+// NEXTAUTH_URL
+// NEXTAUTH_SECRET
+
+// in your environment variables
+
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const getLayout = Component.getLayout || ((page) => page);
 

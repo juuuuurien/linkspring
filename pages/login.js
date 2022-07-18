@@ -60,7 +60,13 @@ const Login = () => {
           </div> */}
           <button
             className="bg-purple-600 text-white rounded-[10000px] p-3"
-            onClick={() => signIn("credentials", { username, password })}
+            onClick={() =>
+              signIn("credentials", {
+                username,
+                password,
+                callbackUrl: "https://5mjnky.sse.codesandbox.io/dashboard"
+              })
+            }
           >
             Log In
           </button>
@@ -84,8 +90,8 @@ const Login = () => {
 const getServerSideProps = async (ctx) => {
   return {
     props: {
-      providers: await providers(ctx),
-    },
+      providers: await providers(ctx)
+    }
   };
 };
 
