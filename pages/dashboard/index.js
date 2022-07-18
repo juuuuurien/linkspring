@@ -5,23 +5,24 @@ import { authOptions } from "../api/auth/[...nextauth]";
 
 import MainContent from "../../components/dashboard/MainContent";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
+import Head from "next/head";
 
 export default function Dashboard() {
   const session = useSession();
-  console.log(session, "index.js/dashboard");
+  const { user } = session.data;
 
-  if (session) {
-    return (
-      <>
-        <h1>Protected Page</h1>
-        <p>You can view this page because you are signed in.</p>
-        <p>{session.data?.user.name}</p>
-        <p>{session.data?.user.email}</p>
-      </>
-    );
-  }
+  console.log(user);
 
-  return <MainContent />;
+  return (
+    <>
+      <Head>
+        <title>Treeoflinks | Dashboard</title>
+        <meta name="description" content="Treeoflinks dashboard" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <MainContent data={session.data} />
+    </>
+  );
 }
 
 Dashboard.getLayout = (page) => {
@@ -39,14 +40,14 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         destination: "/login",
-        permanent: false
-      }
+        permanent: false,
+      },
     };
   }
 
   return {
     props: {
-      session: JSON.parse(JSON.stringify(session))
-    }
+      session: JSON.parse(JSON.stringify(session)),
+    },
   };
 }

@@ -64,6 +64,7 @@ const Login = () => {
           >
             <span className={`text-gray-500`}>treeoflinks.me/</span>
             <input
+              autofill={true}
               required
               name="username"
               onFocus={() => {
@@ -80,6 +81,7 @@ const Login = () => {
             ></input>
           </div>
           <TextInput
+            autofill={true}
             name="password"
             type="password"
             placeholder="Password"

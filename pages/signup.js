@@ -71,15 +71,18 @@ const Signup = () => {
           >
             <span className={`text-gray-500`}>treeoflinks.me/</span>
             <input
+              autofill={true}
               required
               name="username"
               onFocus={() => {
                 if (!usernameFocus) setUsernameFocus(true);
               }}
               onBlur={() => {
+                setUsername(username.toLowerCase());
                 if (usernameFocus) setUsernameFocus(false);
               }}
               onChange={(e) => handleUsernameChange(e.target.value)}
+              value={username}
               className={
                 "bg-transparent focus:ring-0 focus:outline-none py-3 text-sm ml-1 w-[80%] h-full"
               }
@@ -87,6 +90,7 @@ const Signup = () => {
             />
           </div>
           <TextInput
+            autofill={true}
             name="email"
             type="email"
             placeholder="Email"
@@ -94,6 +98,7 @@ const Signup = () => {
             onChange={(e) => handleEmailChange(e.target.value)}
           />
           <TextInput
+            autofill={true}
             name="password"
             type="password"
             placeholder="Password"
