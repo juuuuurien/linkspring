@@ -30,8 +30,7 @@ const config = {
         });
 
         const user = await res.json();
-        console.log(user, "asdfjalsdkfjahsdjh");
-        if (user.success && user) return user;
+        if (user.success && user) return user.data;
       },
     }),
   ],

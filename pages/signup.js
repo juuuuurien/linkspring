@@ -72,6 +72,7 @@ const Signup = () => {
             <span className={`text-gray-500`}>treeoflinks.me/</span>
             <input
               required
+              name="username"
               onFocus={() => {
                 if (!usernameFocus) setUsernameFocus(true);
               }}
@@ -86,12 +87,14 @@ const Signup = () => {
             />
           </div>
           <TextInput
+            name="email"
             type="email"
             placeholder="Email"
             required={true}
             onChange={(e) => handleEmailChange(e.target.value)}
           />
           <TextInput
+            name="password"
             type="password"
             placeholder="Password"
             required={true}

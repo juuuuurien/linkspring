@@ -1,16 +1,20 @@
 import { TextInput, Spinner } from "flowbite-react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { unstable_getServerSession } from "next-auth/next";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 const Login = () => {
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameFocus, setUsernameFocus] = useState(false);
 
-  const { status } = useSession();
-
-  console.log(status, "this is status");
+  const router = useRouter();
 
   const handleUsernameChange = (val) => {
     setUsername(val);
@@ -18,6 +22,27 @@ const Login = () => {
 
   const handlePasswordChange = (val) => {
     setPassword(val);
+  };
+
+  const handleLogin = async () => {
+    setLoading(true);
+    setError(null);
+
+    // returns a promise since redirect is custom handled
+    const res = await signIn("credentials", {
+      redirect: false,
+      username,
+      password,
+      callbackUrl: "http://localhost:3000/dashboard",
+    });
+
+    if (res.error) {
+      setLoading(false);
+      setError("Invalid username or password");
+      return;
+    }
+
+    router.push("/dashboard");
   };
 
   return (
@@ -39,6 +64,8 @@ const Login = () => {
           >
             <span className={`text-gray-500`}>treeoflinks.me/</span>
             <input
+              required
+              name="username"
               onFocus={() => {
                 if (!usernameFocus) setUsernameFocus(true);
               }}
@@ -53,6 +80,7 @@ const Login = () => {
             ></input>
           </div>
           <TextInput
+            name="password"
             type="password"
             placeholder="Password"
             required={true}
@@ -64,16 +92,11 @@ const Login = () => {
           </div> */}
           <button
             className="bg-purple-600 text-white rounded-[10000px] p-3"
-            onClick={() =>
-              signIn("credentials", {
-                username,
-                password,
-                callbackUrl: "http://localhost:3000/dashboard",
-              })
-            }
+            onClick={handleLogin}
           >
-            {status === "loading" ? <Spinner /> : "Log In"}
+            {loading ? <Spinner /> : "Log In"}
           </button>
+          <span className="text-red-700">{error ? `${error}` : null}</span>
         </div>
         <section className="flex flex-col justify-center items-center gap-10">
           <p className="underline">
@@ -91,12 +114,27 @@ const Login = () => {
   );
 };
 
-const getServerSideProps = async (ctx) => {
+export async function getServerSideProps(context) {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
-      providers: await providers(ctx),
+      session: JSON.parse(JSON.stringify(session)),
     },
   };
-};
+}
 
 export default Login;
