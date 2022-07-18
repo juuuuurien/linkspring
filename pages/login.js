@@ -1,5 +1,5 @@
-import { TextInput } from "flowbite-react";
-import { signIn } from "next-auth/react";
+import { TextInput, Spinner } from "flowbite-react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -7,6 +7,10 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameFocus, setUsernameFocus] = useState(false);
+
+  const { status } = useSession();
+
+  console.log(status, "this is status");
 
   const handleUsernameChange = (val) => {
     setUsername(val);
@@ -68,7 +72,7 @@ const Login = () => {
               })
             }
           >
-            Log In
+            {status === "loading" ? <Spinner /> : "Log In"}
           </button>
         </div>
         <section className="flex flex-col justify-center items-center gap-10">

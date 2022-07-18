@@ -6,7 +6,7 @@ import dbConnect from "../../../util/mongoose";
 
 import User from "../../../models/User";
 
-export default NextAuth({
+const config = {
   site: process.env.NEXTAUTH_URL,
   adapter: MongoDBAdapter(clientPromise),
   // Configure one or more authentication providers
@@ -24,25 +24,18 @@ export default NextAuth({
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-
-        // console.log(credentials, "=====");
-        // console.log(req, "+++++");
         const { username, password } = credentials;
 
-        console.log(credentials, "=-0=-0=-0");
         // make db call here
         await dbConnect();
 
         const user = await User.exists({ username: username });
-        console.log("User: ", user);
         if (!user)
           throw new Error("There exists no profile with this username!");
 
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
           const data = await User.findById(user);
-
-          console.log("Data", data);
 
           return data;
         } else {
@@ -65,4 +58,8 @@ export default NextAuth({
   session: {
     strategy: "jwt"
   }
-});
+};
+
+export const authOptions = config;
+
+export default NextAuth(config);
