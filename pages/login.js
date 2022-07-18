@@ -64,7 +64,7 @@ const Login = () => {
               signIn("credentials", {
                 username,
                 password,
-                callbackUrl: "https://5mjnky.sse.codesandbox.io/dashboard"
+                callbackUrl: "http://localhost:3000/dashboard",
               })
             }
           >
@@ -90,8 +90,8 @@ const Login = () => {
 const getServerSideProps = async (ctx) => {
   return {
     props: {
-      providers: await providers(ctx)
-    }
+      providers: await providers(ctx),
+    },
   };
 };
 

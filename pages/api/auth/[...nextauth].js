@@ -5,6 +5,7 @@ import clientPromise from "../../../util/mongodb";
 import dbConnect from "../../../util/mongoose";
 
 import User from "../../../models/User";
+import { compareHash } from "../../../util/bcrypt";
 
 export default NextAuth({
   site: process.env.NEXTAUTH_URL,
@@ -20,49 +21,26 @@ export default NextAuth({
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-
-        // console.log(credentials, "=====");
-        // console.log(req, "+++++");
         const { username, password } = credentials;
-
-        console.log(credentials, "=-0=-0=-0");
         // make db call here
-        await dbConnect();
+        const res = await fetch("http://localhost:3000/api/auth/login", {
+          method: "POST",
+          body: JSON.stringify({ username, password }),
+          headers: { "Content-Type": "application/json" },
+        });
 
-        const user = await User.exists({ username: username });
-        console.log("User: ", user);
-        if (!user)
-          throw new Error("There exists no profile with this username!");
-
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
-          const data = await User.findById(user);
-
-          console.log("Data", data);
-
-          return data;
-        } else {
-          // If you return null then an error will be displayed advising the user to check their details.
-          return null;
-
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
-        }
-      }
-    })
+        const user = await res.json();
+        console.log(user, "asdfjalsdkfjahsdjh");
+        if (user.success && user) return user;
+      },
+    }),
   ],
-  // callbacks: {
-  //   async signIn({ user, account, profile, email, credentials, authorize }) {
-  //     console.log(user, "this is user returned from authorize");
-  //     if (user !== null) return "/dashboard";
-  //     return "/login";
-  //   }
-  // },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: "jwt"
-  }
+    strategy: "jwt",
+  },
 });

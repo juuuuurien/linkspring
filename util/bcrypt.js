@@ -11,7 +11,6 @@ export const createHash = async (password) => {
 export const compareHash = async (password, dbHash) => {
   bcrypt.compare(password, dbHash, function (err, result) {
     if (err) throw new Error(err);
-
     return result;
   });
 };
