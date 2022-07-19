@@ -19,6 +19,8 @@ export default async function handler(req, res) {
     const isValid = await compare(password, data.password);
     console.log(isValid, "isValid");
 
+    console.log(data, "data smdpfaosldfpasdofasofi");
+
     if (isValid) res.status(200).json({ success: true, data: data });
   }
 }

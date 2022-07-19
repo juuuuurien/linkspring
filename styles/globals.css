@@ -29,6 +29,11 @@ body {
   .jumbo-text {
     @apply text-8xl  font-extrabold;
   }
+
+  .w-inherit {
+    width: inherit;
+    background: #000;
+  }
 }
 
 a {

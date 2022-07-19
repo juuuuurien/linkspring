@@ -5,6 +5,11 @@ const ThemeSchema = new mongoose.Schema({
   tabColor: { type: String },
 });
 
+const LinkSchema = new mongoose.Schema({
+  url: { type: String },
+  title: { type: String },
+});
+
 const ProfileSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -45,5 +50,7 @@ const UserSchema = new mongoose.Schema({
     default: {},
   },
 });
+
+export { LinkSchema, ProfileSchema, UserSchema };
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);

@@ -4,7 +4,7 @@ import Sidebar from "../dashboard/Sidebar";
 
 const DashboardLayout = ({ children }) => {
   return (
-    <div className="main-wrapper flex flex-row h-screen w-screen">
+    <div className="main-wrapper flex flex-row h-screen w-screen overflow-y-auto">
       <Sidebar />
       <div className="w-full">{children}</div>
       <RightPreview />

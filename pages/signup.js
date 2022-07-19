@@ -25,7 +25,6 @@ const Signup = () => {
   };
 
   const handleSignup = async ({ username, email, password }) => {
-    console.log(JSON.stringify({ username, email, password }));
     const data = await (
       await fetch("http://localhost:3000/api/auth/register", {
         method: "POST",

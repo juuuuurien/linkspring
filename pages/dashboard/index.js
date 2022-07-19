@@ -1,17 +1,15 @@
 import React from "react";
-import { useSession } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../api/auth/[...nextauth]";
 
 import MainContent from "../../components/dashboard/MainContent";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import Head from "next/head";
+import dbConnect from "../../util/mongoose";
+import User from "../../models/User";
 
-export default function Dashboard() {
-  const session = useSession();
-  const { user } = session.data;
-
-  console.log(user);
+export default function Dashboard({ data }) {
+  // data contains  username, links, profile of the user
 
   return (
     <>
@@ -20,7 +18,7 @@ export default function Dashboard() {
         <meta name="description" content="Treeoflinks dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <MainContent data={session.data} />
+      <MainContent userdata={data} />
     </>
   );
 }
@@ -36,6 +34,20 @@ export async function getServerSideProps(context) {
     authOptions
   );
 
+  if (session) {
+    dbConnect();
+    const user = await User.findOne({ email: session.user.email });
+
+    const { username, links, profile } = user;
+
+    return {
+      props: {
+        session: JSON.parse(JSON.stringify(session)),
+        data: JSON.parse(JSON.stringify({ username, links, profile })),
+      },
+    };
+  }
+
   if (!session) {
     return {
       redirect: {
@@ -44,10 +56,4 @@ export async function getServerSideProps(context) {
       },
     };
   }
-
-  return {
-    props: {
-      session: JSON.parse(JSON.stringify(session)),
-    },
-  };
 }
