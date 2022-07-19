@@ -42,6 +42,7 @@ const UserSchema = new mongoose.Schema({
     maxlength: [60, "Name cannot be more than 60 characters."],
   },
   links: {
+    _id: { type: mongoose.Schema.Types.ObjectId },
     type: Array,
     default: [],
   },

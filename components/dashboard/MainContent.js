@@ -16,6 +16,19 @@ const MainContent = ({ userdata }) => {
     ).json();
   };
 
+  const deleteLink = async (_id) => {
+    return await (
+      await fetch("http://localhost:3000/api/links", {
+        method: "POST",
+        body: JSON.stringify({
+          type: "delete",
+          username: userdata.username,
+          _id: _id,
+        }),
+      })
+    ).json();
+  };
+
   const getLinks = async () => {
     return await (
       await fetch("http://localhost:3000/api/links", {
@@ -53,6 +66,30 @@ const MainContent = ({ userdata }) => {
     },
   });
 
+  const handleDeleteLink = useMutation((_id) => deleteLink(_id), {
+    onMutate: async (_id) => {
+      await queryClient.cancelQueries(["links"]);
+
+      const previousValue = queryClient.getQueryData(["links"]);
+
+      queryClient.setQueryData(["links"], (old) => {
+        console.log(old);
+        const newLinks = old.links.filter((link) => link._id !== _id);
+        console.log(newLinks, "newLinks");
+        return { ...old, links: newLinks };
+      });
+
+      return previousValue;
+    },
+    // On failure, roll back to the previous value
+    onError: (err, variables, previousValue) =>
+      queryClient.setQueryData(["links"], previousValue),
+    // After success or failure, refetch the links query
+    onSettled: () => {
+      queryClient.invalidateQueries(["links"]);
+    },
+  });
+
   return (
     <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
       <MainNavbar />
@@ -60,12 +97,18 @@ const MainContent = ({ userdata }) => {
         <div className="flex flex-col items-center py-10 gap-12">
           <Button pill onClick={() => handleAddLink.mutate()}>
             <div className="text-lg font-bold w-full">
-              {isLoading ? <Spinner /> : "Add New Link"}
+              {handleAddLink.isLoading ? <Spinner /> : "Add New Link"}
             </div>
           </Button>
           <div className="flex flex-col w-full gap-2">
             {data?.links?.map((e, i) => (
-              <LinkTab key={i} />
+              <LinkTab
+                key={e._id}
+                _id={e._id}
+                url={e.url}
+                title={e.title}
+                handleDeleteLink={handleDeleteLink}
+              />
             ))}
           </div>
         </div>

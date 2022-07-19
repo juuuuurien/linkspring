@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { PencilIcon } from "@heroicons/react/solid";
 
-const EditableInput = ({ label, className }) => {
+const EditableInput = ({ label, className, data }) => {
   const [editFocused, setEditFocused] = useState(false);
-  const [value, setValue] = useState(label);
+  const [value, setValue] = useState(data === "" ? label : data);
 
   const inputRef = useRef(null);
 
@@ -53,7 +53,7 @@ const EditableInput = ({ label, className }) => {
           onFocus={handleFocus}
           onBlur={handleBlur}
           onKeyDown={handleEnter}
-          className={`rounded-md font-semibold focus:ring-2 focus:ring-slate-200 p-1 focus:outline-none w-full ${
+          className={`rounded-md font-semibold focus:ring-0 p-1 focus:outline-none w-full ${
             value === label ? "text-slate-400" : "text-slate-800"
           }`}
         />
