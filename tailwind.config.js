@@ -8,5 +8,8 @@ module.exports = {
   theme: {
     extend: {},
   },
+  variants: {
+    backgroundColor: ["active"],
+  },
   plugins: [require("flowbite/plugin")],
 };

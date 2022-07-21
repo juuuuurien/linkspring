@@ -38,6 +38,24 @@ const MainContent = ({ userdata }) => {
     ).json();
   };
 
+  const updateLink = async (variables) => {
+    console.log("IN THE UPDATE LINK FUNCTION", variables);
+
+    const { _id, updateObj } = variables;
+
+    return await (
+      await fetch("http://localhost:3000/api/links", {
+        method: "POST",
+        body: JSON.stringify({
+          type: "update",
+          username: userdata.username,
+          _id: _id,
+          formData: updateObj,
+        }),
+      })
+    ).json();
+  };
+
   const { data, isLoading } = useQuery(["links"], getLinks, {
     initialData: userdata.links,
   });
@@ -90,6 +108,40 @@ const MainContent = ({ userdata }) => {
     },
   });
 
+  const handleUpdateLink = useMutation((variables) => updateLink(variables), {
+    onMutate: async (variables) => {
+      await queryClient.cancelQueries(["links"]);
+      const previousValue = queryClient.getQueryData(["links"]);
+
+      const { _id, formData } = variables;
+
+      console.log(formData, "formData");
+      console.log(_id, "_id");
+
+      queryClient.setQueryData(["links"], (old) => {
+        const newLinks = old.links.map((link) => {
+          if (link._id === _id) {
+            return { ...link, ...formData };
+          }
+          return link;
+        });
+
+        return { ...old, links: newLinks };
+      });
+
+      return previousValue;
+    },
+    // On failure, roll back to the previous value
+    onError: (err, variables, previousValue) => {
+      queryClient.setQueryData(["links"], previousValue);
+      console.log(err);
+    },
+    // After success or failure, refetch the links query
+    onSettled: () => {
+      queryClient.invalidateQueries(["links"]);
+    },
+  });
+
   return (
     <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
       <MainNavbar />
@@ -107,6 +159,7 @@ const MainContent = ({ userdata }) => {
                 _id={e._id}
                 url={e.url}
                 title={e.title}
+                handleUpdateLink={handleUpdateLink}
                 handleDeleteLink={handleDeleteLink}
               />
             ))}

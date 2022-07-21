@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { PencilIcon } from "@heroicons/react/solid";
 
-const EditableInput = ({ label, className, data }) => {
+const EditableInput = ({ label, className, data, handleSubmit }) => {
   const [editFocused, setEditFocused] = useState(false);
-  const [value, setValue] = useState(data === "" ? label : data);
+  const [value, setValue] = useState(data);
+  const [cache, setCache] = useState(data);
 
   const inputRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   useEffect(() => {
     if (editFocused) inputRef.current.focus();
@@ -16,12 +18,19 @@ const EditableInput = ({ label, className, data }) => {
   };
 
   const handleBlur = (e) => {
-    if (e.target.value === "") setValue(label);
+    if (e.target.value === cache) {
+      setEditFocused(false);
+      return;
+    }
+    const obj = {};
+    obj[label.toLowerCase()] = value;
+
+    handleSubmit(obj);
     setEditFocused(false);
   };
 
-  const handleFocus = () => {
-    console.log(value === label);
+  const handleFocus = (e) => {
+    setCache(e.target.value);
     if (value === label) setValue("");
   };
 
@@ -32,31 +41,51 @@ const EditableInput = ({ label, className, data }) => {
     }
   };
 
+  // prevent blur if click is inside the component (presses clear button)
+  useEffect(() => {
+    window.addEventListener("mousedown", (e) => {
+      if (wrapperRef.current && wrapperRef.current.contains(e.target))
+        e.preventDefault();
+    });
+  });
+
   return (
-    <div className={`flex flex-row items-center ${className}`}>
+    <div ref={wrapperRef} className={`flex flex-row items-center ${className}`}>
       {editFocused === false ? (
         <button
           className={`flex flex-row items-center gap-2 p-1 ${
-            value === label ? "text-slate-400" : "text-slate-800"
+            value === "" ? "text-slate-400" : "text-slate-800"
           }`}
           onClick={() => {
             setEditFocused(true);
           }}
         >
-          {value} <PencilIcon className="h-5 w-5" />
+          {value === "" ? label : value}{" "}
+          <PencilIcon className="h-4 w-4 text-slate-400" />
         </button>
       ) : (
-        <input
-          ref={inputRef}
-          onChange={handleChange}
-          value={value}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onKeyDown={handleEnter}
-          className={`rounded-md font-semibold focus:ring-0 p-1 focus:outline-none w-full ${
-            value === label ? "text-slate-400" : "text-slate-800"
-          }`}
-        />
+        <>
+          <input
+            placeholder={label}
+            ref={inputRef}
+            onChange={handleChange}
+            value={value}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onKeyDown={handleEnter}
+            className={`rounded-md font-semibold focus:ring-0 p-1 focus:outline-none w-full ${
+              value === label ? "text-slate-400" : "text-slate-800"
+            }`}
+          />
+          <div
+            className="text-slate-600 cursor-pointer p-1 rounded-md hover:bg-slate-200"
+            onClick={(e) => {
+              setValue("");
+            }}
+          >
+            Clear
+          </div>
+        </>
       )}
     </div>
   );

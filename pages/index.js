@@ -16,7 +16,10 @@ export default function Home() {
         {/* navbar */}
         <div className="fixed flex flex-row justify-between items-center self-center gap-20 p-[12px] mx-[20rem] rounded-[10000px] bg-gray-200">
           <div className="flex flex-row items-center  gap-10 pl-6">
-            <h1>Logo</h1>
+            <h1>
+              <Link href="/dashboard">Logo</Link>
+            </h1>
+
             <h1 className="text-gray-400 font-semibold text-2xl">
               Create, learn, share.
             </h1>

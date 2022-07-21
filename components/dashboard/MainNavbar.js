@@ -22,7 +22,9 @@ const MainNavbar = () => {
             <NavItem
               title={title}
               href={
-                title === "Links" ? "/dashboard" : `/${title.toLowerCase()}`
+                title === "Links"
+                  ? "/dashboard"
+                  : `dashboard/${title.toLowerCase()}`
               }
             />
           ))}

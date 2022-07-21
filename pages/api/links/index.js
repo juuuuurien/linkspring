@@ -48,14 +48,13 @@ export default async function handler(req, res) {
   }
 
   if (type === "update") {
-    const { _id } = JSON.parse(req.body);
+    const { _id, formData } = JSON.parse(req.body);
 
     //  const user = await User.findOneAndUpdate({
     //   {username: username, links: {$elemMatch: {_id: mongoose.Types.ObjectId(_id)}},
     //   {$set: {'links.$.url': url, 'links.$.title': title}, new: true}}})
 
-    const title = "Portfolio";
-    const url = "www.julienlopez.me";
+    const { url, title } = formData;
 
     const user = await User.findOneAndUpdate(
       {
