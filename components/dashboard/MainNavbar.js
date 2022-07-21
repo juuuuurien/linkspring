@@ -5,7 +5,9 @@ const NavItem = ({ title, href }) => {
   return (
     <Link href={href}>
       <a>
-        <li className="text-lg font-semibold">{title}</li>
+        <li className="text-lg font-semibold hover:bg-slate-200 rounded-lg py-1 px-2">
+          {title}
+        </li>
       </a>
     </Link>
   );
@@ -15,7 +17,7 @@ const MainNavbar = () => {
   const navTitles = ["Links", "Appearance"];
 
   return (
-    <section className=" flex self-start py-6 px-5 w-full bg-white">
+    <section className=" flex self-start py-3 px-5 w-full bg-white">
       <nav>
         <ul className="flex flex-row gap-5">
           {navTitles.map((title) => (
