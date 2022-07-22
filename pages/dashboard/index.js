@@ -126,9 +126,6 @@ export default function Dashboard({ userdata }) {
 
       const { _id, formData } = variables;
 
-      console.log(formData, "formData");
-      console.log(_id, "_id");
-
       queryClient.setQueryData(["links"], (old) => {
         const newLinks = old.links.map((link) => {
           if (link._id === _id) {
@@ -153,6 +150,8 @@ export default function Dashboard({ userdata }) {
     }
   });
 
+  console.log(userdata, "userdata from ssr");
+
   return (
     <>
       <Head>
@@ -160,7 +159,7 @@ export default function Dashboard({ userdata }) {
         <meta name="description" content="Treeoflinks dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <DashboardLayout userdata={userdata}>
+      <DashboardLayout userdata={userdata} linkData={data.links}>
         <MainContent userdata={userdata}>
           <div className="flex flex-col items-center py-10 gap-12">
             <Button pill onClick={() => handleAddLink.mutate()}>
