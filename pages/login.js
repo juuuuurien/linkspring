@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { authOptions } from "./api/auth/[...nextauth]";
 
 const Login = () => {
+  const url = `${process.env.NEXT_PUBLIC_URL}/dashboard`;
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +34,7 @@ const Login = () => {
       redirect: false,
       username,
       password,
-      callbackUrl: "http://localhost:3000/dashboard",
+      callbackUrl: url
     });
 
     if (res.error) {
@@ -127,15 +128,15 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         destination: "/dashboard",
-        permanent: false,
-      },
+        permanent: false
+      }
     };
   }
 
   return {
     props: {
-      session: JSON.parse(JSON.stringify(session)),
-    },
+      session: JSON.parse(JSON.stringify(session))
+    }
   };
 }
 

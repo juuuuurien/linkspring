@@ -6,10 +6,11 @@ import { ReactQueryDevtools } from "react-query/devtools";
 // if you're encountering any error concerning .env,
 // please make sure you have:
 
-// MONGODB_DB
-// MONGODB_URI
-// NEXTAUTH_URL
-// NEXTAUTH_SECRET
+// MONGODB_DB --> name of the db
+// MONGODB_URI  --> connection string for MONGO
+// NEXTAUTH_URL --> basic URL for server side
+// NEXTAUTH_SECRET --> secret for JWT tokens
+// NEXT_PUBLIC_URL --> basic URL of site
 
 // in your environment variables
 
