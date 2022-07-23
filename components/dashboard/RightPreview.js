@@ -2,11 +2,12 @@ import Link from "next/link";
 import React from "react";
 
 import { ShareIcon } from "@heroicons/react/outline";
+import Profile from "../[profile]/Profile";
 
 const PVLinkTab = ({ children, url }) => {
   return (
-    <a href={`//${url}`} target="_new">
-      <div className="flex bg-gray-800 rounded-xl justify-center items-center text-center text-white text-xs font-semibold w-full py-3.5 px-6">
+    <a href={url} target="_new">
+      <div className="flex bg-gray-800 rounded-xl justify-center items-center text-center text-white text-xs font-semibold w-full py-3.5 px-6 ">
         {children}
       </div>
     </a>
@@ -27,6 +28,14 @@ const RightPreview = ({ userdata, linkData }) => {
         </span>
       </div>
       <div className="flex justify-center items-center h-full w-full">
+        {/* <iframe
+          src="https://sgcsid.sse.codesandbox.io/juuuuurien"
+          title="iframe-test"
+          className="PHONE-WRAPPER flex flex-col h-[480px] w-[225px] lg:h-[740px] lg:w-[354px] items-center p-0 border-[1.25rem] bg-white border-slate-900 rounded-[4rem] "
+
+          // className="PHONE-WRAPPER flex flex-col h-[34rem] w-[17rem] items-center p-0 border-[.9rem] bg-white border-slate-900 rounded-[2.5rem] "
+        /> */}
+
         <div className="PHONE-WRAPPER flex flex-col h-[34rem] w-[17rem] items-center p-2 border-[.9rem] bg-white border-slate-900 rounded-[2.5rem]">
           <div className="flex flex-row w-full">
             <ShareIcon

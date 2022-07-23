@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { PencilIcon } from "@heroicons/react/solid";
 
-const EditableInput = ({ label, className, data, handleSubmit }) => {
+const TitleInput = ({ label, className, data, handleSubmit }) => {
   const [editFocused, setEditFocused] = useState(false);
   const [value, setValue] = useState(data);
   const [cache, setCache] = useState(data);
@@ -91,4 +91,4 @@ const EditableInput = ({ label, className, data, handleSubmit }) => {
   );
 };
 
-export default EditableInput;
+export default TitleInput;

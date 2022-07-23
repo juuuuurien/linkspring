@@ -1,6 +1,7 @@
 import React from "react";
 import { PhotographIcon, TrashIcon } from "@heroicons/react/solid";
-import EditableInput from "./EditableInput";
+import TitleInput from "./TitleInput";
+import URLInput from "./URLInput";
 
 const LinkTab = ({ _id, handleDeleteLink, handleUpdateLink, url, title }) => {
   const handleSubmit = (formObj) => {
@@ -15,14 +16,14 @@ const LinkTab = ({ _id, handleDeleteLink, handleUpdateLink, url, title }) => {
   return (
     <div className="flex flex-col w-full bg-white rounded-[33px] py-4 px-6 gap-3">
       <div className="flex flex-col py-1">
-        <EditableInput
+        <TitleInput
           className={"font-bold"}
           data={title}
           label={"Title"}
           _id={_id}
           handleSubmit={handleSubmit}
         />
-        <EditableInput data={url} label={"Url"} handleSubmit={handleSubmit} />
+        <URLInput data={url} label={"Url"} handleSubmit={handleSubmit} />
       </div>
       <div className="flex flex-row w-full justify-between">
         <PhotographIcon className="h-5 w-5 text-green-300 hover:text-green-400 cursor-pointer" />

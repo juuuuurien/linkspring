@@ -5,15 +5,15 @@ import React, { useState } from "react";
 import { useMutation } from "react-query";
 
 const Signup = () => {
-  const [username, setUsername] = useState("asdf");
-  const [email, setEmail] = useState("asdf@GMAIL.COM");
-  const [password, setPassword] = useState("ASDF");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [usernameFocus, setUsernameFocus] = useState(false);
 
   const router = useRouter();
 
   const handleUsernameChange = (val) => {
-    setUsername(val);
+    setUsername(val.split(" ").join);
   };
 
   const handleEmailChange = (val) => {
@@ -28,7 +28,7 @@ const Signup = () => {
     const data = await (
       await fetch("http://localhost:3000/api/auth/register", {
         method: "POST",
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password })
       })
     ).json();
     if (data.error) throw new Error(data.error);
@@ -44,7 +44,7 @@ const Signup = () => {
       },
       onError: (err) => {
         console.log(err);
-      },
+      }
     }
   );
 
