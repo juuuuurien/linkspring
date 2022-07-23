@@ -13,7 +13,7 @@ const PVLinkTab = ({ children, url }) => {
   );
 };
 
-const RightPreview = ({ userdata, linkData }) => {
+const RightPreview = ({ userdata, linkData, profileData }) => {
   const { username, profile } = userdata;
   const links = linkData;
   return (
@@ -38,8 +38,8 @@ const RightPreview = ({ userdata, linkData }) => {
             <div className="flex bg-gray-600 w-[4rem] h-[4rem] mb-3 rounded-[100%] justify-center items-center">
               <h1>JL</h1>
             </div>
-            <span className="font-bold text-sm">Julien's Profile</span>
-            <span className="text-xs">This is a sample bio</span>
+            <span className="font-bold text-sm">{profileData?.title}</span>
+            <span className="text-xs">{profileData?.bio}</span>
           </div>
           <div className="LINKS-WRAPPER flex flex-col w-[90%] gap-2">
             {links?.map((e) => {

@@ -1,4 +1,3 @@
-import { Label, Textarea, TextInput } from "flowbite-react";
 import React from "react";
 import ProfileEditor from "../../components/dashboard/components/appearance/ProfileEditor";
 import MainNavbar from "../../components/dashboard/MainNavbar";
@@ -8,16 +7,74 @@ import { unstable_getServerSession } from "next-auth/next";
 
 import dbConnect from "../../util/mongoose";
 import User from "../../models/User";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+
+import { getProfile, updateProfile } from "../../services/profileServices";
 
 const Appearance = ({ userdata }) => {
+  const queryClient = useQueryClient();
+
+  const { data: queryData, isLoading } = useQuery(
+    ["profile"],
+    async () => getProfile(userdata.username),
+    {
+      initialData: userdata.profile,
+    }
+  );
+
+  const handleUpdateProfile = useMutation(
+    (updatedProfile) =>
+      updateProfile({
+        updatedProfile,
+        username: userdata.username,
+      }),
+    {
+      onMutate: async (updatedProfile) => {
+        await queryClient.cancelQueries(["profile"]);
+        const previousValue = queryClient.getQueryData(["profile"]);
+
+        const { title, bio } = updatedProfile;
+
+        queryClient.setQueryData(["profile"], (old) => {
+          return {
+            ...old,
+            title,
+            bio,
+          };
+        });
+
+        return previousValue;
+      },
+      // On failure, roll back to the previous value
+      onError: (err, variables, previousValue) => {
+        queryClient.setQueryData(["profile"], previousValue);
+        console.log(err);
+      },
+      // After success or failure, refetch the profile query
+      onSettled: () => {
+        queryClient.invalidateQueries(["profile"]);
+      },
+    }
+  );
+
+  console.log(queryData, "THIS IS PROFILE QUERY");
+
   return (
-    <DashboardLayout userdata={userdata} linkData={userdata.links}>
+    <DashboardLayout
+      userdata={userdata}
+      linkData={userdata.links}
+      profileData={queryData}
+    >
       <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
         <MainNavbar />
         <div className="mx-auto w-full max-w-[640px]">
           <div className="flex flex-col items-center py-10 gap-12">
             <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3">
-              <ProfileEditor />
+              <ProfileEditor
+                initialData={userdata}
+                liveData={queryData}
+                handleUpdateProfile={handleUpdateProfile}
+              />
             </div>
           </div>
         </div>
@@ -42,8 +99,8 @@ export async function getServerSideProps(context) {
     return {
       props: {
         session: JSON.parse(JSON.stringify(session)),
-        userdata: JSON.parse(JSON.stringify({ username, links, profile }))
-      }
+        userdata: JSON.parse(JSON.stringify({ username, links, profile })),
+      },
     };
   }
 
@@ -51,8 +108,8 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         destination: "/login",
-        permanent: false
-      }
+        permanent: false,
+      },
     };
   }
 }

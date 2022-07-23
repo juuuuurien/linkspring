@@ -22,7 +22,7 @@ export default function Dashboard({ userdata }) {
     return await (
       await fetch(`${url}/api/links`, {
         method: "POST",
-        body: JSON.stringify({ type: "add", username: userdata.username })
+        body: JSON.stringify({ type: "add", username: userdata.username }),
       })
     ).json();
   };
@@ -34,8 +34,8 @@ export default function Dashboard({ userdata }) {
         body: JSON.stringify({
           type: "delete",
           username: userdata.username,
-          _id: _id
-        })
+          _id: _id,
+        }),
       })
     ).json();
   };
@@ -44,14 +44,12 @@ export default function Dashboard({ userdata }) {
     return await (
       await fetch(`${url}/api/links`, {
         method: "POST",
-        body: JSON.stringify({ type: "get", username: userdata.username })
+        body: JSON.stringify({ type: "get", username: userdata.username }),
       })
     ).json();
   };
 
   const updateLink = async (variables) => {
-    console.log("IN THE UPDATE LINK FUNCTION", variables);
-
     const { _id, updateObj } = variables;
 
     return await (
@@ -61,29 +59,25 @@ export default function Dashboard({ userdata }) {
           type: "update",
           username: userdata.username,
           _id: _id,
-          formData: updateObj
-        })
+          formData: updateObj,
+        }),
       })
     ).json();
   };
 
   const { data, isLoading } = useQuery(["links"], getLinks, {
-    initialData: userdata.links
+    initialData: userdata.links,
   });
-
-  console.log(data, "data from useQuery");
 
   const handleAddLink = useMutation(postLink, {
     onMutate: async () => {
       await queryClient.cancelQueries(["links"]);
-
       const previousValue = queryClient.getQueryData(["links"]);
 
       queryClient.setQueryData(["links"], (old) => ({
         ...old,
-        links: [...old.links, { url: "", title: "" }]
+        links: [...old.links, { url: "", title: "" }],
       }));
-
       return previousValue;
     },
     // On failure, roll back to the previous value
@@ -92,19 +86,16 @@ export default function Dashboard({ userdata }) {
     // After success or failure, refetch the links query
     onSettled: () => {
       queryClient.invalidateQueries(["links"]);
-    }
+    },
   });
 
   const handleDeleteLink = useMutation((_id) => deleteLink(_id), {
     onMutate: async (_id) => {
       await queryClient.cancelQueries(["links"]);
-
       const previousValue = queryClient.getQueryData(["links"]);
 
       queryClient.setQueryData(["links"], (old) => {
-        console.log(old);
         const newLinks = old.links.filter((link) => link._id !== _id);
-        console.log(newLinks, "newLinks");
         return { ...old, links: newLinks };
       });
 
@@ -116,7 +107,7 @@ export default function Dashboard({ userdata }) {
     // After success or failure, refetch the links query
     onSettled: () => {
       queryClient.invalidateQueries(["links"]);
-    }
+    },
   });
 
   const handleUpdateLink = useMutation((variables) => updateLink(variables), {
@@ -147,10 +138,8 @@ export default function Dashboard({ userdata }) {
     // After success or failure, refetch the links query
     onSettled: () => {
       queryClient.invalidateQueries(["links"]);
-    }
+    },
   });
-
-  console.log(userdata, "userdata from ssr");
 
   return (
     <>
@@ -159,7 +148,11 @@ export default function Dashboard({ userdata }) {
         <meta name="description" content="Treeoflinks dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <DashboardLayout userdata={userdata} linkData={data.links}>
+      <DashboardLayout
+        userdata={userdata}
+        linkData={data?.links}
+        profileData={userdata.profile}
+      >
         <MainContent userdata={userdata}>
           <div className="flex flex-col items-center py-10 gap-12">
             <Button pill onClick={() => handleAddLink.mutate()}>
@@ -202,8 +195,8 @@ export async function getServerSideProps(context) {
     return {
       props: {
         session: JSON.parse(JSON.stringify(session)),
-        userdata: JSON.parse(JSON.stringify({ username, links, profile }))
-      }
+        userdata: JSON.parse(JSON.stringify({ username, links, profile })),
+      },
     };
   }
 
@@ -211,8 +204,8 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         destination: "/login",
-        permanent: false
-      }
+        permanent: false,
+      },
     };
   }
 }
