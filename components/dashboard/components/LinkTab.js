@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { PhotographIcon, TrashIcon } from "@heroicons/react/solid";
 import TitleInput from "./TitleInput";
 import URLInput from "./URLInput";
 
 const LinkTab = ({ _id, handleDeleteLink, handleUpdateLink, url, title }) => {
+  const [open, setOpen] = useState(false);
+
   const handleSubmit = (formObj) => {
     const updateObj = { url, title };
 
