@@ -17,7 +17,8 @@ const URLInput = ({ label, className, data, handleSubmit }) => {
   }, [editFocused]);
 
   const handleChange = (e) => {
-    setValue(e.target.value);
+    const val = e.target.value;
+    setValue(val.split(" ").join(""));
   };
 
   const verify_url = (value) => {
@@ -45,12 +46,12 @@ const URLInput = ({ label, className, data, handleSubmit }) => {
       setEditFocused(false);
     }
 
+    if ((Error && url) || value === "") setIsError(false);
+
     if (e.target.value === cache) {
       setEditFocused(false);
       return;
     }
-
-    if (Error) setIsError(false);
 
     const obj = {};
     obj[label.toLowerCase()] = url;

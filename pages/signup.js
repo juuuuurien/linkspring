@@ -13,7 +13,7 @@ const Signup = () => {
   const router = useRouter();
 
   const handleUsernameChange = (val) => {
-    setUsername(val.split(" ").join);
+    setUsername(val.split(" ").join(""));
   };
 
   const handleEmailChange = (val) => {
