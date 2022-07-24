@@ -7,7 +7,7 @@ import Profile from "../[profile]/Profile";
 const PVLinkTab = ({ children, url }) => {
   return (
     <a href={url} target="_new">
-      <div className="flex bg-gray-800 rounded-xl justify-center items-center text-center text-white text-xs font-semibold w-full py-3.5 px-6 ">
+      <div className="flex bg-gray-800 rounded-xl justify-center items-center text-center text-white text-xs font-semibold w-full py-3.5 px-6 hover:scale-[1.05] transition-all ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
         {children}
       </div>
     </a>
@@ -52,6 +52,7 @@ const RightPreview = ({ userdata, linkData, profileData }) => {
           </div>
           <div className="LINKS-WRAPPER flex flex-col w-[90%] gap-2">
             {links?.map((e) => {
+              if (!e.url || !e.title) return;
               return (
                 <PVLinkTab url={e.url}>
                   <span>{e.title}</span>

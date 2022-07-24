@@ -73,6 +73,7 @@ const TitleInput = ({ label, className, data, handleSubmit }) => {
             onFocus={handleFocus}
             onBlur={handleBlur}
             onKeyDown={handleEnter}
+            tabIndex={0}
             className={`rounded-md font-semibold focus:ring-0 p-1 focus:outline-none w-full ${
               value === label ? "text-slate-400" : "text-slate-800"
             }`}
