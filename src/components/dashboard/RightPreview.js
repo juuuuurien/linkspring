@@ -54,7 +54,7 @@ const RightPreview = ({ userdata, linkData, profileData }) => {
             {links?.map((e) => {
               if (!e.url || !e.title) return;
               return (
-                <PVLinkTab url={e.url}>
+                <PVLinkTab url={e.url} key={e.title}>
                   <span>{e.title}</span>
                 </PVLinkTab>
               );

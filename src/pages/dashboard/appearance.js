@@ -70,11 +70,14 @@ const Appearance = ({ userdata }) => {
         <div className="mx-auto w-full max-w-[640px]">
           <div className="flex flex-col items-center py-10 gap-12">
             <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3">
-              <ProfileEditor
-                initialData={userdata}
-                liveData={queryData}
-                handleUpdateProfile={handleUpdateProfile}
-              />
+              <div className="profile-wrapper">
+                <h2 className="text-xl font-semibold mb-6">Profile</h2>
+                <ProfileEditor
+                  initialData={userdata}
+                  liveData={queryData}
+                  handleUpdateProfile={handleUpdateProfile}
+                />
+              </div>
             </div>
           </div>
         </div>
