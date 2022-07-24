@@ -27,7 +27,7 @@ const Profile = ({ userdata }) => {
           <div className="flex bg-gray-600 w-[6rem] h-[6rem] mb-3 rounded-[100%] justify-center items-center">
             <h1>JL</h1>
           </div>
-          <span className="font-bold text-lg">Julien's Profile</span>
+          <span className="font-bold text-lg">{"Julien's Profile"}</span>
           <span className="text-md">This is a sample bio</span>
         </div>
         <div className="LINKS-WRAPPER flex flex-col w-full px-2.5 gap-2">
