@@ -37,7 +37,7 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
 
   return (
     <div className="profile-wrapper">
-      <h2>Profile</h2>
+      <h2 className="text-xl">Profile</h2>
       <div className="flex flex-col p-5 gap-5 bg-white rounded-xl">
         <div className="flex flex-row gap-5">
           <div className="flexw-fit h-auto">
