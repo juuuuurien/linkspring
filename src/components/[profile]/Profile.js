@@ -34,7 +34,7 @@ const Profile = ({ userdata }) => {
           {links?.map((e) => {
             if (!e.url || !e.title) return;
             return (
-              <ProfileLinkTab url={e.url}>
+              <ProfileLinkTab url={e.url} key={e.title}>
                 <span>{e.title}</span>
               </ProfileLinkTab>
             );
