@@ -2,10 +2,10 @@ import { ShareIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import React from "react";
 
-const ProfileLinkTab = ({ children, url }) => {
+const ProfileLinkTab = ({ children, url, key }) => {
   return (
-    <a href={url} target="_new">
-      <div className="normal-right-preview-tab xs:xs-right-preview-tab hover:scale-[1.05] transition-all ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
+    <a href={url} target="_new" key={key}>
+      <div key={key} className="normal-right-preview-tab xs:xs-right-preview-tab hover:scale-[1.05] transition-all ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
         {children}
       </div>
     </a>
