@@ -23,7 +23,7 @@ const config = {
         // Add logic here to look up the user from the credentials supplied
         const { username, password } = credentials;
         // make db call here
-        const res = await fetch("http://localhost:3000/api/auth/login", {
+        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
           method: "POST",
           body: JSON.stringify({ username, password }),
           headers: { "Content-Type": "application/json" },
