@@ -34,6 +34,22 @@ body {
     width: inherit;
     background: #000;
   }
+
+  .xs-right-preview-tab {
+    @apply flex bg-gray-800 rounded-xl justify-center items-center text-center text-white text-sm font-semibold w-full py-[0.9rem];
+  }
+
+  .normal-right-preview-tab {
+    @apply flex bg-gray-800 rounded-xl justify-center items-center text-center text-white text-sm font-semibold w-full py-[1.33rem];
+  }
+
+  iframe {
+    -moz-transform: scale(0.78, 0.78);
+    -webkit-transform: scale(0.78, 0.78);
+    -o-transform: scale(0.78, 0.78);
+    -ms-transform: scale(0.78, 0.78);
+    transform: scale(0.78, 0.78);
+  }
 }
 
 a {

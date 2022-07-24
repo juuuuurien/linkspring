@@ -1,7 +1,8 @@
+import Profile from "../components/[profile]/Profile";
 import User from "../models/User";
 import dbConnect from "../util/mongoose";
 
-const Profile = ({ userdata }) => {
+const ProfilePage = ({ userdata }) => {
   if (!userdata)
     return (
       <div>
@@ -13,11 +14,9 @@ const Profile = ({ userdata }) => {
   const { username, links, profile } = userdata;
 
   return (
-    <>
-      {links.map((e) => (
-        <div>{e.title}</div>
-      ))}
-    </>
+    <div className="w-screen h-screen">
+      <Profile userdata={userdata} />
+    </div>
   );
 };
 
@@ -25,7 +24,7 @@ export async function getServerSideProps(context) {
   dbConnect();
   console.log(context.query);
 
-  const _username = context.query.slug;
+  const _username = context.query.profile;
 
   console.log(context);
 
@@ -45,4 +44,4 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default Profile;
+export default ProfilePage;
