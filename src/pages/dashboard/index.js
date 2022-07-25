@@ -15,11 +15,6 @@ import LinkTab from "../../components/dashboard/components/LinkTab";
 export default function Dashboard({ userdata }) {
   // data contains  username, links, profile of the user
 
-  
-  const { data, isLoading } = useQuery(["links"], getLinks, {
-    initialData: userdata.links,
-  });
-
   const url = process.env.NEXT_PUBLIC_URL;
   const queryClient = useQueryClient();
 
@@ -70,6 +65,9 @@ export default function Dashboard({ userdata }) {
     ).json();
   };
 
+  const { data, isLoading } = useQuery(["links"], getLinks, {
+    initialData: userdata.links,
+  });
 
   const handleAddLink = useMutation(postLink, {
     onMutate: async () => {
@@ -162,9 +160,9 @@ export default function Dashboard({ userdata }) {
                 {handleAddLink.isLoading ? <Spinner /> : "Add New Link"}
               </div>
             </Button>
-            <div className="flex flex-col w-full gap-2">
+            <div className="flex flex-col w-full gap-2 items-center">
               {isLoading && <Spinner />}
-              {data && data?.links?.map((e, i) => (
+              {data?.links?.map((e, i) => (
                 <LinkTab
                   key={e._id}
                   _id={e._id}
