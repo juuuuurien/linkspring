@@ -1,7 +1,7 @@
 export const getProfile = async (username) => {
   console.log(username);
   const prof = await (
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/profile`, {
+    await fetch(`/api/profile`, {
       method: "POST",
       body: JSON.stringify({
         type: "get",
@@ -16,7 +16,7 @@ export const getProfile = async (username) => {
 
 export const updateProfile = async (updatedProfile, username) => {
   return await (
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/profile`, {
+    await fetch(`/api/profile`, {
       method: "POST",
       body: JSON.stringify({
         type: "update",
