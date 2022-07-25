@@ -15,7 +15,7 @@ import LinkTab from "../../components/dashboard/components/LinkTab";
 export default function Dashboard({ userdata }) {
   // data contains  username, links, profile of the user
 
-  const url = process.env.NEXT_PUBLIC_URL;
+  const url = process.env.NEXTAUTH_URL;
   const queryClient = useQueryClient();
 
   const postLink = async () => {
