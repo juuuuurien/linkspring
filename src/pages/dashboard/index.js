@@ -144,8 +144,8 @@ export default function Dashboard({ userdata }) {
   return (
     <>
       <Head>
-        <title>Treeoflinks | Dashboard</title>
-        <meta name="description" content="Treeoflinks dashboard" />
+        <title>Linkspring | Dashboard</title>
+        <meta name="description" content="Linkspring dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <DashboardLayout

@@ -20,11 +20,11 @@ const RightPreview = ({ userdata, linkData, profileData }) => {
   return (
     <div className="flex flex-col items-center max-w-[33%] w-full h-auto bg-gray-100 border border-gray-200 z-10">
       <div className="flex flex-row gap-2 w-full p-3 bg-white">
-        <h3 className="text-sm">My Treeoflinks:</h3>
+        <h3 className="text-sm">My Linkspring:</h3>
         <span className="text-sm visited:text-blue-600">
           <Link
-            href={`https://treeoflinks.me/${username}`}
-          >{`https://treeoflinks.me/${username}`}</Link>
+            href={`${process.env.NEXT_PUBLIC_URL}/${username}`}
+          >{`${process.env.NEXT_PUBLIC_URL}/${username}`}</Link>
         </span>
       </div>
       <div className="flex justify-center items-center h-full w-full">

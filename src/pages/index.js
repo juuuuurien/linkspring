@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Treeoflinks</title>
+        <title>Linkspring</title>
         <meta name="description" content="Your link resume" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -37,7 +37,7 @@ export default function Home() {
             {data && (
               <div
                 onClick={() =>
-                  signOut({ callbackUrl: "https://5mjnky.sse.codesandbox.io/" })
+                  signOut({ callbackUrl: process.env.NEXT_PUBLIC_URL })
                 }
                 className="py-4 px-6 bg-gray-300 hover:bg-gray-400 rounded-lg font-semibold cursor-pointer"
               >

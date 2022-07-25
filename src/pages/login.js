@@ -34,7 +34,7 @@ const Login = () => {
       redirect: false,
       username,
       password,
-      callbackUrl: url
+      callbackUrl: url,
     });
 
     if (res.error) {
@@ -50,11 +50,11 @@ const Login = () => {
     <section className="flex flex-col h-screen w-screen bg-slate-100">
       <div className="p-20">
         <h1>
-          <Link href="/">TreeOfLinks</Link>
+          <Link href="/">Linkspring</Link>
         </h1>
       </div>
       <div className="flex flex-col gap-5 justify-center items-center mx-auto w-full max-w-[640px] min-w-[30%]">
-        <h1 className="text-5xl font-extrabold">Log in to your TreeofLinks</h1>
+        <h1 className="text-5xl font-extrabold">Log in to your Linkspring</h1>
         <div className="flex flex-col gap-4 my-5 w-full">
           <div
             className={`block w-full border disabled:cursor-not-allowed disabled:opacity-50 px-2.5 bg-gray-50 text-gray-900 rounded-lg text-sm ${
@@ -63,7 +63,7 @@ const Login = () => {
                 : " border-gray-300 "
             }`}
           >
-            <span className={`text-gray-500`}>treeoflinks.me/</span>
+            <span className={`text-gray-500`}>linkspring.me/</span>
             <input
               autofill={true}
               required
@@ -128,15 +128,15 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         destination: "/dashboard",
-        permanent: false
-      }
+        permanent: false,
+      },
     };
   }
 
   return {
     props: {
-      session: JSON.parse(JSON.stringify(session))
-    }
+      session: JSON.parse(JSON.stringify(session)),
+    },
   };
 }
 

@@ -30,7 +30,7 @@ const Signup = () => {
     const data = await (
       await fetch(`${url}/api/auth/register`, {
         method: "POST",
-        body: JSON.stringify({ username, email, password })
+        body: JSON.stringify({ username, email, password }),
       })
     ).json();
     if (data.error) throw new Error(data.error);
@@ -46,7 +46,7 @@ const Signup = () => {
       },
       onError: (err) => {
         console.log(err);
-      }
+      },
     }
   );
 
@@ -54,7 +54,7 @@ const Signup = () => {
     <section className="flex flex-col  h-screen w-screen bg-slate-100">
       <div className="p-20">
         <h1>
-          <Link href="/">TreeOfLinks</Link>
+          <Link href="/">Linkspring</Link>
         </h1>
       </div>
       <div className="flex flex-col gap-5 mx-auto w-full max-w-[800px]">
@@ -70,7 +70,7 @@ const Signup = () => {
                 : " border-gray-300 "
             }`}
           >
-            <span className={`text-gray-500`}>treeoflinks.me/</span>
+            <span className={`text-gray-500`}>linkspring.me/</span>
             <input
               autofill={true}
               required

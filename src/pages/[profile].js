@@ -7,7 +7,7 @@ const ProfilePage = ({ userdata }) => {
     return (
       <div>
         The page you’re looking for doesn’t exist. Want this to be your
-        username? Create your Treeoflinks now.
+        username? Create your Linkspring now.
       </div>
     );
 
@@ -39,8 +39,8 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      userdata: JSON.parse(JSON.stringify(data))
-    }
+      userdata: JSON.parse(JSON.stringify(data)),
+    },
   };
 }
 
