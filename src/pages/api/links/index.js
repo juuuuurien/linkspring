@@ -9,9 +9,7 @@ export default async function handler(req, res) {
 
   if (type === "get") {
     const user = await User.findOne({ username: username });
-    if(user)  res.status(200).json({ links: user.links });
-    if(!user)  res.status(500).json({ error: "error, user was not found" });
-  
+ res.status(200).json({ links: user.links });  
   }
 
   if (type === "add") {

@@ -26,7 +26,7 @@ const Signup = () => {
 
   const handleSignup = async ({ username, email, password }) => {
     const data = await (
-      await fetch("http://localhost:3000/api/auth/register", {
+      await fetch(`${process.env.NEXTAUTH_URL}/api/auth/register`, {
         method: "POST",
         body: JSON.stringify({ username, email, password })
       })
