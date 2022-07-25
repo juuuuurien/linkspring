@@ -42,7 +42,7 @@ export default function Dashboard({ userdata }) {
 
   const getLinks = async () => {
     return await (
-      await fetch(`${url}/api/links`, {
+      await fetch(`/api/links`, {
         method: "POST",
         body: JSON.stringify({ type: "get", username: userdata.username }),
       })
