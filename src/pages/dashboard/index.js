@@ -2,7 +2,7 @@ import React from "react";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../api/auth/[...nextauth]";
 
-import MainContent from "../../components/dashboard/MainContent";
+import MainContentSection from "../../components/dashboard/MainContentSection";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import Head from "next/head";
 import dbConnect from "../../util/mongoose";
@@ -83,7 +83,7 @@ export default function Dashboard({ userdata }) {
     // On failure, roll back to the previous value
     onError: (err, variables, previousValue) =>
       queryClient.setQueryData(["links"], previousValue),
-    // After success or failure, refetch the links query
+    // After success or failure, refetch the links
     onSettled: () => {
       queryClient.invalidateQueries(["links"]);
     },
@@ -153,28 +153,34 @@ export default function Dashboard({ userdata }) {
         linkData={data?.links}
         profileData={userdata.profile}
       >
-        <MainContent userdata={userdata}>
+        <MainContentSection userdata={userdata}>
           <div className="flex flex-col items-center py-10 gap-12">
             <Button pill onClick={() => handleAddLink.mutate()}>
               <div className="text-lg font-bold w-full">
                 {handleAddLink.isLoading ? <Spinner /> : "Add New Link"}
               </div>
             </Button>
-            <div className="flex flex-col w-full gap-2 items-center">
+            <div className="flex flex-col w-full h-full gap-2 items-center">
               {isLoading && <Spinner />}
-              {data?.links?.map((e, i) => (
-                <LinkTab
-                  key={e._id}
-                  _id={e._id}
-                  url={e.url}
-                  title={e.title}
-                  handleUpdateLink={handleUpdateLink}
-                  handleDeleteLink={handleDeleteLink}
-                />
-              ))}
+              {data &&
+                data?.links?.map((e, i) => (
+                  <LinkTab
+                    key={e._id}
+                    _id={e._id}
+                    url={e.url}
+                    title={e.title}
+                    handleUpdateLink={handleUpdateLink}
+                    handleDeleteLink={handleDeleteLink}
+                  />
+                ))}
+              {data?.links?.length === 0 && (
+                <div className="flex w-full h-full justify-center items-center text-slate-500">
+                  {"You have no links yet! Click the '+' to add some."}
+                </div>
+              )}
             </div>
           </div>
-        </MainContent>
+        </MainContentSection>
       </DashboardLayout>
     </>
   );

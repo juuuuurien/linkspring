@@ -28,7 +28,7 @@ const Signup = () => {
 
   const handleSignup = async ({ username, email, password }) => {
     const data = await (
-      await fetch(`${url}/api/auth/register`, {
+      await fetch(`/api/auth/register`, {
         method: "POST",
         body: JSON.stringify({ username, email, password }),
       })

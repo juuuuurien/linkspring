@@ -25,7 +25,8 @@ const Login = () => {
     setPassword(val);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setLoading(true);
     setError(null);
 
@@ -55,7 +56,7 @@ const Login = () => {
       </div>
       <div className="flex flex-col gap-5 justify-center items-center mx-auto w-full max-w-[640px] min-w-[30%]">
         <h1 className="text-5xl font-extrabold">Log in to your Linkspring</h1>
-        <div className="flex flex-col gap-4 my-5 w-full">
+        <form className="flex flex-col gap-4 my-5 w-full">
           <div
             className={`block w-full border disabled:cursor-not-allowed disabled:opacity-50 px-2.5 bg-gray-50 text-gray-900 rounded-lg text-sm ${
               usernameFocus
@@ -64,6 +65,7 @@ const Login = () => {
             }`}
           >
             <span className={`text-gray-500`}>linkspring.me/</span>
+
             <input
               autofill={true}
               required
@@ -89,18 +91,20 @@ const Login = () => {
             required={true}
             onChange={(e) => handlePasswordChange(e.target.value)}
           />
+
           {/* <div className="flex items-center gap-2">
             <Checkbox id="remember" />
             <Label htmlFor="remember">Remember me</Label>
           </div> */}
           <button
+            type="submit"
             className="bg-purple-600 text-white rounded-[10000px] p-3"
             onClick={handleLogin}
           >
             {loading ? <Spinner /> : "Log In"}
           </button>
-          <span className="text-red-700">{error ? `${error}` : null}</span>
-        </div>
+        </form>
+        <span className="text-red-700">{error ? `${error}` : null}</span>
         <section className="flex flex-col justify-center items-center gap-10">
           <p className="underline">
             <Link href="/">Forgot your password?</Link>
