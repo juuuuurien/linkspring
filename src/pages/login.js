@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { authOptions } from "./api/auth/[...nextauth]";
 
 const Login = () => {
-  const url = `${process.env.NEXTAUTH_URL}/dashboard`;
+  const url = `${process.env.NEXT_PUBLIC_URL}/dashboard`;
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
