@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import { useMutation } from "react-query";
 
 const Signup = () => {
+  const url = `${process.env.NEXT_PUBLIC_URL}/dashboard`;
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +28,7 @@ const Signup = () => {
 
   const handleSignup = async ({ username, email, password }) => {
     const data = await (
-      await fetch(`${process.env.NEXTAUTH_URL}/api/auth/register`, {
+      await fetch(`https://www.treeoflinks.me/api/auth/register`, {
         method: "POST",
         body: JSON.stringify({ username, email, password })
       })
