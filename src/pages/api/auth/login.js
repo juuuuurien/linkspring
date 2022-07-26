@@ -8,14 +8,14 @@ export default async function handler(req, res) {
   await dbConnect();
 
   const user = await User.exists({ username: username });
-  if (!user) res.send({ error: "User does not exist" });
+  if (!user) res.json({ error: "User does not exist" });
 
   if (user) {
     // Any object returned will be saved in `user` property of the JWT
     const data = await User.findById(user);
     const isValid = await compare(password, data.password);
 
-    if (!isValid) res.send({ success: false, error: "Invalid password" });
+    if (!isValid) res.json({ success: false, error: "Invalid password" });
     if (isValid) res.status(200).json({ success: true, data: data });
   }
 }
