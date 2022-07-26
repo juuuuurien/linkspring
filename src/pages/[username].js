@@ -23,7 +23,7 @@ const ProfilePage = ({ userdata }) => {
 export async function getServerSideProps(context) {
   dbConnect();
 
-  const _username = context.query.profile;
+  const _username = context.query.username;
 
   const user = await User.findOne({ username: _username });
 
