@@ -1,11 +1,8 @@
-import { Label, TextInput, Textarea } from "flowbite-react";
 import React, { Fragment, useRef, useState } from "react";
 import dataUriToBuffer from "data-uri-to-buffer";
 
-import { Dialog, Transition, Disclosure } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import AvatarEditor from "react-avatar-editor";
-
-import Avatar from "../../../../../public/assets/avatar.PNG";
 
 const AvatarModal = ({
   modalVisible,
