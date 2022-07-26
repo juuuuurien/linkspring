@@ -187,6 +187,8 @@ export default function Dashboard({ userdata }) {
 }
 
 export async function getServerSideProps(context) {
+  // this is slow in production... maybe fetch client side to show skeleton while loading?
+
   const session = await unstable_getServerSession(
     context.req,
     context.res,

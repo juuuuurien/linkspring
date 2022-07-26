@@ -11,6 +11,8 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { getProfile, updateProfile } from "../../services/profileServices";
 
+// instead of refetching userdata, just pass as data through query object in nextjs Link. Use get static props.
+
 const Appearance = ({ userdata }) => {
   const queryClient = useQueryClient();
 

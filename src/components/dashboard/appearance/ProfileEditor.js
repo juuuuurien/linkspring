@@ -173,9 +173,9 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
   const handleSubmit = (formObj) => {
     const updatedProfile = { bio, title, avatar };
 
-    updatedProfile.avatar = formObj.avatar ? formObj.avatar : liveData.avatar;
+    updatedProfile.avatar = formObj.avatar ? formObj.avatar : liveData.avatar; // if updating avatar, use formObj.avatar, otherwise use old avatar in liveData
     updatedProfile.title = formObj.title === "" ? "" : formObj.title || title;
-    updatedProfile.bio = formObj.bio === "" ? "" : formObj.bio || bio; // if url is empty, update as empty string, otherwise it will just use the old bio
+    updatedProfile.bio = formObj.bio === "" ? "" : formObj.bio || bio; // if url passed is empty, update as empty string, otherwise it will just use the old bio
     handleUpdateProfile.mutate(updatedProfile);
   };
 
