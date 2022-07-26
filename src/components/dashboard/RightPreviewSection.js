@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 import { ShareIcon } from "@heroicons/react/outline";
-import Profile from "../[profile]/Profile";
+import Profile from "../profile/Profile";
 
 const PVLinkTab = ({ children, url }) => {
   return (
@@ -44,9 +44,22 @@ const RightPreview = ({ userdata, linkData, profileData }) => {
             />
           </div>
           <div className="PORTFOLIO-WRAPPER flex flex-col items-center m-5">
-            <div className="flex bg-gray-600 w-[4rem] h-[4rem] mb-3 rounded-[100%] justify-center items-center">
-              <h1>JL</h1>
-            </div>
+            {profileData.avatar && (
+              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
+                <img
+                  src={
+                    "data:image/png;base64," +
+                    Buffer.from(profileData.avatar).toString("base64")
+                  }
+                  className="w-full h-full rounded-[50%]"
+                ></img>
+              </div>
+            )}
+            {!profileData.avatar && (
+              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
+                <h1>JL</h1>
+              </div>
+            )}
             <span className="font-bold text-sm">{profileData?.title}</span>
             <span className="text-xs">{profileData?.bio}</span>
           </div>

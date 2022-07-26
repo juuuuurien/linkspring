@@ -26,7 +26,7 @@ const Signup = () => {
     setPassword(val);
   };
 
-  const handleSignup = async ({ username, email, password }) => {
+  const fetchSignup = async ({ username, email, password }) => {
     const data = await (
       await fetch(`/api/auth/register`, {
         method: "POST",
@@ -39,7 +39,7 @@ const Signup = () => {
   };
 
   const { mutate, isLoading, isError, isSuccess, error } = useMutation(
-    handleSignup,
+    fetchSignup,
     {
       onSuccess: () => {
         router.replace("/dashboard");
@@ -49,6 +49,11 @@ const Signup = () => {
       },
     }
   );
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    mutate({ username, email, password });
+  };
 
   return (
     <section className="flex flex-col  h-screen w-screen bg-slate-100">
@@ -62,7 +67,7 @@ const Signup = () => {
         <h2 className="font-normal text-gray-500">
           Free forever. No payment needed.
         </h2>
-        <div className="flex flex-col gap-4 my-5">
+        <form className="flex flex-col gap-4 my-5">
           <div
             className={`block w-full border disabled:cursor-not-allowed disabled:opacity-50 px-2.5 bg-gray-50 text-gray-900 rounded-lg text-sm ${
               usernameFocus
@@ -107,13 +112,12 @@ const Signup = () => {
             onChange={(e) => handlePasswordChange(e.target.value)}
           />
           <button
-            onClick={() => {
-              mutate({ username, email, password });
-            }}
+            type="submit"
+            onClick={handleRegister}
             disabled={
               username.length < 1 || email.length < 1 || password.length < 1
             }
-            className="bg-purple-600 text-white rounded-[10000px] p-3"
+            className="bg-purple-600 text-white rounded-[10000px] p-3 disabled:bg-slate-200 disabled:text-slate-400"
           >
             {isLoading ? <Spinner /> : "Sign Up With Email"}
           </button>
@@ -121,7 +125,7 @@ const Signup = () => {
           <span className="text-gray-500">
             {isSuccess ? `Account created!` : null}
           </span>
-        </div>
+        </form>
         <p>
           {" Already have an account? "}
           <span className="underline">

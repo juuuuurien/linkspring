@@ -27,7 +27,6 @@ const URLInput = ({ label, className, data, handleSubmit }) => {
     ) {
       if (isError) setError(false);
 
-      console.log("Yo this is a good link");
       if (
         value.substring(0, 7) === "http://" ||
         value.substring(0, 8) === "https://"

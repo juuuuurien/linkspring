@@ -33,13 +33,14 @@ const Appearance = ({ userdata }) => {
         await queryClient.cancelQueries(["profile"]);
         const previousValue = queryClient.getQueryData(["profile"]);
 
-        const { title, bio } = updatedProfile;
+        const { title, bio, avatar } = updatedProfile;
 
         queryClient.setQueryData(["profile"], (old) => {
           return {
             ...old,
             title,
             bio,
+            avatar,
           };
         });
 
@@ -57,7 +58,7 @@ const Appearance = ({ userdata }) => {
     }
   );
 
-  console.log(queryData, "THIS IS PROFILE QUERY");
+  // console.log(queryData, "THIS IS PROFILE QUERY");
 
   return (
     <DashboardLayout

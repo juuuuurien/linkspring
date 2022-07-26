@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
   if (type === "get") {
     const user = await User.findOne({ username: username });
- res.status(200).json({ links: user.links });  
+    res.status(200).json({ links: user.links });
   }
 
   if (type === "add") {
@@ -17,6 +17,7 @@ export default async function handler(req, res) {
       _id: mongoose.Types.ObjectId(),
       url: "",
       title: "",
+      image: "",
     };
 
     const user = await User.findOneAndUpdate(
@@ -31,8 +32,6 @@ export default async function handler(req, res) {
   if (type === "delete") {
     const { _id } = JSON.parse(req.body);
 
-    console.log(_id);
-
     const user = await User.findOneAndUpdate(
       { username: username },
       {
@@ -41,8 +40,6 @@ export default async function handler(req, res) {
         },
       }
     );
-
-    console.log(user.links);
 
     res.status(200).json({ links: user.links });
   }
@@ -63,8 +60,6 @@ export default async function handler(req, res) {
       },
       { $set: { "links.$.url": url, "links.$.title": title }, new: true }
     );
-
-    console.log(user);
 
     res.status(200).json({ links: user.links });
   }

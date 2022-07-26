@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import User, { LinkSchema } from "../../../models/User";
 import dbConnect from "../../../util/mongoose";
 
+import s3 from "../../../../s3";
+
 export default async function handler(req, res) {
   await dbConnect();
 
@@ -49,20 +51,39 @@ export default async function handler(req, res) {
 
   if (type === "update") {
     const { username, updatedProfile } = JSON.parse(req.body);
-
-    //  const user = await User.findOneAndUpdate({
-    //   {username: username, links: {$elemMatch: {_id: mongoose.Types.ObjectId(_id)}},
-    //   {$set: {'links.$.url': url, 'links.$.title': title}, new: true}}})
-
-    const { title, bio } = updatedProfile;
-
+    const { title, bio, avatar } = updatedProfile;
     const user = await User.findOneAndUpdate(
       {
         username: username,
       },
-      { $set: { "profile.title": title, "profile.bio": bio }, new: true }
+      {
+        $set: {
+          "profile.title": title,
+          "profile.bio": bio,
+          "profile.avatar": avatar,
+        },
+        new: true,
+      }
     );
 
     res.status(200).json({ profile: user.profile });
   }
+
+  //   if (type === "update_avatar") {
+  //     const user = await User.findOneAndUpdate(
+  //       {
+  //         username: username,
+  //       },
+  //       {
+  //         $set: {
+  //           "profile.title": title,
+  //           "profile.bio": bio,
+  //           "profile.avatar": avatar,
+  //         },
+  //         new: true,
+  //       }
+  //     );
+
+  //     res.status(200).json({ profile: user.profile });
+  //   }
 }

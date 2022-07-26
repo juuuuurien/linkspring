@@ -1,4 +1,4 @@
-import Profile from "../components/[profile]/Profile";
+import Profile from "../components/profile/Profile";
 import User from "../models/User";
 import dbConnect from "../util/mongoose";
 
@@ -22,11 +22,8 @@ const ProfilePage = ({ userdata }) => {
 
 export async function getServerSideProps(context) {
   dbConnect();
-  console.log(context.query);
 
   const _username = context.query.profile;
-
-  console.log(context);
 
   const user = await User.findOne({ username: _username });
 

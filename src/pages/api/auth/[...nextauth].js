@@ -30,7 +30,6 @@ const config = {
         });
 
         const user = await res.json();
-        console.log(user, "fal;ksdfa;sdlkfjasd;flkjasf;lkjasf;asdl");
         if (user.success && user) return user.data;
       },
     }),

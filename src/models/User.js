@@ -8,21 +8,19 @@ const ThemeSchema = new mongoose.Schema({
 const LinkSchema = new mongoose.Schema({
   url: { type: String },
   title: { type: String },
+  image: { type: Buffer },
 });
 
 const ProfileSchema = new mongoose.Schema({
   title: {
     type: String,
-    default: "This is my title",
+    default: "Example title",
   },
   bio: {
     type: String,
-    default: "This is my bio",
+    default: "Example bio",
   },
-  theme: {
-    type: ThemeSchema,
-    default: { backgroundColor: "#fafafa", tabColor: "#eeeeee" },
-  },
+  avatar: { type: Buffer },
 });
 
 const UserSchema = new mongoose.Schema({
@@ -48,6 +46,10 @@ const UserSchema = new mongoose.Schema({
   },
   profile: {
     type: ProfileSchema,
+    default: {},
+  },
+  theme: {
+    type: ThemeSchema,
     default: {},
   },
 });
