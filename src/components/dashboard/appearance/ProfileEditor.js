@@ -23,23 +23,15 @@ const AvatarModal = ({
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  // const handleSave = () => {
-  //   // image will be saved as a dataURL string
-  //   if (editorRef.current) {
-  //     const canvas = editorRef.current.getImageScaledToCanvas();
-  //     const dataURL = canvas.toBlob("image/png");
-  //     // setAvatar(dataURL);
-  //     //create form obj
-  //     const formObj = {};
-  //     formObj.avatar = dataURL;
-  //   }
-  // };
-
   const handleAvatarSubmit = async () => {
     // get image in dataURL format
+
     const canvas = editorRef.current.getImageScaledToCanvas();
     const dataURL = canvas.toDataURL("image/png");
+
     // ****** May refactor to use s3 buckets in the future ******
+    //  *********************************************************
+
     // get secure connection URL to aws bucket
     // const { url } = await fetch("/api/s3").then((res) => res.json());
 
@@ -65,6 +57,8 @@ const AvatarModal = ({
     const buf = dataUriToBuffer(dataURL);
     const formObj = {};
     formObj.avatar = buf;
+
+    setAvatar(buf);
     handleSubmit(formObj);
 
     // setAvatar(dataURL);
@@ -159,7 +153,7 @@ const AvatarModal = ({
 const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
   const { username, profile } = initialData;
 
-  const [avatar, setAvatar] = useState(null);
+  const [avatar, setAvatar] = useState(liveData?.avatar);
   const [title, setTitle] = useState(liveData?.title);
   const [bio, setBio] = useState(liveData?.bio);
   const [cache, setCache] = useState(null);
@@ -180,7 +174,7 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
     const updatedProfile = { bio, title, avatar };
 
     updatedProfile.avatar =
-      formObj.avatar === "" ? "" : formObj.avatar || avatar;
+      formObj.avatar === "" ? avatar : formObj.avatar || avatar;
     updatedProfile.title = formObj.title === "" ? "" : formObj.title || title;
     updatedProfile.bio = formObj.bio === "" ? "" : formObj.bio || bio; // if url is empty, update as empty string, otherwise it will just use the old bio
     handleUpdateProfile.mutate(updatedProfile);
