@@ -40,7 +40,7 @@ const Login = () => {
 
     if (res.error) {
       setLoading(false);
-      setError("Invalid username or password");
+      setError(res.error);
       return;
     }
 

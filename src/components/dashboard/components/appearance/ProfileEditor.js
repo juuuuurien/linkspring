@@ -121,7 +121,7 @@ const AvatarModal = ({
                   />
                 </div>
                 <div className="flex flex-row gap-2">
-                  <label for="cowbell">Zoom</label>
+                  <label>Zoom</label>
                   <input
                     type="range"
                     id="cowbell"
