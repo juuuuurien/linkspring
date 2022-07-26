@@ -1,5 +1,5 @@
 import React from "react";
-import ProfileEditor from "../../components/dashboard/components/appearance/ProfileEditor";
+import ProfileEditor from "../../components/dashboard/appearance/ProfileEditor";
 import MainNavbar from "../../components/dashboard/MainNavbar";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { authOptions } from "../api/auth/[...nextauth]";

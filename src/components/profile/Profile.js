@@ -5,7 +5,10 @@ import React from "react";
 const ProfileLinkTab = ({ children, url, key }) => {
   return (
     <a href={url} target="_new" key={key}>
-      <div key={key} className="normal-right-preview-tab xs:xs-right-preview-tab hover:scale-[1.05] transition-all ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
+      <div
+        key={key}
+        className="normal-right-preview-tab xs:xs-right-preview-tab hover:scale-[1.05] transition-all ease-[cubic-bezier(.11,-0.85,.75,1.83)]"
+      >
         {children}
       </div>
     </a>
@@ -25,7 +28,22 @@ const Profile = ({ userdata }) => {
         </div>
         <div className="PORTFOLIO-WRAPPER flex flex-col items-center m-2 mb-10">
           <div className="flex bg-gray-600 w-[6rem] h-[6rem] mb-3 rounded-[100%] justify-center items-center">
-            <h1>JL</h1>
+            {profile.avatar && (
+              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
+                <img
+                  src={
+                    "data:image/png;base64," +
+                    Buffer.from(profile.avatar).toString("base64")
+                  }
+                  className="w-full h-full rounded-[50%]"
+                ></img>
+              </div>
+            )}
+            {!profile.avatar && (
+              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
+                <h1>JL</h1>
+              </div>
+            )}
           </div>
           <span className="font-bold text-lg">{"Julien's Profile"}</span>
           <span className="text-md">This is a sample bio</span>
