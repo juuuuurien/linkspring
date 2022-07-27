@@ -4,7 +4,7 @@ import React from "react";
 const Sidebar = () => {
   return (
     <section className="flex flex-col justify-between items-center py-5 h-full w-[100px] bg-white border border-gray-200 z-10">
-      <Link href="/dashboard">
+      <Link href="/">
         <a>
           <h3>Icon</h3>
         </a>

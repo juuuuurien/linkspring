@@ -40,6 +40,7 @@ const Login = () => {
 
     if (res.error) {
       setLoading(false);
+      console.log(res);
       setError(res.error);
       return;
     }
@@ -56,7 +57,11 @@ const Login = () => {
       </div>
       <div className="flex flex-col gap-5 justify-center items-center mx-auto w-full max-w-[640px] min-w-[30%]">
         <h1 className="text-5xl font-extrabold">Log in to your Linkspring</h1>
-        <form className="flex flex-col gap-4 my-5 w-full">
+        <form
+          className="flex flex-col gap-4 my-5 w-full"
+          autoComplete="on"
+          onSubmit={handleLogin}
+        >
           <div
             className={`block w-full border disabled:cursor-not-allowed disabled:opacity-50 px-2.5 bg-gray-50 text-gray-900 rounded-lg text-sm ${
               usernameFocus
@@ -67,7 +72,7 @@ const Login = () => {
             <span className={`text-gray-500`}>linkspring.me/</span>
 
             <input
-              autofill={true}
+              autocomplete={"on"}
               required
               name="username"
               onFocus={() => {
@@ -84,7 +89,7 @@ const Login = () => {
             ></input>
           </div>
           <TextInput
-            autofill={true}
+            autocomplete={"on"}
             name="password"
             type="password"
             placeholder="Password"
@@ -99,7 +104,7 @@ const Login = () => {
           <button
             type="submit"
             className="bg-purple-600 text-white rounded-[10000px] p-3"
-            onClick={handleLogin}
+            // onClick={handleLogin}
           >
             {loading ? <Spinner /> : "Log In"}
           </button>

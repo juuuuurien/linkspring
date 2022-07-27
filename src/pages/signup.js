@@ -77,7 +77,7 @@ const Signup = () => {
           >
             <span className={`text-gray-500`}>linkspring.me/</span>
             <input
-              autofill={true}
+              autofill={"true"}
               required
               name="username"
               onFocus={() => {
@@ -96,20 +96,22 @@ const Signup = () => {
             />
           </div>
           <TextInput
-            autofill={true}
+            autofill={"true"}
             name="email"
             type="email"
             placeholder="Email"
             required={true}
             onChange={(e) => handleEmailChange(e.target.value)}
+            value={email}
           />
           <TextInput
-            autofill={true}
+            autofill={"true"}
             name="password"
             type="password"
             placeholder="Password"
             required={true}
             onChange={(e) => handlePasswordChange(e.target.value)}
+            value={password}
           />
           <button
             type="submit"

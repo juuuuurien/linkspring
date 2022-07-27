@@ -45,6 +45,9 @@ const config = {
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/login",
+  },
 };
 
 export const authOptions = config;
