@@ -30,17 +30,20 @@ const config = {
         });
 
         const user = await res.json();
+
         if (user.success && user) return user.data;
       },
     }),
   ],
-  // callbacks: {
-  //   session: async ({ session, token, user }) => {
-  //     console.log(token, "THIS IS TOKEN");
-  //     // session.id = user.id;
-  //     return Promise.resolve(session);
-  //   },
-  // },
+  callbacks: {
+    async session({ session, user, token }) {
+      console.log(
+        token,
+        "this is tokie asdfkjasdl;fjkasdlf;kjasd;lfkjasdfl;kasdf;lasdjf;asdlf"
+      );
+      return session;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { unstable_getServerSession } from "next-auth/next";
+import { useSession } from "next-auth/react";
 import { authOptions } from "../api/auth/[...nextauth]";
 
 import MainContentSection from "../../components/dashboard/MainContentSection";
@@ -12,17 +13,31 @@ import { Button, Spinner } from "flowbite-react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import LinkTab from "../../components/dashboard/components/LinkTab";
 
-export default function Dashboard({ userdata }) {
+export default function Dashboard() {
   // data contains  username, links, profile of the user
+
+  const session = useSession();
 
   const url = process.env.NEXT_PUBLIC_URL;
   const queryClient = useQueryClient();
+
+  const { data: userdata, isLoading: userLoading } = useQuery(
+    ["userdata"],
+    async () => {
+      return await (
+        await fetch(`/api/user`, {
+          method: "POST",
+          body: JSON.stringify({ email: session.data.user.email }),
+        })
+      ).json();
+    }
+  );
 
   const postLink = async () => {
     return await (
       await fetch(`/api/links`, {
         method: "POST",
-        body: JSON.stringify({ type: "add", username: userdata.username }),
+        body: JSON.stringify({ type: "add", username: userdata?.username }),
       })
     ).json();
   };
@@ -33,7 +48,7 @@ export default function Dashboard({ userdata }) {
         method: "POST",
         body: JSON.stringify({
           type: "delete",
-          username: userdata.username,
+          username: userdata?.username,
           _id: _id,
         }),
       })
@@ -44,7 +59,7 @@ export default function Dashboard({ userdata }) {
     return await (
       await fetch(`/api/links`, {
         method: "POST",
-        body: JSON.stringify({ type: "get", username: userdata.username }),
+        body: JSON.stringify({ type: "get" }),
       })
     ).json();
   };
@@ -57,7 +72,7 @@ export default function Dashboard({ userdata }) {
         method: "POST",
         body: JSON.stringify({
           type: "update",
-          username: userdata.username,
+          username: userdata?.username,
           _id: _id,
           formData: updateObj,
         }),
@@ -66,7 +81,7 @@ export default function Dashboard({ userdata }) {
   };
 
   const { data, isLoading } = useQuery(["links"], getLinks, {
-    initialData: userdata.links,
+    initialData: [],
   });
 
   const handleAddLink = useMutation(postLink, {
@@ -141,48 +156,54 @@ export default function Dashboard({ userdata }) {
     },
   });
 
+  if (userLoading) {
+    return <Spinner />;
+  }
+
   return (
-    <>
-      <Head>
-        <title>Linkspring | Dashboard</title>
-        <meta name="description" content="Linkspring dashboard" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <DashboardLayout
-        userdata={userdata}
-        linkData={data?.links}
-        profileData={userdata.profile}
-      >
-        <MainContentSection userdata={userdata}>
-          <div className="flex flex-col items-center py-10 gap-12">
-            <Button pill onClick={() => handleAddLink.mutate()}>
-              <div className="text-lg font-bold w-full">
-                {handleAddLink.isLoading ? <Spinner /> : "Add New Link"}
-              </div>
-            </Button>
-            <div className="flex flex-col w-full h-full gap-2 items-center">
-              {isLoading && <Spinner />}
-              {data &&
-                data?.links?.map((e, i) => (
-                  <LinkTab
-                    key={e._id}
-                    _id={e._id}
-                    url={e.url}
-                    title={e.title}
-                    handleUpdateLink={handleUpdateLink}
-                    handleDeleteLink={handleDeleteLink}
-                  />
-                ))}
-              {data?.links?.length === 0 && (
-                <div className="flex w-full h-full justify-center items-center text-slate-500">
-                  {"You have no links yet! Click the '+' to add some."}
+    userdata && (
+      <>
+        <Head>
+          <title>Linkspring | Dashboard</title>
+          <meta name="description" content="Linkspring dashboard" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <DashboardLayout
+          userdata={userdata}
+          linkData={data?.links}
+          profileData={userdata?.profile}
+        >
+          <MainContentSection userdata={userdata}>
+            <div className="flex flex-col items-center py-10 gap-12">
+              <Button pill onClick={() => handleAddLink.mutate()}>
+                <div className="text-lg font-bold w-full">
+                  {handleAddLink.isLoading ? <Spinner /> : "Add New Link"}
                 </div>
-              )}
+              </Button>
+              <div className="flex flex-col w-full h-full gap-2 items-center">
+                {isLoading && <Spinner />}
+                {data &&
+                  data?.links?.map((e, i) => (
+                    <LinkTab
+                      key={e._id}
+                      _id={e._id}
+                      url={e.url}
+                      title={e.title}
+                      handleUpdateLink={handleUpdateLink}
+                      handleDeleteLink={handleDeleteLink}
+                    />
+                  ))}
+                {data?.links?.length === 0 && (
+                  <div className="flex w-full h-full justify-center items-center text-slate-500">
+                    {"You have no links yet! Click the '+' to add some."}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </MainContentSection>
-      </DashboardLayout>
-    </>
+          </MainContentSection>
+        </DashboardLayout>
+      </>
+    )
   );
 }
 
@@ -194,6 +215,8 @@ export async function getServerSideProps(context) {
     context.res,
     authOptions
   );
+
+  console.log(session);
 
   if (session) {
     dbConnect();
