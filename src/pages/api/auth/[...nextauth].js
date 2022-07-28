@@ -3,9 +3,9 @@ import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import clientPromise from "../../../util/mongodb";
 
-const config = {
+export const authOptions = {
   site: process.env.NEXTAUTH_URL,
-  // adapter: MongoDBAdapter(clientPromise),
+  adapter: MongoDBAdapter(clientPromise),
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
@@ -41,7 +41,7 @@ const config = {
       },
     }),
   ],
-  
+
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
@@ -51,6 +51,4 @@ const config = {
   },
 };
 
-export const authOptions = config;
-
-export default NextAuth(config);
+export default NextAuth(authOptions);

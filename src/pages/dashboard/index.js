@@ -1,38 +1,34 @@
 import React, { useState } from "react";
 import { unstable_getServerSession } from "next-auth/next";
 import { useSession } from "next-auth/react";
-import { authOptions } from "../api/auth/[...nextauth]";
 
 import MainContentSection from "../../components/dashboard/MainContentSection";
 import RightPreviewSection from "../../components/dashboard/RightPreviewSection";
 import Sidebar from "../../components/dashboard/Sidebar";
 import MainNavbar from "../../components/dashboard/MainNavbar";
-import DashboardSkeleton from '../../components/dashboard/DashboardSkeleton'
+import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
 
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import Head from "next/head";
-import dbConnect from "../../util/mongoose";
-import User from "../../models/User";
 
 import { Button, Spinner } from "flowbite-react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import LinkTab from "../../components/dashboard/components/LinkTab";
+import { authOptions } from "../api/auth/[...nextauth]";
 
-export default function Dashboard() {
+export default function Dashboard({ _session }) {
   // data contains  username, links, profile of the user
-  const session = useSession();
-
   const url = process.env.NEXT_PUBLIC_URL;
   const queryClient = useQueryClient();
 
-// get user data
+  // get user data
   const { data: userdata, isLoading: userLoading } = useQuery(
     ["userdata"],
     async () => {
       return await (
         await fetch(`/api/user`, {
           method: "POST",
-          body: JSON.stringify({ email: session.data.user.email }),
+          body: JSON.stringify({ email: _session.user.email }),
         })
       ).json();
     }
@@ -47,12 +43,12 @@ export default function Dashboard() {
       })
     ).json();
   };
-  
+
   const addLink = async () => {
     return await (
       await fetch(`/api/links`, {
         method: "POST",
-        body: JSON.stringify({ type: "add"}),
+        body: JSON.stringify({ type: "add" }),
       })
     ).json();
   };
@@ -68,8 +64,6 @@ export default function Dashboard() {
       })
     ).json();
   };
-
-
 
   const updateLink = async (variables) => {
     const { _id, updateObj } = variables;
@@ -157,18 +151,14 @@ export default function Dashboard() {
       queryClient.invalidateQueries(["links"]);
     },
   });
-  
-    
+
   // query links
   const { data: linkData, isLoading } = useQuery(["links"], getLinks, {
     initialData: userdata?.links || [],
   });
-  
 
   if (userLoading) {
-    return (
-<DashboardSkeleton  />
-    );
+    return <DashboardSkeleton />;
   }
 
   // return (
@@ -225,12 +215,11 @@ export default function Dashboard() {
           <meta name="description" content="Linkspring dashboard" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-
         <div className="main-wrapper flex flex-row h-screen w-screen overflow-y-auto">
           <Sidebar />
           <div className="w-full">
             <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
-              <MainNavbar  userdata={userdata}  />
+              <MainNavbar userdata={userdata} />
               <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px]">
                 <div className="flex flex-col items-center py-10 gap-12">
                   <Button pill onClick={() => handleAddLink.mutate()}>
@@ -268,28 +257,16 @@ export default function Dashboard() {
   );
 }
 
-// export async function getServerSideProps(context) {
-//   // this is slow in production... maybe fetch client side to show skeleton while loading?
+export async function getServerSideProps(context) {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
 
-//   const session = await unstable_getServerSession(
-//     context.req,
-//     context.res,
-//     authOptions
-//   );
-
-//   if (session) {
-//     // for some reason deleting this SSR breaks mongodb???
-//     dbConnect();
-//     const user = await User.findOne({ email: session.user.email });
-//     const { username, links, profile } = user;
-
-//     return {
-//       props: {
-//         session: JSON.parse(JSON.stringify(session)),
-//         userdata: JSON.parse(JSON.stringify({ username, links, profile })),
-//       },
-//     };
-//   }
-
- 
-// }
+  return {
+    props: {
+      _session: JSON.parse(JSON.stringify(session)),
+    },
+  };
+}

@@ -6,10 +6,12 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { authOptions } from "./api/auth/[...nextauth]";
 
-const Login = () => {
+const Login = ({ session }) => {
   const url = `${process.env.NEXT_PUBLIC_URL}/dashboard`;
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  console.log(session);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -89,7 +91,7 @@ const Login = () => {
             ></input>
           </div>
           <TextInput
-            autocomplete={"on"}
+            autoComplete={"on"}
             name="password"
             type="password"
             placeholder="Password"

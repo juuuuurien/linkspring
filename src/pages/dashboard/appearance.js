@@ -1,7 +1,6 @@
 // import React from "react";
 import ProfileEditor from "../../components/dashboard/appearance/ProfileEditor";
 
-
 // import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
@@ -11,19 +10,16 @@ import RightPreviewSection from "../../components/dashboard/RightPreviewSection"
 import Sidebar from "../../components/dashboard/Sidebar";
 import MainNavbar from "../../components/dashboard/MainNavbar";
 
-import DashboardSkeleton from '../../components/dashboard/DashboardSkeleton'
+import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
 
 import { useSession } from "next-auth/react";
 
 // import User from "../../models/User";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-
-const Appearance = ({session}) => {
+const Appearance = ({ _session }) => {
   // const session = useSession();
-  const queryClient = useQueryClient();
-  console.log(session)
-  const email = 'julien24lopez@gmail.com'
+
   // get user data
 
   const { data: userdata, isLoading: userLoading } = useQuery(
@@ -32,13 +28,13 @@ const Appearance = ({session}) => {
       return await (
         await fetch(`/api/user`, {
           method: "POST",
-          body: JSON.stringify({ email: email }),
+          body: JSON.stringify({ email: _session.user.email }),
         })
       ).json();
     }
   );
 
-  // profile api calls 
+  // profile api calls
   const getProfile = async () => {
     return await (
       await fetch(`/api/profile`, {
@@ -63,20 +59,16 @@ const Appearance = ({session}) => {
     ).json();
   };
 
-
-  const { data: profileData, isLoading } = useQuery(
-    ["profile"],
-    getProfile, {
-      initialData: userdata?.profile || {},
-    }
-  );
-  
+  const { data: profileData, isLoading } = useQuery(["profile"], getProfile, {
+    initialData: userdata?.profile || {},
+  });
 
   const handleUpdateProfile = useMutation(
     (updatedProfile) =>
-    updateProfile({
-      updatedProfile,
-    }), {
+      updateProfile({
+        updatedProfile,
+      }),
+    {
       onMutate: async (updatedProfile) => {
         await queryClient.cancelQueries(["profile"]);
         const previousValue = queryClient.getQueryData(["profile"]);
@@ -107,47 +99,42 @@ const Appearance = ({session}) => {
 
   // console.log(queryData, "THIS IS PROFILE QUERY");
 
-
-
-
-  if ( userLoading) {
-    return (
-    <DashboardSkeleton />
-    );
+  if (userLoading) {
+    return <DashboardSkeleton />;
   }
-
-
-
 
   return (
     userdata && (
       <div className="main-wrapper flex flex-row h-screen w-screen overflow-y-auto">
-          <Sidebar />
-          <div className="w-full">
-            <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
-              <MainNavbar/>
-              <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px]">
-  <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
-        <div className="mx-auto w-full max-w-[640px]">
-          <div className="flex flex-col items-center py-10 gap-12">
-            <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3">
-              <div className="profile-wrapper">
-                <h2 className="text-xl font-semibold mb-6">Profile</h2>
-                <ProfileEditor
-                  initialData={userdata}
-                  liveData={profileData}
-                  handleUpdateProfile={handleUpdateProfile}
-                />
-              </div>
+        <Sidebar />
+        <div className="w-full">
+          <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
+            <MainNavbar />
+            <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px]">
+              <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
+                <div className="mx-auto w-full max-w-[640px]">
+                  <div className="flex flex-col items-center py-10 gap-12">
+                    <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3">
+                      <div className="profile-wrapper">
+                        <h2 className="text-xl font-semibold mb-6">Profile</h2>
+                        <ProfileEditor
+                          initialData={userdata}
+                          liveData={profileData}
+                          handleUpdateProfile={handleUpdateProfile}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
-          </div>
+          </section>
         </div>
-      </section>
-              </div>
-            </section>
-          </div>
-          <RightPreviewSection initialData={userdata} liveData={{profile: profileData}} />
-        </div>
+        <RightPreviewSection
+          initialData={userdata}
+          liveData={{ profile: profileData }}
+        />
+      </div>
     )
   );
 
@@ -178,32 +165,18 @@ const Appearance = ({session}) => {
   // );
 };
 
+export default Appearance;
+
 export async function getServerSideProps(context) {
   const session = await unstable_getServerSession(
     context.req,
     context.res,
     authOptions
   );
-  
-  console.log(session, 'this is the session in appearnace......')
 
-  if (session) {
-    console.log('this should return...')
-    return {
-      props: {
-        session: JSON.parse(JSON.stringify(session)),
-      },
-    };
-  }
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+  return {
+    props: {
+      _session: JSON.parse(JSON.stringify(session)),
+    },
+  };
 }
-
-export default Appearance;
