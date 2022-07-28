@@ -1,36 +1,82 @@
-import React from "react";
+// import React from "react";
 import ProfileEditor from "../../components/dashboard/appearance/ProfileEditor";
-import MainNavbar from "../../components/dashboard/MainNavbar";
-import DashboardLayout from "../../components/layouts/DashboardLayout";
+
+
+// import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
 
-import dbConnect from "../../util/mongoose";
-import User from "../../models/User";
+// import MainContentSection from "../../components/dashboard/MainContentSection";
+import RightPreviewSection from "../../components/dashboard/RightPreviewSection";
+import Sidebar from "../../components/dashboard/Sidebar";
+import MainNavbar from "../../components/dashboard/MainNavbar";
+
+import DashboardSkeleton from '../../components/dashboard/DashboardSkeleton'
+
+import { useSession } from "next-auth/react";
+
+// import User from "../../models/User";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-import { getProfile, updateProfile } from "../../services/profileServices";
 
-// instead of refetching userdata, just pass as data through query object in nextjs Link. Use get static props.
-
-const Appearance = ({ userdata }) => {
+const Appearance = ({session}) => {
+  // const session = useSession();
   const queryClient = useQueryClient();
+  console.log(session)
+  const email = 'julien24lopez@gmail.com'
+  // get user data
 
-  const { data: queryData, isLoading } = useQuery(
-    ["profile"],
-    async () => getProfile(userdata.username),
-    {
-      initialData: userdata.profile,
+  const { data: userdata, isLoading: userLoading } = useQuery(
+    ["userdata"],
+    async () => {
+      return await (
+        await fetch(`/api/user`, {
+          method: "POST",
+          body: JSON.stringify({ email: email }),
+        })
+      ).json();
     }
   );
 
+  // profile api calls 
+  const getProfile = async () => {
+    return await (
+      await fetch(`/api/profile`, {
+        method: "POST",
+        body: JSON.stringify({
+          type: "get",
+        }),
+      })
+    ).json();
+  };
+
+  const updateProfile = async (updatedProfile, username) => {
+    // updatedProfile contains
+    return await (
+      await fetch(`/api/profile`, {
+        method: "POST",
+        body: JSON.stringify({
+          type: "update",
+          ...updatedProfile,
+        }),
+      })
+    ).json();
+  };
+
+
+  const { data: profileData, isLoading } = useQuery(
+    ["profile"],
+    getProfile, {
+      initialData: userdata?.profile || {},
+    }
+  );
+  
+
   const handleUpdateProfile = useMutation(
     (updatedProfile) =>
-      updateProfile({
-        updatedProfile,
-        username: userdata.username,
-      }),
-    {
+    updateProfile({
+      updatedProfile,
+    }), {
       onMutate: async (updatedProfile) => {
         await queryClient.cancelQueries(["profile"]);
         const previousValue = queryClient.getQueryData(["profile"]);
@@ -51,7 +97,6 @@ const Appearance = ({ userdata }) => {
       // On failure, roll back to the previous value
       onError: (err, variables, previousValue) => {
         queryClient.setQueryData(["profile"], previousValue);
-        console.log(err);
       },
       // After success or failure, refetch the profile query
       onSettled: () => {
@@ -62,14 +107,27 @@ const Appearance = ({ userdata }) => {
 
   // console.log(queryData, "THIS IS PROFILE QUERY");
 
+
+
+
+  if ( userLoading) {
+    return (
+    <DashboardSkeleton />
+    );
+  }
+
+
+
+
   return (
-    <DashboardLayout
-      userdata={userdata}
-      linkData={userdata.links}
-      profileData={queryData}
-    >
-      <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
-        <MainNavbar />
+    userdata && (
+      <div className="main-wrapper flex flex-row h-screen w-screen overflow-y-auto">
+          <Sidebar />
+          <div className="w-full">
+            <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
+              <MainNavbar/>
+              <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px]">
+  <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
         <div className="mx-auto w-full max-w-[640px]">
           <div className="flex flex-col items-center py-10 gap-12">
             <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3">
@@ -77,7 +135,7 @@ const Appearance = ({ userdata }) => {
                 <h2 className="text-xl font-semibold mb-6">Profile</h2>
                 <ProfileEditor
                   initialData={userdata}
-                  liveData={queryData}
+                  liveData={profileData}
                   handleUpdateProfile={handleUpdateProfile}
                 />
               </div>
@@ -85,8 +143,39 @@ const Appearance = ({ userdata }) => {
           </div>
         </div>
       </section>
-    </DashboardLayout>
+              </div>
+            </section>
+          </div>
+          <RightPreviewSection initialData={userdata} liveData={{profile: profileData}} />
+        </div>
+    )
   );
+
+  // return (
+  //   <DashboardLayout
+  //     userdata={userdata}
+  //     linkData={userdata.links}
+  //     profileData={queryData}
+  //   >
+  //     <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
+  //       <MainNavbar />
+  //       <div className="mx-auto w-full max-w-[640px]">
+  //         <div className="flex flex-col items-center py-10 gap-12">
+  //           <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3">
+  //             <div className="profile-wrapper">
+  //               <h2 className="text-xl font-semibold mb-6">Profile</h2>
+  //               <ProfileEditor
+  //                 initialData={userdata}
+  //                 liveData={queryData}
+  //                 handleUpdateProfile={handleUpdateProfile}
+  //               />
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </section>
+  //   </DashboardLayout>
+  // );
 };
 
 export async function getServerSideProps(context) {
@@ -95,17 +184,14 @@ export async function getServerSideProps(context) {
     context.res,
     authOptions
   );
+  
+  console.log(session, 'this is the session in appearnace......')
 
   if (session) {
-    dbConnect();
-    const user = await User.findOne({ email: session.user.email });
-
-    const { username, links, profile } = user;
-
+    console.log('this should return...')
     return {
       props: {
         session: JSON.parse(JSON.stringify(session)),
-        userdata: JSON.parse(JSON.stringify({ username, links, profile })),
       },
     };
   }

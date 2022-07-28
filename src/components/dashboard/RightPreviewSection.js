@@ -14,9 +14,22 @@ const PVLinkTab = ({ children, url }) => {
   );
 };
 
-const RightPreview = ({ userdata, linkData, profileData }) => {
-  const { username, profile } = userdata;
-  const links = linkData;
+// In preview, we're getting data from the main data section of the dashboard
+// liveData will contain data from the query made on the main dashboard
+
+//  i.e liveData from index.js --> contains {links: []} that will change on udpates
+//      liveData from appearance.js --> {profile: {}, theme: {}}
+
+// want to bind liveData to UI, or initial data
+
+const RightPreview = ({ initialData, liveData }) => {
+  const { username, profile, links, theme } = initialData;
+
+  const linkData = liveData.links || initialData.links
+  const profileData = liveData.profile || initialData.profile
+
+
+
   return (
     <div className="flex flex-col items-center max-w-[33%] w-full h-auto bg-gray-100 border border-gray-200 z-10">
       <div className="flex flex-row gap-2 w-full p-3 bg-white">
@@ -44,18 +57,18 @@ const RightPreview = ({ userdata, linkData, profileData }) => {
             />
           </div>
           <div className="PORTFOLIO-WRAPPER flex flex-col items-center m-5">
-            {profileData.avatar && (
+            {profileData?.avatar && (
               <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
                 <img
                   src={
                     "data:image/png;base64," +
-                    Buffer.from(profileData.avatar).toString("base64")
+                    Buffer.from(profileData?.avatar).toString("base64")
                   }
                   className="w-full h-full rounded-[50%]"
                 ></img>
               </div>
             )}
-            {!profileData.avatar && (
+            {!profileData?.avatar && (
               <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
                 <h1>JL</h1>
               </div>
@@ -64,7 +77,7 @@ const RightPreview = ({ userdata, linkData, profileData }) => {
             <span className="text-xs">{profileData?.bio}</span>
           </div>
           <div className="LINKS-WRAPPER flex flex-col w-[90%] gap-2">
-            {links?.map((e) => {
+            {linkData?.map((e) => {
               if (!e.url || !e.title) return;
               return (
                 <PVLinkTab url={e.url} key={e.title}>

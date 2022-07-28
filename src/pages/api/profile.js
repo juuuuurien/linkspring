@@ -1,16 +1,19 @@
 import mongoose from "mongoose";
-import User, { LinkSchema } from "../../../models/User";
-import dbConnect from "../../../util/mongoose";
+import { unstable_getServerSession } from "next-auth";
+import User from "../../models/User";
+import dbConnect from "../../util/mongoose";
+import { authOptions } from "./auth/[...nextauth]";
 
-import s3 from "../../../../s3";
 
 export default async function handler(req, res) {
+    const session = await unstable_getServerSession(req, res, authOptions);
+  const { email: _email } = session.user;
   await dbConnect();
 
   const { username, type } = JSON.parse(req.body);
 
   if (type === "get") {
-    const user = await User.findOne({ username: username });
+    const user = await User.findOne({ email: _email });
     res.status(200).json(user.profile);
   }
 
@@ -50,11 +53,11 @@ export default async function handler(req, res) {
   //   }
 
   if (type === "update") {
-    const { username, updatedProfile } = JSON.parse(req.body);
+    const { updatedProfile } = JSON.parse(req.body);
     const { title, bio, avatar } = updatedProfile;
     const user = await User.findOneAndUpdate(
       {
-        username: username,
+        email: _email,
       },
       {
         $set: {

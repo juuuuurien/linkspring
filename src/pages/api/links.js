@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
 import { unstable_getServerSession } from "next-auth";
-import User, { LinkSchema } from "../../../models/User";
-import dbConnect from "../../../util/mongoose";
-import { authOptions } from "../auth/[...nextauth]";
+import User from "../../models/User";
+import dbConnect from "../../util/mongoose";
+import { authOptions } from "./auth/[...nextauth]";
 
 export default async function handler(req, res) {
   const session = await unstable_getServerSession(req, res, authOptions);
-  console.log(session, "this is session asdjlfasd;fhasdklfjasdhl");
-
   const { email: _email } = session.user;
   await dbConnect();
 
@@ -27,7 +25,7 @@ export default async function handler(req, res) {
     };
 
     const user = await User.findOneAndUpdate(
-      { username: username },
+      { email: _email },
       { $push: { links: { ...emptyLink } } },
       { new: true }
     );
@@ -39,7 +37,7 @@ export default async function handler(req, res) {
     const { _id } = JSON.parse(req.body);
 
     const user = await User.findOneAndUpdate(
-      { username: username },
+      { email: _email },
       {
         $pull: {
           links: { _id: mongoose.Types.ObjectId(_id) },
@@ -61,7 +59,7 @@ export default async function handler(req, res) {
 
     const user = await User.findOneAndUpdate(
       {
-        username: username,
+        email: _email,
         "links._id": mongoose.Types.ObjectId(_id),
       },
       { $set: { "links.$.url": url, "links.$.title": title }, new: true }

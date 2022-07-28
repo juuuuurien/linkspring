@@ -5,7 +5,7 @@ import clientPromise from "../../../util/mongodb";
 
 const config = {
   site: process.env.NEXTAUTH_URL,
-  adapter: MongoDBAdapter(clientPromise),
+  // adapter: MongoDBAdapter(clientPromise),
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
@@ -31,19 +31,17 @@ const config = {
 
         const user = await res.json();
 
-        if (user.success && user) return user.data;
+        if (!res.ok) {
+          throw new Error(user.exception);
+        }
+        // If no error and we have user data, return it
+        if (res.ok && user) {
+          return user.data;
+        }
       },
     }),
   ],
-  callbacks: {
-    async session({ session, user, token }) {
-      console.log(
-        token,
-        "this is tokie asdfkjasdl;fjkasdlf;kjasd;lfkjasdfl;kasdf;lasdjf;asdlf"
-      );
-      return session;
-    },
-  },
+  
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",

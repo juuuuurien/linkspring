@@ -152,10 +152,11 @@ const AvatarModal = ({
 
 const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
   const { username, profile } = initialData;
+  console.log(initialData)
 
-  const [avatar, setAvatar] = useState(liveData?.avatar);
-  const [title, setTitle] = useState(liveData?.title);
-  const [bio, setBio] = useState(liveData?.bio);
+  const [avatar, setAvatar] = useState(profile.avatar);
+  const [title, setTitle] = useState(profile.title);
+  const [bio, setBio] = useState(profile.bio);
   const [cache, setCache] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
