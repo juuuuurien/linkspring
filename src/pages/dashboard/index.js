@@ -268,28 +268,28 @@ export default function Dashboard() {
   );
 }
 
-export async function getServerSideProps(context) {
-  // this is slow in production... maybe fetch client side to show skeleton while loading?
+// export async function getServerSideProps(context) {
+//   // this is slow in production... maybe fetch client side to show skeleton while loading?
 
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+//   const session = await unstable_getServerSession(
+//     context.req,
+//     context.res,
+//     authOptions
+//   );
 
-  if (session) {
-    // for some reason deleting this SSR breaks mongodb???
-    dbConnect();
-    const user = await User.findOne({ email: session.user.email });
-    const { username, links, profile } = user;
+//   if (session) {
+//     // for some reason deleting this SSR breaks mongodb???
+//     dbConnect();
+//     const user = await User.findOne({ email: session.user.email });
+//     const { username, links, profile } = user;
 
-    return {
-      props: {
-        session: JSON.parse(JSON.stringify(session)),
-        userdata: JSON.parse(JSON.stringify({ username, links, profile })),
-      },
-    };
-  }
+//     return {
+//       props: {
+//         session: JSON.parse(JSON.stringify(session)),
+//         userdata: JSON.parse(JSON.stringify({ username, links, profile })),
+//       },
+//     };
+//   }
 
  
-}
+// }
