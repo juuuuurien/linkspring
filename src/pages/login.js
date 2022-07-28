@@ -72,7 +72,7 @@ const Login = () => {
             <span className={`text-gray-500`}>linkspring.me/</span>
 
             <input
-              autocomplete={"on"}
+              autoComplete={"on"}
               required
               name="username"
               onFocus={() => {
