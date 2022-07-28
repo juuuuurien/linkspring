@@ -142,6 +142,12 @@ export async function getServerSideProps(context) {
     authOptions
   );
 
+  if (!session) {
+    return {
+      redirect: { destination: "/login" },
+    };
+  }
+
   return {
     props: {
       _session: JSON.parse(JSON.stringify(session)),
