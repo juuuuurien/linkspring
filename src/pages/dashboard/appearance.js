@@ -12,16 +12,10 @@ import MainNavbar from "../../components/dashboard/MainNavbar";
 
 import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
 
-import { useSession } from "next-auth/react";
-
 // import User from "../../models/User";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const Appearance = ({ _session }) => {
-  // const session = useSession();
-
-  // get user data
-
   const { data: userdata, isLoading: userLoading } = useQuery(
     ["userdata"],
     async () => {
@@ -137,32 +131,6 @@ const Appearance = ({ _session }) => {
       </div>
     )
   );
-
-  // return (
-  //   <DashboardLayout
-  //     userdata={userdata}
-  //     linkData={userdata.links}
-  //     profileData={queryData}
-  //   >
-  //     <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
-  //       <MainNavbar />
-  //       <div className="mx-auto w-full max-w-[640px]">
-  //         <div className="flex flex-col items-center py-10 gap-12">
-  //           <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3">
-  //             <div className="profile-wrapper">
-  //               <h2 className="text-xl font-semibold mb-6">Profile</h2>
-  //               <ProfileEditor
-  //                 initialData={userdata}
-  //                 liveData={queryData}
-  //                 handleUpdateProfile={handleUpdateProfile}
-  //               />
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </section>
-  //   </DashboardLayout>
-  // );
 };
 
 export default Appearance;
