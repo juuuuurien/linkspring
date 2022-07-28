@@ -16,6 +16,8 @@ import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const Appearance = ({ _session }) => {
+  const queryClient = useQueryClient();
+
   const { data: userdata, isLoading: userLoading } = useQuery(
     ["userdata"],
     async () => {
@@ -97,6 +99,8 @@ const Appearance = ({ _session }) => {
     return <DashboardSkeleton />;
   }
 
+  const themes = [{}];
+
   return (
     userdata && (
       <div className="main-wrapper flex flex-row h-screen w-screen overflow-y-auto">
@@ -105,10 +109,10 @@ const Appearance = ({ _session }) => {
           <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
             <MainNavbar />
             <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px]">
-              <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
+              <section className="flex flex-col items-center h-full bg-gray-100">
                 <div className="mx-auto w-full max-w-[640px]">
                   <div className="flex flex-col items-center py-10 gap-12">
-                    <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3">
+                    <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3 gap-10">
                       <div className="profile-wrapper">
                         <h2 className="text-xl font-semibold mb-6">Profile</h2>
                         <ProfileEditor
@@ -116,6 +120,21 @@ const Appearance = ({ _session }) => {
                           liveData={profileData}
                           handleUpdateProfile={handleUpdateProfile}
                         />
+                      </div>
+                      <div className="theme-wrapper">
+                        <h2 className="text-xl font-semibold mb-6">Theme</h2>
+                        <div className="inline-grid w-full grid-cols-[repeat(auto-fit,_minmax(130px,_1fr))] p-5 gap-4 bg-white rounded-xl">
+                          {"splitmeintoabunchofletters"
+                            .split("")
+                            .map((letter, index) => (
+                              <div
+                                key={index}
+                                className="group flex py-[6rem] bg-gray-200 rounded-xl px-5 flex-col items-center focus:outline-none self-stretch"
+                              >
+                                {letter}
+                              </div>
+                            ))}
+                        </div>
                       </div>
                     </div>
                   </div>

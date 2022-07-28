@@ -60,8 +60,6 @@ const AvatarModal = ({
 
     setAvatar(buf);
     handleSubmit(formObj);
-
-    // setAvatar(dataURL);
   };
 
   return (
@@ -152,7 +150,7 @@ const AvatarModal = ({
 
 const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
   const { username, profile } = initialData;
-  console.log(initialData)
+  console.log(initialData);
 
   const [avatar, setAvatar] = useState(profile.avatar);
   const [title, setTitle] = useState(profile.title);
