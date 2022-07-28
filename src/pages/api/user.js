@@ -9,6 +9,6 @@ export default async function handler(req, res) {
   await dbConnect();
 
   const user = await User.findOne({ email: _email });
-  const { username, email, links, profile } = user;
-  res.json({ username, email, links, profile });
+  const { username, email, links, profile, theme } = user;
+  res.json({ username, email, links, profile, theme });
 }

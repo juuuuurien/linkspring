@@ -31,7 +31,7 @@ const RightPreview = ({ initialData, liveData }) => {
   const profileData = liveData.profile || initialData.profile;
   const themeData = liveData.theme || initialData.theme;
 
-  console.log(themeData.backgroundColor, "checking themeData");
+  console.log(initialData);
 
   return (
     <div className="flex flex-col items-center max-w-[33%] w-full h-auto bg-gray-100 border border-gray-200 z-10">
@@ -53,7 +53,7 @@ const RightPreview = ({ initialData, liveData }) => {
         /> */}
 
         <div
-          className={`PHONE-WRAPPER flex flex-col h-[34rem] w-[17rem] items-center p-2 border-[.9rem] ${themeData.backgroundColor} border-slate-900 rounded-[2.5rem] transition-all ease `}
+          className={`PHONE-WRAPPER flex flex-col h-[34rem] w-[17rem] items-center p-2 border-[.9rem] ${themeData?.backgroundColor} border-slate-900 rounded-[2.5rem] transition-all ease `}
         >
           <div className="flex flex-row w-full">
             <ShareIcon

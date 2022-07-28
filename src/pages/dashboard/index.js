@@ -30,6 +30,8 @@ export default function Dashboard({ _session }) {
     }
   );
 
+  console.log(userdata, "userdata");
+
   // Link mutations:
   const getLinks = async () => {
     return await (
