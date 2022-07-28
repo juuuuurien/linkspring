@@ -11,8 +11,6 @@ const ProfilePage = ({ userdata }) => {
       </div>
     );
 
-  const { username, links, profile } = userdata;
-
   return (
     <div className="w-screen h-screen">
       <Profile userdata={userdata} />
@@ -22,15 +20,13 @@ const ProfilePage = ({ userdata }) => {
 
 export async function getServerSideProps(context) {
   dbConnect();
-
   const _username = context.query.username;
-
   const user = await User.findOne({ username: _username });
 
   let data;
   if (user) {
-    const { username, links, profile } = user;
-    data = { username, links, profile };
+    const { username, links, profile, theme } = user;
+    data = { username, links, profile, theme };
   }
   if (!user) data = null;
 

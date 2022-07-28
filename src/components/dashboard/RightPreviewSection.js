@@ -4,10 +4,12 @@ import React from "react";
 import { ShareIcon } from "@heroicons/react/outline";
 import Profile from "../profile/Profile";
 
-const PVLinkTab = ({ children, url }) => {
+const PVLinkTab = ({ children, url, tabColor }) => {
   return (
     <a href={url} target="_new">
-      <div className="flex bg-gray-800 rounded-xl justify-center items-center text-center text-white text-xs font-semibold w-full py-3.5 px-6 hover:scale-[1.05] transition-all ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
+      <div
+        className={`flex ${tabColor} rounded-xl justify-center items-center text-center text-white text-xs font-semibold w-full py-3.5 px-6 hover:scale-[1.05] transition-transform  hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]`}
+      >
         {children}
       </div>
     </a>
@@ -25,10 +27,11 @@ const PVLinkTab = ({ children, url }) => {
 const RightPreview = ({ initialData, liveData }) => {
   const { username, profile, links, theme } = initialData;
 
-  const linkData = liveData.links || initialData.links
-  const profileData = liveData.profile || initialData.profile
+  const linkData = liveData.links || initialData.links;
+  const profileData = liveData.profile || initialData.profile;
+  const themeData = liveData.theme || initialData.theme;
 
-
+  console.log(themeData.backgroundColor, "checking themeData");
 
   return (
     <div className="flex flex-col items-center max-w-[33%] w-full h-auto bg-gray-100 border border-gray-200 z-10">
@@ -49,7 +52,9 @@ const RightPreview = ({ initialData, liveData }) => {
           // className="PHONE-WRAPPER flex flex-col h-[34rem] w-[17rem] items-center p-0 border-[.9rem] bg-white border-slate-900 rounded-[2.5rem] "
         /> */}
 
-        <div className="PHONE-WRAPPER flex flex-col h-[34rem] w-[17rem] items-center p-2 border-[.9rem] bg-white border-slate-900 rounded-[2.5rem]">
+        <div
+          className={`PHONE-WRAPPER flex flex-col h-[34rem] w-[17rem] items-center p-2 border-[.9rem] ${themeData.backgroundColor} border-slate-900 rounded-[2.5rem] transition-all ease `}
+        >
           <div className="flex flex-row w-full">
             <ShareIcon
               onClick={() => {}}
@@ -58,7 +63,7 @@ const RightPreview = ({ initialData, liveData }) => {
           </div>
           <div className="PORTFOLIO-WRAPPER flex flex-col items-center m-5">
             {profileData?.avatar && (
-              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
+              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px] m-2">
                 <img
                   src={
                     "data:image/png;base64," +
@@ -69,7 +74,7 @@ const RightPreview = ({ initialData, liveData }) => {
               </div>
             )}
             {!profileData?.avatar && (
-              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
+              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px] m-2">
                 <h1>JL</h1>
               </div>
             )}
@@ -80,8 +85,12 @@ const RightPreview = ({ initialData, liveData }) => {
             {linkData?.map((e) => {
               if (!e.url || !e.title) return;
               return (
-                <PVLinkTab url={e.url} key={e.title}>
-                  <span>{e.title}</span>
+                <PVLinkTab
+                  tabColor={themeData?.tabColor}
+                  url={e.url}
+                  key={e.title}
+                >
+                  <span className={`${themeData?.textColor}`}>{e.title}</span>
                 </PVLinkTab>
               );
             })}

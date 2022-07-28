@@ -2,12 +2,12 @@ import { ShareIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import React from "react";
 
-const ProfileLinkTab = ({ children, url, key }) => {
+const ProfileLinkTab = ({ children, url, key, tabColor }) => {
   return (
     <a href={url} target="_new" key={key}>
       <div
         key={key}
-        className="normal-right-preview-tab xs:xs-right-preview-tab hover:scale-[1.05] transition-all ease-[cubic-bezier(.11,-0.85,.75,1.83)]"
+        className={`normal-right-preview-tab xs:xs-right-preview-tab hover:scale-[1.05] transition-all ease-[cubic-bezier(.11,-0.85,.75,1.83)] ${tabColor}`}
       >
         {children}
       </div>
@@ -16,9 +16,11 @@ const ProfileLinkTab = ({ children, url, key }) => {
 };
 
 const Profile = ({ userdata }) => {
-  const { links, username, profile } = userdata;
+  const { links, username, profile, theme } = userdata;
   return (
-    <div className="flex flex-col w-full h-full justify-center items-center bg-gray-100">
+    <div
+      className={`flex flex-col w-full h-full justify-center items-center ${theme.backgroundColor}`}
+    >
       <div className="w-full lg:max-w-[36%] h-full">
         <div className="flex flex-row w-full p-3">
           <ShareIcon
@@ -52,8 +54,12 @@ const Profile = ({ userdata }) => {
           {links?.map((e) => {
             if (!e.url || !e.title) return;
             return (
-              <ProfileLinkTab url={e.url} key={e.title}>
-                <span>{e.title}</span>
+              <ProfileLinkTab
+                url={e.url}
+                key={e.title}
+                tabColor={theme.tabColor}
+              >
+                <span className={`${theme.textColor}`}>{e.title}</span>
               </ProfileLinkTab>
             );
           })}

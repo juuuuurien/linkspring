@@ -16,9 +16,42 @@ import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const Appearance = ({ _session }) => {
+  const themes = [
+    {
+      backgroundColor: "bg-rose-600",
+      tabColor: "bg-slate-800",
+      textColor: `text-white`,
+    },
+    {
+      backgroundColor: "bg-indigo-600",
+      tabColor: "bg-slate-600",
+      textColor: "text-white",
+    },
+    {
+      backgroundColor: "bg-lime-100",
+      tabColor: "bg-emerald-300",
+      textColor: "text-orange-400",
+    },
+    {
+      backgroundColor: "bg-violet-700",
+      tabColor: "bg-rose-800",
+      textColor: "text-pink-300",
+    },
+    {
+      backgroundColor: "bg-slate-900",
+      tabColor: "bg-gray-500",
+      textColor: "text-black",
+    },
+    {
+      backgroundColor: "bg-slate-1--",
+      tabColor: "bg-slate-600",
+      textColor: "text-white",
+    },
+  ];
+
   const queryClient = useQueryClient();
 
-  const { data: userdata, isLoading: userLoading } = useQuery(
+  const { data: userdata, isLoading: isUserLoading } = useQuery(
     ["userdata"],
     async () => {
       return await (
@@ -42,8 +75,7 @@ const Appearance = ({ _session }) => {
     ).json();
   };
 
-  const updateProfile = async (updatedProfile, username) => {
-    // updatedProfile contains
+  const updateProfile = async (updatedProfile) => {
     return await (
       await fetch(`/api/profile`, {
         method: "POST",
@@ -55,9 +87,13 @@ const Appearance = ({ _session }) => {
     ).json();
   };
 
-  const { data: profileData, isLoading } = useQuery(["profile"], getProfile, {
-    initialData: userdata?.profile || {},
-  });
+  const { data: profileData, isProfileLoading } = useQuery(
+    ["profile"],
+    getProfile,
+    {
+      initialData: userdata?.profile || {},
+    }
+  );
 
   const handleUpdateProfile = useMutation(
     (updatedProfile) =>
@@ -93,13 +129,75 @@ const Appearance = ({ _session }) => {
     }
   );
 
+  const getTheme = async () => {
+    return await (
+      await fetch(`/api/theme`, {
+        method: "POST",
+        body: JSON.stringify({
+          type: "get",
+        }),
+      })
+    ).json();
+  };
+
+  const updateTheme = async (updatedTheme) => {
+    return await (
+      await fetch(`/api/theme`, {
+        method: "POST",
+        body: JSON.stringify({
+          type: "update",
+          ...updatedTheme,
+        }),
+      })
+    ).json();
+  };
+
+  const { data: themeData, isThemeLoading } = useQuery(["theme"], getTheme, {
+    initialData: userdata?.theme || {},
+  });
+
+  const handleUpdateTheme = useMutation(
+    (updatedTheme) =>
+      // pass to new theme to api endpoint
+      updateTheme(updatedTheme),
+    {
+      onMutate: async (updatedTheme) => {
+        await queryClient.cancelQueries(["theme"]);
+        const previousValue = queryClient.getQueryData(["theme"]);
+
+        const { backgroundColor, tabColor, textColor } = updatedTheme;
+
+        queryClient.setQueryData(["theme"], (old) => {
+          return {
+            ...old,
+            backgroundColor,
+            tabColor,
+            textColor,
+          };
+        });
+
+        return previousValue;
+      },
+      // On failure, roll back to the previous value
+      onError: (err, variables, previousValue) => {
+        queryClient.setQueryData(["theme"], previousValue);
+      },
+      // After success or failure, refetch the theme query
+      onSettled: () => {
+        queryClient.invalidateQueries(["theme"]);
+      },
+    }
+  );
+
+  // mutate happens when you click on the theme button
+
   // console.log(queryData, "THIS IS PROFILE QUERY");
 
-  if (userLoading) {
+  if (isUserLoading) {
     return <DashboardSkeleton />;
   }
 
-  const themes = [{}];
+  console.log(themeData, "checking themeData");
 
   return (
     userdata && (
@@ -123,17 +221,24 @@ const Appearance = ({ _session }) => {
                       </div>
                       <div className="theme-wrapper">
                         <h2 className="text-xl font-semibold mb-6">Theme</h2>
-                        <div className="inline-grid w-full grid-cols-[repeat(auto-fit,_minmax(130px,_1fr))] p-5 gap-4 bg-white rounded-xl">
-                          {"splitmeintoabunchofletters"
-                            .split("")
-                            .map((letter, index) => (
-                              <div
-                                key={index}
-                                className="group flex py-[6rem] bg-gray-200 rounded-xl px-5 flex-col items-center focus:outline-none self-stretch"
-                              >
-                                {letter}
-                              </div>
-                            ))}
+                        <div className="inline-grid w-full  grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] p-5 gap-4 bg-white rounded-xl">
+                          {themes.map((theme, index) => (
+                            <button
+                              onClick={() => handleUpdateTheme.mutate(theme)}
+                              key={index}
+                              className={`flex gap-2 pb-6 justify-center min-h-[200px] flex-shrink-0 grow min-w-[80px] rounded-lg flex-col items-center focus:outline-none self-stretch ${theme.backgroundColor} ${theme.textColor} border-[1px] border-gray-300 hover:scale-105 transition-all duration-200 ease-[cubic-bezier(1,-0.32,0,1.59)]`}
+                            >
+                              <span
+                                className={`h-4 w-[80%] rounded-lg ${theme.tabColor} text-xs font-bold`}
+                              />
+                              <span
+                                className={`h-4 w-[80%] rounded-lg ${theme.tabColor} text-xs font-bold`}
+                              />
+                              <span
+                                className={`h-4 w-[80%] rounded-lg ${theme.tabColor} text-xs font-bold`}
+                              />
+                            </button>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -145,7 +250,7 @@ const Appearance = ({ _session }) => {
         </div>
         <RightPreviewSection
           initialData={userdata}
-          liveData={{ profile: profileData }}
+          liveData={{ profile: profileData, theme: themeData }}
         />
       </div>
     )

@@ -150,7 +150,6 @@ const AvatarModal = ({
 
 const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
   const { username, profile } = initialData;
-  console.log(initialData);
 
   const [avatar, setAvatar] = useState(profile.avatar);
   const [title, setTitle] = useState(profile.title);
@@ -189,7 +188,7 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
     <>
       <div className="flex flex-col p-5 gap-5 bg-white rounded-xl">
         <div className="flex flex-row gap-5">
-          <div className="flexw-fit h-auto">
+          <div className="flex w-fit h-auto ">
             {liveData.avatar && (
               <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
                 <img
