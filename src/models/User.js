@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 
 const ThemeSchema = new mongoose.Schema({
   backgroundColor: { type: String, default: "bg-slate-100" },
+  profileTextColor: { type: String, default: "text-slate-100" },
   tabColor: { type: String, default: "bg-slate-600" },
-  textColor: { type: String, default: "text-white" },
+  tabTextColor: { type: String, default: "text-white" },
 });
 
 const LinkSchema = new mongoose.Schema({

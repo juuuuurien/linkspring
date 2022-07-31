@@ -19,9 +19,8 @@ export default async function handler(req, res) {
 
   if (type === "update") {
     const updatedTheme = JSON.parse(req.body);
-    const { backgroundColor, tabColor, textColor } = updatedTheme;
-
-    console.log(backgroundColor, tabColor, textColor);
+    const { backgroundColor, profileTextColor, tabColor, tabTextColor } =
+      updatedTheme;
 
     const user = await User.findOneAndUpdate(
       {
@@ -30,8 +29,9 @@ export default async function handler(req, res) {
       {
         $set: {
           "theme.backgroundColor": backgroundColor,
+          "theme.profileTextColor": profileTextColor,
           "theme.tabColor": tabColor,
-          "theme.textColor": textColor,
+          "theme.tabTextColor": tabTextColor,
         },
         new: true,
         upsert: true,

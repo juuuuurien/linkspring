@@ -8,7 +8,10 @@ const PVLinkTab = ({ children, url, tabColor }) => {
   return (
     <a href={url} target="_new">
       <div
-        className={`flex ${tabColor} rounded-xl justify-center items-center text-center text-white text-xs font-semibold w-full py-3.5 px-6 hover:scale-[1.05] transition-transform  hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]`}
+        style={{
+          backgroundColor: tabColor,
+        }}
+        className={`flex rounded-xl justify-center items-center text-center text-white text-xs font-semibold w-full py-3.5 px-6 hover:scale-[1.05] transition-transform  hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]`}
       >
         {children}
       </div>
@@ -31,8 +34,6 @@ const RightPreview = ({ initialData, liveData }) => {
   const profileData = liveData.profile || initialData.profile;
   const themeData = liveData.theme || initialData.theme;
 
-  console.log(initialData);
-
   return (
     <div className="flex flex-col items-center max-w-[33%] w-full h-auto bg-gray-100 border border-gray-200 z-10">
       <div className="flex flex-row gap-2 w-full p-3 bg-white">
@@ -53,7 +54,10 @@ const RightPreview = ({ initialData, liveData }) => {
         /> */}
 
         <div
-          className={`PHONE-WRAPPER flex flex-col h-[34rem] w-[17rem] items-center p-2 border-[.9rem] ${themeData?.backgroundColor} border-slate-900 rounded-[2.5rem] transition-all ease `}
+          style={{
+            backgroundColor: themeData.backgroundColor,
+          }}
+          className={`PHONE-WRAPPER flex flex-col scale-[0.75] xl:scale-100 h-[685px] min-w-[320px] items-center p-3 border-[.9rem] border-slate-900 rounded-[2.5rem] transition-all ease `}
         >
           <div className="flex flex-row w-full">
             <ShareIcon
@@ -61,9 +65,11 @@ const RightPreview = ({ initialData, liveData }) => {
               className="flex justify-center items-center h-8 w-8 self-end bg-slate-300 p-2 rounded-[100%] text-slate-800 hover:text-slate-400 cursor-pointer"
             />
           </div>
-          <div className="PORTFOLIO-WRAPPER flex flex-col items-center m-5">
+          <div
+            className={`PORTFOLIO-WRAPPER flex flex-col items-center m-5 ${themeData?.profileTextColor}`}
+          >
             {profileData?.avatar && (
-              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px] m-2">
+              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px] m-2 shadow-md">
                 <img
                   src={
                     "data:image/png;base64," +
@@ -74,7 +80,7 @@ const RightPreview = ({ initialData, liveData }) => {
               </div>
             )}
             {!profileData?.avatar && (
-              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px] m-2">
+              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px] m-2 shadow-md">
                 <h1>JL</h1>
               </div>
             )}
@@ -88,9 +94,11 @@ const RightPreview = ({ initialData, liveData }) => {
                 <PVLinkTab
                   tabColor={themeData?.tabColor}
                   url={e.url}
-                  key={e.title}
+                  key={e.title.concat(e.url)}
                 >
-                  <span className={`${themeData?.textColor}`}>{e.title}</span>
+                  <span style={{ color: themeData.tabTextColor }}>
+                    {e.title}
+                  </span>
                 </PVLinkTab>
               );
             })}

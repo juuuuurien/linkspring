@@ -1,4 +1,4 @@
-// import React from "react";
+import React, { useState } from "react";
 import ProfileEditor from "../../components/dashboard/appearance/ProfileEditor";
 
 // import DashboardLayout from "../../components/layouts/DashboardLayout";
@@ -14,38 +14,49 @@ import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
 
 // import User from "../../models/User";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { ChromePicker } from "react-color";
+import { usePopper } from "react-popper";
+import { Popover } from "@headlessui/react";
 
 const Appearance = ({ _session }) => {
+  const [pickerOpen, setPickerOpen] = useState(false);
+
   const themes = [
     {
-      backgroundColor: "bg-rose-600",
-      tabColor: "bg-slate-800",
-      textColor: `text-white`,
+      backgroundColor: "#E11D48",
+      profileTextColor: "text-white",
+      tabColor: "#1E293B",
+      tabTextColor: "#ffffff",
     },
     {
-      backgroundColor: "bg-indigo-600",
-      tabColor: "bg-slate-600",
-      textColor: "text-white",
+      backgroundColor: "#4338CA",
+      profileTextColor: "text-white",
+      tabColor: "#475569",
+      tabTextColor: "#ffffff",
     },
     {
-      backgroundColor: "bg-lime-100",
-      tabColor: "bg-emerald-300",
-      textColor: "text-orange-400",
+      backgroundColor: "#ECFCCB",
+      profileTextColor: "text-white",
+      tabColor: "#10B981",
+      tabTextColor: "#EA580C",
     },
     {
-      backgroundColor: "bg-violet-700",
-      tabColor: "bg-rose-800",
-      textColor: "text-pink-300",
+      backgroundColor: "#5B21B6",
+      profileTextColor: "text-white",
+      tabColor: "#9D174D",
+      tabTextColor: "#F0ABFC",
     },
     {
-      backgroundColor: "bg-slate-900",
-      tabColor: "bg-gray-500",
-      textColor: "text-black",
+      backgroundColor: "#0F172A",
+      profileTextColor: "text-white",
+      tabColor: "#4B5563",
+      tabTextColor: "#000000",
     },
     {
-      backgroundColor: "bg-slate-1--",
-      tabColor: "bg-slate-600",
-      textColor: "text-white",
+      backgroundColor: "#F1F5F9",
+      profileTextColor: "text-white",
+      tabColor: "#475569",
+      tabTextColor: "#ffffff",
     },
   ];
 
@@ -165,14 +176,16 @@ const Appearance = ({ _session }) => {
         await queryClient.cancelQueries(["theme"]);
         const previousValue = queryClient.getQueryData(["theme"]);
 
-        const { backgroundColor, tabColor, textColor } = updatedTheme;
+        const { backgroundColor, profileTextColor, tabColor, tabTextColor } =
+          updatedTheme;
 
         queryClient.setQueryData(["theme"], (old) => {
           return {
             ...old,
             backgroundColor,
+            profileTextColor,
             tabColor,
-            textColor,
+            tabTextColor,
           };
         });
 
@@ -189,15 +202,41 @@ const Appearance = ({ _session }) => {
     }
   );
 
-  // mutate happens when you click on the theme button
+  const [bgColorPicker, setBgColorPicker] = useState(
+    userdata?.backgroundColor || themeData.backgroundColor
+  );
+  const [tabColorPicker, setTabColorPicker] = useState(
+    userdata?.tabColor || themeData.tabColor
+  );
+  const [tabTextColorPicker, setTabTextColorPicker] = useState(
+    userdata?.tabTextColor || themeData.tabTextColor
+  );
 
-  // console.log(queryData, "THIS IS PROFILE QUERY");
+  const handleChangeBackroundColor = (color) => {
+    const newTheme = {
+      ...themeData,
+      backgroundColor: color.hex,
+    };
+
+    handleUpdateTheme.mutate(newTheme);
+  };
+  const handleChangeTabColor = (updateObj) => {
+    // obj is either { tabColor: color.hex} or { tabTextColor: color.hex}
+    const newTheme = {
+      ...themeData,
+      ...updateObj,
+    };
+    console.log(updateObj, "updateObj");
+    console.log(newTheme, "newTheme");
+
+    handleUpdateTheme.mutate(newTheme);
+  };
+
+  console.log(themeData.tabTextColor);
 
   if (isUserLoading) {
     return <DashboardSkeleton />;
   }
-
-  console.log(themeData, "checking themeData");
 
   return (
     userdata && (
@@ -221,24 +260,115 @@ const Appearance = ({ _session }) => {
                       </div>
                       <div className="theme-wrapper">
                         <h2 className="text-xl font-semibold mb-6">Theme</h2>
-                        <div className="inline-grid w-full  grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] p-5 gap-4 bg-white rounded-xl">
-                          {themes.map((theme, index) => (
-                            <button
-                              onClick={() => handleUpdateTheme.mutate(theme)}
-                              key={index}
-                              className={`flex gap-2 pb-6 justify-center min-h-[200px] flex-shrink-0 grow min-w-[80px] rounded-lg flex-col items-center focus:outline-none self-stretch ${theme.backgroundColor} ${theme.textColor} border-[1px] border-gray-300 hover:scale-105 transition-all duration-200 ease-[cubic-bezier(1,-0.32,0,1.59)]`}
-                            >
-                              <span
-                                className={`h-4 w-[80%] rounded-lg ${theme.tabColor} text-xs font-bold`}
+                        <div className=" flex flex-col bg-white p-5 gap-4 rounded-xl">
+                          <h2 className="text-md font-semibold">
+                            Background Color
+                          </h2>
+                          <Popover className="relative">
+                            <Popover.Button
+                              style={{
+                                backgroundColor: themeData.backgroundColor,
+                              }}
+                              className={`h-10 w-10 rounded-lg border-2 border-black`}
+                            />
+                            <Popover.Panel className="absolute left-6 top-6 z-10">
+                              <ChromePicker
+                                color={bgColorPicker}
+                                onChange={(color, event) =>
+                                  setBgColorPicker(color.hex)
+                                }
+                                onChangeComplete={(color, event) => {
+                                  handleChangeBackroundColor(color);
+                                  setBgColorPicker(color.hex);
+                                }}
                               />
-                              <span
-                                className={`h-4 w-[80%] rounded-lg ${theme.tabColor} text-xs font-bold`}
+                            </Popover.Panel>
+                          </Popover>
+                          <h2 className="text-md font-semibold">
+                            Tab <span className="text-sm">&</span> Text Color
+                          </h2>
+                          <div className="flex gap-6">
+                            <Popover className="relative">
+                              <Popover.Button
+                                style={{
+                                  backgroundColor: themeData.tabColor,
+                                }}
+                                className={`h-10 w-10 rounded-lg border-2 border-black`}
                               />
-                              <span
-                                className={`h-4 w-[80%] rounded-lg ${theme.tabColor} text-xs font-bold`}
+
+                              <Popover.Panel className="absolute left-6 top-6 z-10">
+                                <ChromePicker
+                                  color={tabColorPicker}
+                                  onChange={(color, event) =>
+                                    setTabColorPicker(color.hex)
+                                  }
+                                  onChangeComplete={(color, event) => {
+                                    const updateObj = {
+                                      tabColor: color.hex,
+                                    };
+                                    handleChangeTabColor(updateObj);
+                                    setTabColorPicker(color.hex);
+                                  }}
+                                />
+                              </Popover.Panel>
+                            </Popover>
+                            <Popover className="relative">
+                              <Popover.Button
+                                style={{
+                                  backgroundColor: themeData.tabTextColor,
+                                }}
+                                className={`h-10 w-10 rounded-lg border-2 border-black`}
                               />
-                            </button>
-                          ))}
+
+                              <Popover.Panel className="absolute left-6 top-6 z-10">
+                                <ChromePicker
+                                  color={tabTextColorPicker}
+                                  onChange={(color, event) =>
+                                    setTabTextColorPicker(color.hex)
+                                  }
+                                  onChangeComplete={(color, event) => {
+                                    const updateObj = {
+                                      tabTextColor: color.hex,
+                                    };
+                                    handleChangeTabColor(updateObj);
+                                    setTabTextColorPicker(color.hex);
+                                  }}
+                                />
+                              </Popover.Panel>
+                            </Popover>
+                          </div>
+                          <h2 className="text-md font-semibold">Templates</h2>
+                          <div className="inline-grid w-full grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] gap-4">
+                            {themes.map((theme, index) => (
+                              <button
+                                onClick={() => handleUpdateTheme.mutate(theme)}
+                                key={index}
+                                style={{
+                                  backgroundColor: theme.backgroundColor,
+                                }}
+                                className={`flex gap-2 pb-6 justify-center min-h-[200px] flex-shrink-0 grow min-w-[80px] rounded-lg flex-col items-center focus:outline-none self-stretch ${theme.tabTextColor} border-[1px] border-gray-300 hover:scale-105 transition-all duration-200 ease-[cubic-bezier(1,-0.32,0,1.59)]`}
+                              >
+                                <span
+                                  style={{
+                                    backgroundColor: theme.tabColor,
+                                  }}
+                                  className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
+                                />
+                                <span
+                                  style={{
+                                    backgroundColor: theme.tabColor,
+                                  }}
+                                  className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
+                                />
+                                <span
+                                  style={{
+                                    backgroundColor: theme.tabColor,
+                                  }}
+                                  className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
+                                />
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
