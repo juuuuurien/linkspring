@@ -262,6 +262,11 @@ const Appearance = ({ _session }) => {
                     <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3 gap-10">
                       <div className="profile-wrapper">
                         <h2 className="text-xl font-semibold mb-6">Profile</h2>
+                        <ProfileEditor
+                          initialData={userdata}
+                          liveData={profileData}
+                          handleUpdateProfile={handleUpdateProfile}
+                        />
                       </div>
                       <div className="theme-wrapper">
                         <h2 className="text-xl font-semibold mb-6">Theme</h2>
