@@ -23,6 +23,7 @@ const ProfileSchema = new mongoose.Schema({
     default: "Example bio",
   },
   avatar: { type: Buffer },
+  banner: { type: Buffer },
 });
 
 const UserSchema = new mongoose.Schema({

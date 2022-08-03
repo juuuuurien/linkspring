@@ -1,33 +1,61 @@
 import React, { Fragment, useRef, useState } from "react";
 import dataUriToBuffer from "data-uri-to-buffer";
 
+import { XIcon } from "@heroicons/react/solid";
+import { CameraIcon } from "@heroicons/react/outline";
+
 import { Dialog, Transition } from "@headlessui/react";
 import AvatarEditor from "react-avatar-editor";
+import BannerModal from "./BannerModal";
+import AvatarModal from "./AvatarModal";
 
-const AvatarModal = ({
-  modalVisible,
-  setModalVisible,
-  setAvatar,
-  handleSubmit,
-}) => {
-  const [img, setImg] = useState(null);
-  const [scale, setScale] = useState(1);
+const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
+  const { username, profile } = initialData;
 
-  const editorRef = useRef(null);
+  const [avatar, setAvatar] = useState(profile.avatar);
+  const [banner, setBanner] = useState(profile.banner);
+  const [title, setTitle] = useState(profile.title);
+  const [bio, setBio] = useState(profile.bio);
+  // const [cache, setCache] = useState(null); // used to use this to save data on input focus in case it needed to be restored
+  const [bannerModalVisible, setBannerModalVisible] = useState(false);
+  const [avatarModalVisible, setAvatarModalVisible] = useState(false);
 
-  const handleImageChange = (e) => {
-    let reader = new FileReader();
-    reader.onload = () => {
-      setImg(reader.result);
-    };
-    reader.readAsDataURL(e.target.files[0]);
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  };
+  const handleBioChange = (e) => {
+    setBio(e.target.value);
   };
 
-  const handleAvatarSubmit = async () => {
-    // get image in dataURL format
+  // const handleFocus = (e) => {
+  //   setCache(e.target.value);
+  // };
 
-    const canvas = editorRef.current.getImageScaledToCanvas();
-    const dataURL = canvas.toDataURL("image/png");
+  const handleSubmit = (formObj) => {
+    // bundle any data coming from the form into a single object
+    const updatedProfile = { bio, title, avatar, banner };
+
+    updatedProfile.avatar = formObj.avatar ? formObj.avatar : liveData.avatar; // if updating avatar, use formObj.avatar, otherwise use old avatar in liveData
+    updatedProfile.banner = formObj.banner ? formObj.banner : liveData.banner;
+    updatedProfile.title = formObj.title === "" ? "" : formObj.title || title;
+    updatedProfile.bio = formObj.bio === "" ? "" : formObj.bio || bio; // if url passed is empty, update as empty string, otherwise it will just use the old bio
+
+    // finally make api call to update with object of data
+    handleUpdateProfile.mutate(updatedProfile);
+  };
+
+  const handleBlur = (e) => {
+    let formObj = {};
+    formObj[e.target.id] = e.target.value;
+
+    handleSubmit(formObj);
+  };
+
+  const handleAvatarSubmit = async (dataURL) => {
+    // should accpept a dataURL.
+
+    // const canvas = editorRef.current.getImageScaledToCanvas();
+    // const dataURL = canvas.toDataURL("image/png");
 
     // ****** May refactor to use s3 buckets in the future ******
     //  *********************************************************
@@ -62,135 +90,54 @@ const AvatarModal = ({
     handleSubmit(formObj);
   };
 
-  return (
-    <Transition appear show={modalVisible} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={() => null}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
-        </Transition.Child>
+  const handleBannerSubmit = async (dataURL) => {
+    // should accpept a dataURL.
 
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <Dialog.Panel className="flex flex-col w-auto px-[6rem] justify-center transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all gap-4">
-                <Dialog.Title
-                  as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
-                >
-                  Profile photo
-                </Dialog.Title>
-                <div className="flex flex-col w-full justify-center mt-2">
-                  <AvatarEditor
-                    ref={editorRef}
-                    className="w-full h-full"
-                    image={img}
-                    width={300}
-                    height={300}
-                    border={[100, 25]}
-                    borderRadius={10000}
-                    color={[255, 255, 255, 0.6]} // RGBA
-                    scale={scale}
-                    rotate={0}
-                  />
-                </div>
-                <div className="flex flex-row gap-2">
-                  <label>Zoom</label>
-                  <input
-                    type="range"
-                    id="cowbell"
-                    name="cowbell"
-                    min="1"
-                    max="1.5"
-                    step="0.01"
-                    onChange={(e) => setScale(e.target.value)}
-                  />
-                </div>
+    const buf = dataUriToBuffer(dataURL);
+    const formObj = {};
+    formObj.banner = buf;
 
-                <input
-                  type="file"
-                  multiple={false}
-                  onChange={handleImageChange}
-                />
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={() => {
-                      if (img) handleAvatarSubmit();
-                      setModalVisible(false);
-                    }}
-                  >
-                    Save
-                  </button>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </div>
-      </Dialog>
-    </Transition>
-  );
-};
-
-const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
-  const { username, profile } = initialData;
-
-  const [avatar, setAvatar] = useState(profile.avatar);
-  const [title, setTitle] = useState(profile.title);
-  const [bio, setBio] = useState(profile.bio);
-  const [cache, setCache] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
-  };
-  const handleBioChange = (e) => {
-    setBio(e.target.value);
-  };
-
-  const handleFocus = (e) => {
-    setCache(e.target.value);
-  };
-
-  const handleSubmit = (formObj) => {
-    const updatedProfile = { bio, title, avatar };
-
-    updatedProfile.avatar = formObj.avatar ? formObj.avatar : liveData.avatar; // if updating avatar, use formObj.avatar, otherwise use old avatar in liveData
-    updatedProfile.title = formObj.title === "" ? "" : formObj.title || title;
-    updatedProfile.bio = formObj.bio === "" ? "" : formObj.bio || bio; // if url passed is empty, update as empty string, otherwise it will just use the old bio
-    handleUpdateProfile.mutate(updatedProfile);
-  };
-
-  const handleBlur = (e) => {
-    let formObj = {};
-    formObj[e.target.id] = e.target.value;
-
+    setBanner(buf);
     handleSubmit(formObj);
   };
 
   return (
     <>
-      <div className="flex flex-col p-5 gap-5 bg-white rounded-xl">
-        <div className="flex flex-row gap-5">
-          <div className="flex w-fit h-auto ">
+      <div className="flex flex-col gap-5 bg-white rounded-xl">
+        <div className="flex flex-col gap-5">
+          <div className="BG-PICTURE-WRAPPER relative flex justify-center items-center">
+            <button
+              onClick={() => setBannerModalVisible(true)}
+              className="absolute mt-5 w-10 h-10 bg-slate-900 p-2 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all"
+            >
+              <CameraIcon className="text-slate-200" />
+            </button>
+            <div className="flex content-[''] h-[164px] bg-gray-500 w-full mb-4 rounded-t-3xl">
+              {liveData.banner && (
+                <div className="flex w-full justify-center items-center bg-gray-500 text-slate-100 rounded-t-3xl">
+                  <img
+                    src={
+                      "data:image/png;base64," +
+                      Buffer.from(liveData.banner).toString("base64")
+                    }
+                    className="object-cover w-full h-full rounded-t-3xl"
+                  ></img>
+                </div>
+              )}
+              {!liveData.banner && (
+                <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[126px] h-[126px] border-white border-4">
+                  <h1>JL</h1>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="relative flex justify-center items-center w-fit h-auto mt-[-96px] px-5">
+            <button onClick={() => setAvatarModalVisible(true)}>
+              <CameraIcon className="absolute w-10 h-10 mt-5 text-slate-200 bg-slate-900 p-2 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all" />
+            </button>
             {liveData.avatar && (
-              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
+              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[126px] h-[126px] border-white border-4">
                 <img
                   src={
                     "data:image/png;base64," +
@@ -201,12 +148,13 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
               </div>
             )}
             {!liveData.avatar && (
-              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
+              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[126px] h-[126px] border-white border-4">
                 <h1>JL</h1>
               </div>
             )}
           </div>
-          <div className="flex flex-col gap-2 w-full h-full">
+
+          {/* <div className="flex flex-col gap-2 w-full h-full">
             <button
               className="flex flex-row w-auto h-fit rounded-lg p-2 bg-purple-500 hover:bg-purple-400 justify-center items-center text-slate-100 cursor-pointer"
               onClick={() => setModalVisible(true)}
@@ -219,9 +167,9 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
             >
               <h3>Remove</h3>
             </button>
-          </div>
+          </div> */}
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 px-5">
           <label htmlFor="title" className="text-xs text-slate-500">
             Profile Title
           </label>
@@ -229,7 +177,7 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
             type={"title"}
             onChange={handleTitleChange}
             onBlur={handleBlur}
-            onFocus={handleFocus}
+            // onFocus={handleFocus}
             value={title}
             maxLength={60}
             id="title"
@@ -244,7 +192,7 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
               id="bio"
               onChange={handleBioChange}
               onBlur={handleBlur}
-              onFocus={handleFocus}
+              // onFocus={handleFocus}
               value={bio}
               maxLength={80}
               className="w-full h-auto rounded-lg border-2 border-slate-300 focus:border-slate-500 focus:outline-none focus:ring-0"
@@ -256,10 +204,14 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
         </div>
       </div>
       <AvatarModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        setAvatar={setAvatar}
-        handleSubmit={handleSubmit}
+        modalVisible={avatarModalVisible}
+        setModalVisible={setAvatarModalVisible}
+        handleSubmit={handleAvatarSubmit}
+      />
+      <BannerModal
+        modalVisible={bannerModalVisible}
+        setModalVisible={setBannerModalVisible}
+        handleSubmit={handleBannerSubmit}
       />
     </>
   );

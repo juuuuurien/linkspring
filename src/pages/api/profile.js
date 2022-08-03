@@ -4,9 +4,8 @@ import User from "../../models/User";
 import dbConnect from "../../util/mongoose";
 import { authOptions } from "./auth/[...nextauth]";
 
-
 export default async function handler(req, res) {
-    const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await unstable_getServerSession(req, res, authOptions);
   const { email: _email } = session.user;
   await dbConnect();
 
@@ -54,7 +53,7 @@ export default async function handler(req, res) {
 
   if (type === "update") {
     const { updatedProfile } = JSON.parse(req.body);
-    const { title, bio, avatar } = updatedProfile;
+    const { title, bio, avatar, banner } = updatedProfile;
     const user = await User.findOneAndUpdate(
       {
         email: _email,
@@ -64,6 +63,7 @@ export default async function handler(req, res) {
           "profile.title": title,
           "profile.bio": bio,
           "profile.avatar": avatar,
+          "profile.banner": banner,
         },
         new: true,
       }
@@ -90,3 +90,11 @@ export default async function handler(req, res) {
   //     res.status(200).json({ profile: user.profile });
   //   }
 }
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "4mb",
+    },
+  },
+};

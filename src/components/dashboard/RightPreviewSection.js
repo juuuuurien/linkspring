@@ -45,47 +45,68 @@ const RightPreview = ({ initialData, liveData }) => {
         </span>
       </div>
       <div className="flex justify-center items-center h-full w-full">
-        {/* <iframe
-          src="https://sgcsid.sse.codesandbox.io/juuuuurien"
-          title="iframe-test"
-          className="PHONE-WRAPPER flex flex-col h-[480px] w-[225px] lg:h-[740px] lg:w-[354px] items-center p-0 border-[1.25rem] bg-white border-slate-900 rounded-[4rem] "
-
-          // className="PHONE-WRAPPER flex flex-col h-[34rem] w-[17rem] items-center p-0 border-[.9rem] bg-white border-slate-900 rounded-[2.5rem] "
-        /> */}
-
         <div
           style={{
             backgroundColor: themeData.backgroundColor,
           }}
-          className={`PHONE-WRAPPER flex flex-col scale-[0.75] xl:scale-100 h-[685px] min-w-[320px] items-center p-3 border-[.9rem] border-slate-900 rounded-[2.5rem] transition-all ease `}
+          className={`PHONE-WRAPPER flex flex-col scale-[0.75] xl:scale-100 h-[685px] max-w-[320px] w-[320px] items-center border-[.9rem] border-slate-900 rounded-[2.5rem] transition-all ease `}
         >
-          <div className="flex flex-row w-full">
+          {/* <div className="flex flex-row w-full">
             <ShareIcon
               onClick={() => {}}
               className="flex justify-center items-center h-8 w-8 self-end bg-slate-300 p-2 rounded-[100%] text-slate-800 hover:text-slate-400 cursor-pointer"
             />
+          </div> */}
+          <div className="flex content-[''] bg-gray-500 w-full h-[25%] mb-4 rounded-t-3xl">
+            {profileData.banner && (
+              <img
+                src={
+                  "data:image/png;base64," +
+                  Buffer.from(profileData.banner).toString("base64")
+                }
+                className="object-cover w-full h-full rounded-t-3xl"
+              ></img>
+            )}
+            {!profileData.banner && (
+              <div className="flex content-[''] h-[140px] bg-gray-500 w-full mb-4 rounded-t-3xl" />
+            )}
           </div>
           <div
-            className={`PORTFOLIO-WRAPPER flex flex-col items-center m-5 ${themeData?.profileTextColor}`}
+            style={{ color: themeData?.profileTextColor }}
+            className={`PORTFOLIO-WRAPPER flex flex-col items-start w-full mb-10`}
           >
-            {profileData?.avatar && (
-              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px] m-2 shadow-md">
-                <img
-                  src={
-                    "data:image/png;base64," +
-                    Buffer.from(profileData?.avatar).toString("base64")
-                  }
-                  className="w-full h-full rounded-[50%]"
-                ></img>
-              </div>
-            )}
-            {!profileData?.avatar && (
-              <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px] m-2 shadow-md">
-                <h1>JL</h1>
-              </div>
-            )}
-            <span className="font-bold text-sm">{profileData?.title}</span>
-            <span className="text-xs">{profileData?.bio}</span>
+            <div className="flex justify-end w-full rounded-md px-3 gap-2">
+              <div className="w-4 h-4 rounded-md bg-slate-200" />
+              <div className="w-4 h-4 rounded-md bg-slate-200" />
+              <div className="w-4 h-4 rounded-md bg-slate-200" />
+            </div>
+            <div className="flex w-full mt-[-104px] px-1">
+              {profileData?.avatar && (
+                <div
+                  style={{
+                    border: `3px solid ${themeData?.backgroundColor}`,
+                  }}
+                  className="left-2 rounded-[50%] bg-gray-500 text-slate-100 w-[102px] h-[102px] m-2 shadow-md"
+                >
+                  <img
+                    src={
+                      "data:image/png;base64," +
+                      Buffer.from(profileData?.avatar).toString("base64")
+                    }
+                    className="w-full h-full rounded-[50%]"
+                  ></img>
+                </div>
+              )}
+              {!profileData?.avatar && (
+                <div className="left-2 rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px] m-2 shadow-md">
+                  <h1>JL</h1>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col px-3 gap-1">
+              <span className="font-bold text-xl">{profileData?.title}</span>
+              <span className="text-sm">{profileData?.bio}</span>
+            </div>
           </div>
           <div className="LINKS-WRAPPER flex flex-col w-[90%] gap-2">
             {linkData?.map((e) => {

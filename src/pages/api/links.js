@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   if (type === "get" && session) {
     const user = await User.findOne({ email: _email });
-    res.status(200).json({ links: user.links });
+    res.status(200).json({ links: user?.links });
   }
 
   if (type === "add") {

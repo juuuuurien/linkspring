@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProfileEditor from "../../components/dashboard/appearance/ProfileEditor";
 
 // import DashboardLayout from "../../components/layouts/DashboardLayout";
@@ -24,37 +24,37 @@ const Appearance = ({ _session }) => {
   const themes = [
     {
       backgroundColor: "#E11D48",
-      profileTextColor: "text-white",
+      profileTextColor: "#ffffff",
       tabColor: "#1E293B",
       tabTextColor: "#ffffff",
     },
     {
       backgroundColor: "#4338CA",
-      profileTextColor: "text-white",
+      profileTextColor: "#ffffff",
       tabColor: "#475569",
       tabTextColor: "#ffffff",
     },
     {
       backgroundColor: "#ECFCCB",
-      profileTextColor: "text-white",
+      profileTextColor: "#ffffff",
       tabColor: "#10B981",
       tabTextColor: "#EA580C",
     },
     {
       backgroundColor: "#5B21B6",
-      profileTextColor: "text-white",
+      profileTextColor: "#ffffff",
       tabColor: "#9D174D",
       tabTextColor: "#F0ABFC",
     },
     {
       backgroundColor: "#0F172A",
-      profileTextColor: "text-white",
+      profileTextColor: "#ffffff",
       tabColor: "#4B5563",
       tabTextColor: "#000000",
     },
     {
       backgroundColor: "#F1F5F9",
-      profileTextColor: "text-white",
+      profileTextColor: "#ffffff",
       tabColor: "#475569",
       tabTextColor: "#ffffff",
     },
@@ -116,7 +116,7 @@ const Appearance = ({ _session }) => {
         await queryClient.cancelQueries(["profile"]);
         const previousValue = queryClient.getQueryData(["profile"]);
 
-        const { title, bio, avatar } = updatedProfile;
+        const { title, bio, avatar, banner } = updatedProfile;
 
         queryClient.setQueryData(["profile"], (old) => {
           return {
@@ -124,6 +124,7 @@ const Appearance = ({ _session }) => {
             title,
             bio,
             avatar,
+            banner,
           };
         });
 
@@ -176,6 +177,8 @@ const Appearance = ({ _session }) => {
         await queryClient.cancelQueries(["theme"]);
         const previousValue = queryClient.getQueryData(["theme"]);
 
+        console.log(profileTextColor, "profileTextColor");
+
         const { backgroundColor, profileTextColor, tabColor, tabTextColor } =
           updatedTheme;
 
@@ -203,19 +206,30 @@ const Appearance = ({ _session }) => {
   );
 
   const [bgColorPicker, setBgColorPicker] = useState(
-    userdata?.backgroundColor || themeData.backgroundColor
+    userdata?.backgroundColor || themeData?.backgroundColor
+  );
+  const [profileTextColorPicker, setProfileTextColor] = useState(
+    userdata?.profileTextColor || themeData?.profileTextColor
   );
   const [tabColorPicker, setTabColorPicker] = useState(
-    userdata?.tabColor || themeData.tabColor
+    userdata?.tabColor || themeData?.tabColor
   );
   const [tabTextColorPicker, setTabTextColorPicker] = useState(
     userdata?.tabTextColor || themeData.tabTextColor
   );
 
-  const handleChangeBackroundColor = (color) => {
+  useEffect(() => {
+    setBgColorPicker(userdata?.backgroundColor || themeData?.backgroundColor);
+    setTabColorPicker(userdata?.tabColor || themeData?.tabColor);
+    setTabTextColorPicker(userdata?.tabTextColor || themeData.tabTextColor);
+  }, [userdata]);
+
+  const handleChangeBackroundColor = (updateObj) => {
+    // obj is either { backgroundColor: color.hex} or { profileTextColor: color.hex}
+
     const newTheme = {
       ...themeData,
-      backgroundColor: color.hex,
+      ...updateObj,
     };
 
     handleUpdateTheme.mutate(newTheme);
@@ -226,13 +240,9 @@ const Appearance = ({ _session }) => {
       ...themeData,
       ...updateObj,
     };
-    console.log(updateObj, "updateObj");
-    console.log(newTheme, "newTheme");
 
     handleUpdateTheme.mutate(newTheme);
   };
-
-  console.log(themeData.tabTextColor);
 
   if (isUserLoading) {
     return <DashboardSkeleton />;
@@ -264,26 +274,54 @@ const Appearance = ({ _session }) => {
                           <h2 className="text-md font-semibold">
                             Background Color
                           </h2>
-                          <Popover className="relative">
-                            <Popover.Button
-                              style={{
-                                backgroundColor: themeData.backgroundColor,
-                              }}
-                              className={`h-10 w-10 rounded-lg border-2 border-black`}
-                            />
-                            <Popover.Panel className="absolute left-6 top-6 z-10">
-                              <ChromePicker
-                                color={bgColorPicker}
-                                onChange={(color, event) =>
-                                  setBgColorPicker(color.hex)
-                                }
-                                onChangeComplete={(color, event) => {
-                                  handleChangeBackroundColor(color);
-                                  setBgColorPicker(color.hex);
+                          <div className="flex gap-6">
+                            <Popover className="relative">
+                              <Popover.Button
+                                style={{
+                                  backgroundColor: themeData.backgroundColor,
                                 }}
+                                className={`h-10 w-10 rounded-lg border-2 border-black`}
                               />
-                            </Popover.Panel>
-                          </Popover>
+                              <Popover.Panel className="absolute left-6 top-6 z-10">
+                                <ChromePicker
+                                  color={bgColorPicker}
+                                  onChange={(color, event) =>
+                                    setBgColorPicker(color.hex)
+                                  }
+                                  onChangeComplete={(color, event) => {
+                                    const updateObj = {
+                                      backgroundColor: color.hex,
+                                    };
+                                    handleChangeBackroundColor(updateObj);
+                                    setBgColorPicker(color.hex);
+                                  }}
+                                />
+                              </Popover.Panel>
+                            </Popover>
+                            <Popover className="relative">
+                              <Popover.Button
+                                style={{
+                                  backgroundColor: themeData.profileTextColor,
+                                }}
+                                className={`h-10 w-10 rounded-lg border-2 border-black`}
+                              />
+                              <Popover.Panel className="absolute left-6 top-6 z-10">
+                                <ChromePicker
+                                  color={profileTextColorPicker}
+                                  onChange={(color, event) =>
+                                    setProfileTextColor(color.hex)
+                                  }
+                                  onChangeComplete={(color, event) => {
+                                    const updateObj = {
+                                      profileTextColor: color.hex,
+                                    };
+                                    handleChangeBackroundColor(updateObj);
+                                    setProfileTextColor(color.hex);
+                                  }}
+                                />
+                              </Popover.Panel>
+                            </Popover>
+                          </div>
                           <h2 className="text-md font-semibold">
                             Tab <span className="text-sm">&</span> Text Color
                           </h2>

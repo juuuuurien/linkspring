@@ -1,6 +1,9 @@
 import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
+
+import Brand from "../../public/assets/linkspring_brand.svg";
 
 export default function Home() {
   const { data, status } = useSession();
@@ -15,11 +18,12 @@ export default function Home() {
       <div className=" flex flex-col h-screen w-screen py-20  bg-green-900">
         {/* navbar */}
         <div className="fixed flex flex-row justify-between items-center self-center gap-20 p-[12px] mx-[20rem] rounded-[10000px] bg-gray-200">
-          <div className="flex flex-row items-center  gap-10 pl-6">
-            <h1>
-              <Link href="/dashboard">Logo</Link>
-            </h1>
-
+          <div className="flex flex-row items-center gap-10 pl-6">
+            <button className="mb-[-20px]">
+              <Link href="/dashboard">
+                <Image src={Brand} height={100} width={200} />
+              </Link>
+            </button>
             <h1 className="text-gray-400 font-semibold text-2xl">
               Create, learn, share.
             </h1>
