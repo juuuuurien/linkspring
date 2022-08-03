@@ -133,8 +133,11 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
           </div>
 
           <div className="relative flex justify-center items-center w-fit h-auto mt-[-96px] px-5">
-            <button onClick={() => setAvatarModalVisible(true)}>
-              <CameraIcon className="absolute w-10 h-10 mt-5 text-slate-200 bg-slate-900 p-2 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all" />
+            <button
+              onClick={() => setAvatarModalVisible(true)}
+              className="absolute w-full h-full flex justify-center items-center"
+            >
+              <CameraIcon className=" w-10 h-10 text-slate-200 bg-slate-900 p-2 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all" />
             </button>
             {liveData.avatar && (
               <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[126px] h-[126px] border-white border-4">
