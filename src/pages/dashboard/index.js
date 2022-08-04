@@ -12,10 +12,16 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import LinkTab from "../../components/dashboard/components/LinkTab";
 import { authOptions } from "../api/auth/[...nextauth]";
 
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+
 export default function Dashboard({ _session }) {
   // data contains  username, links, profile of the user
   const url = process.env.NEXT_PUBLIC_URL;
   const queryClient = useQueryClient();
+
+  const [parent] = useAutoAnimate();
+
+  console.log(parent);
 
   // get user data
   const { data: userdata, isLoading: userLoading } = useQuery(
@@ -83,10 +89,10 @@ export default function Dashboard({ _session }) {
       await queryClient.cancelQueries(["links"]);
       const previousValue = queryClient.getQueryData(["links"]);
 
-      queryClient.setQueryData(["links"], (old) => ({
-        ...old,
-        links: [...old.links, { url: "", title: "" }],
-      }));
+      // queryClient.setQueryData(["links"], (old) => ({
+      //   ...old,
+      //   links: [...old.links, { url: "", title: "" }],
+      // }));
       return previousValue;
     },
     // On failure, roll back to the previous value
@@ -179,7 +185,10 @@ export default function Dashboard({ _session }) {
                       {handleAddLink.isLoading ? <Spinner /> : "Add New Link"}
                     </div>
                   </Button>
-                  <div className="flex flex-col w-full h-full gap-2 items-center">
+                  <div
+                    ref={parent}
+                    className="flex flex-col w-full h-full gap-2 items-center"
+                  >
                     {isLoading && <Spinner />}
                     {linkData &&
                       linkData?.links?.map((e, i) => (

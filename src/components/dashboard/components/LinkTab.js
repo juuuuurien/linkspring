@@ -8,9 +8,13 @@ import {
 import TitleInput from "./TitleInput";
 import URLInput from "./URLInput";
 
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+
 import { Dialog, Transition, Disclosure } from "@headlessui/react";
 
 const BottomBar = ({ isOpen, setIsOpen, handleDeleteLink, _id }) => {
+  const [parent] = useAutoAnimate();
+
   return (
     <Disclosure>
       {({ open, close }) => (
@@ -21,39 +25,38 @@ const BottomBar = ({ isOpen, setIsOpen, handleDeleteLink, _id }) => {
               <TrashIcon className="h-5 w-5 text-slate-300 hover:text-slate-400 cursor-pointer" />
             </Disclosure.Button>
           </div>
-          <Transition
-            enter="transition duration-100 ease-out"
-            enterFrom="transform height-[0px] translate-y-[-20px] opacity-20"
-            enterTo="transform height-[100px] translate-y-[0px] opacity-100"
-            leave="transition duration-100 ease-out"
-            leaveFrom="transform translate-y-[0px] opacity-100"
-            leaveTo="transform translate-y-[-10px] opacity-0"
-          >
-            {({ open, close }) => {
-              return (
-                <Disclosure.Panel className="flex flex-col pt-4 pb-2 text-sm text-gray-900 text-center gap-4">
-                  <div className="DELETE HEAD flex flex-row justify-center items-center w-full bg-slate-200 text-lg text-center font-semibold">
-                    Delete
-                    <Disclosure.Button className="absolute right-3 h-4 w-4 text-slate-700 hover:text-slate-500 cursor-pointer">
-                      <XIcon onClick={close} />
-                    </Disclosure.Button>
-                  </div>
-                  <span className="w-full">Delete forever?</span>
-                  <div className="flex flex-row px-5 gap-2">
-                    <Disclosure.Button className="px-5 py-3 w-full bg-slate-200 rounded-[1000px]">
-                      Cancel
-                    </Disclosure.Button>
-                    <Disclosure.Button
-                      onClick={() => handleDeleteLink.mutate(_id)}
-                      className="px-5 py-3 w-full bg-slate-800 rounded-[1000px] text-white"
-                    >
-                      Delete
-                    </Disclosure.Button>
-                  </div>
-                </Disclosure.Panel>
-              );
-            }}
-          </Transition>
+          {/* <Transition
+            ref={parent}
+            // enter="transition duration-100 ease-out"
+            // enterFrom="transform height-[0px] translate-y-[-20px] opacity-20"
+            // enterTo="transform height-[100px] translate-y-[0px] opacity-100"
+            // leave="transition duration-100 ease-out"
+            // leaveFrom="transform translate-y-[0px] opacity-100"
+            // leaveTo="transform translate-y-[-10px] opacity-0"
+          > */}
+          <div ref={parent}>
+            <Disclosure.Panel className="flex flex-col pt-4 pb-2 text-sm text-gray-900 text-center gap-4">
+              <div className="DELETE HEAD flex flex-row justify-center items-center w-full bg-slate-200 text-lg text-center font-semibold">
+                Delete
+                <Disclosure.Button className="absolute right-3 h-4 w-4 text-slate-700 hover:text-slate-500 cursor-pointer">
+                  <XIcon onClick={close} />
+                </Disclosure.Button>
+              </div>
+              <span className="w-full">Delete forever?</span>
+              <div className="flex flex-row px-5 gap-2">
+                <Disclosure.Button className="px-5 py-3 w-full bg-slate-200 rounded-[1000px]">
+                  Cancel
+                </Disclosure.Button>
+                <Disclosure.Button
+                  onClick={() => handleDeleteLink.mutate(_id)}
+                  className="px-5 py-3 w-full bg-slate-800 rounded-[1000px] text-white"
+                >
+                  Delete
+                </Disclosure.Button>
+              </div>
+            </Disclosure.Panel>
+          </div>
+          {/* </Transition> */}
         </>
       )}
     </Disclosure>

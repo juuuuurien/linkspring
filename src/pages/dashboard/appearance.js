@@ -98,7 +98,7 @@ const Appearance = ({ _session }) => {
     ).json();
   };
 
-  const { data: profileData, isProfileLoading } = useQuery(
+  const { data: profileData, isLoading: isProfileLoading } = useQuery(
     ["profile"],
     getProfile,
     {
@@ -263,6 +263,7 @@ const Appearance = ({ _session }) => {
                       <div className="profile-wrapper">
                         <h2 className="text-xl font-semibold mb-6">Profile</h2>
                         <ProfileEditor
+                          isProfileLoading={isProfileLoading}
                           initialData={userdata}
                           liveData={profileData}
                           handleUpdateProfile={handleUpdateProfile}

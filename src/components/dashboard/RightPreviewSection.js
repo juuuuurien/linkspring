@@ -60,10 +60,7 @@ const RightPreview = ({ initialData, liveData }) => {
           <div className="flex content-[''] bg-gray-500 w-full h-[25%] mb-4 rounded-t-3xl">
             {profileData.banner && (
               <img
-                src={
-                  "data:image/png;base64," +
-                  Buffer.from(profileData.banner).toString("base64")
-                }
+                src={profileData.banner}
                 className="object-cover w-full h-full rounded-t-3xl"
               ></img>
             )}
@@ -89,10 +86,7 @@ const RightPreview = ({ initialData, liveData }) => {
                   className="left-2 rounded-[50%] bg-gray-500 text-slate-100 w-[102px] h-[102px] m-2 shadow-md"
                 >
                   <img
-                    src={
-                      "data:image/png;base64," +
-                      Buffer.from(profileData?.avatar).toString("base64")
-                    }
+                    src={profileData.avatar}
                     className="w-full h-full rounded-[50%]"
                   ></img>
                 </div>
