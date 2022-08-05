@@ -7,8 +7,11 @@
 
 ### Front
 
-- [ ] Update profile theme & include banner
-- [ ] General mobile UI
+- [x] Update profile theme & include banner
+- [ ] General responsive mobile UI
+  - [x] /username route
+  - [ ] dashboard
+  - [ ] landing page
 - [ ] Sidebar functionality
 - [ ] Logout from sidebar lol
 - [ ] General animations
@@ -17,5 +20,6 @@
 
 ### Back
 
+- [ ] Update image upload flow to delete the old picture after successful image upload to free cloudinary space
 - [ ] Refactor color picker to update on popper close and not while choosing. (It hits endpoint on EACH drag, e- w)
 - [ ] Mini analytics feature?
