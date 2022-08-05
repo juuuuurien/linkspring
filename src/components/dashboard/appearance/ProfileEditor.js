@@ -9,7 +9,14 @@ import AvatarEditor from "react-avatar-editor";
 import BannerModal from "./BannerModal";
 import AvatarModal from "./AvatarModal";
 
-const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
+import { Spinner } from "flowbite-react";
+
+const ProfileEditor = ({
+  initialData,
+  liveData,
+  handleUpdateProfile,
+  isProfileLoading,
+}) => {
   const { username, profile } = initialData;
 
   const [avatar, setAvatar] = useState(profile.avatar);
@@ -53,16 +60,12 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
 
   const handleAvatarSubmit = async (dataURL) => {
     // should accpept a dataURL.
-
     // const canvas = editorRef.current.getImageScaledToCanvas();
     // const dataURL = canvas.toDataURL("image/png");
-
     // ****** May refactor to use s3 buckets in the future ******
     //  *********************************************************
-
     // get secure connection URL to aws bucket
     // const { url } = await fetch("/api/s3").then((res) => res.json());
-
     // make a PUT request to that URL to store image
     // await fetch(url, {
     //   method: "PUT",
@@ -73,37 +76,21 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
     //   },
     //   body: dataURL,
     // });
-
     // const imageUrl = url.split("?")[0];
-
     // console.log(imageUrl);
-
     // const formObj = {};
     // formObj.avatar = imageUrl;
     // handleSubmit(imageUrl);
-
-    const buf = dataUriToBuffer(dataURL);
-    const formObj = {};
-    formObj.avatar = buf;
-
-    setAvatar(buf);
-    handleSubmit(formObj);
-  };
-
-  const handleBannerSubmit = async (dataURL) => {
-    // should accpept a dataURL.
-
-    const buf = dataUriToBuffer(dataURL);
-    const formObj = {};
-    formObj.banner = buf;
-
-    setBanner(buf);
-    handleSubmit(formObj);
+    // const buf = dataUriToBuffer(dataURL);
+    // const formObj = {};
+    // formObj.avatar = buf;
+    // setAvatar(buf);
+    // handleSubmit(formObj);
   };
 
   return (
     <>
-      <div className="flex flex-col gap-5 bg-white rounded-xl">
+      <div className="relative flex flex-col gap-5 bg-white rounded-xl">
         <div className="flex flex-col gap-5">
           <div className="BG-PICTURE-WRAPPER relative flex justify-center items-center">
             <button
@@ -116,10 +103,7 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
               {liveData.banner && (
                 <div className="flex w-full justify-center items-center bg-gray-500 text-slate-100 rounded-t-3xl">
                   <img
-                    src={
-                      "data:image/png;base64," +
-                      Buffer.from(liveData.banner).toString("base64")
-                    }
+                    src={liveData.banner}
                     className="object-cover w-full h-full rounded-t-3xl"
                   ></img>
                 </div>
@@ -133,16 +117,16 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
           </div>
 
           <div className="relative flex justify-center items-center w-fit h-auto mt-[-96px] px-5">
-            <button onClick={() => setAvatarModalVisible(true)}>
-              <CameraIcon className="absolute w-10 h-10 mt-5 text-slate-200 bg-slate-900 p-2 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all" />
+            <button
+              onClick={() => setAvatarModalVisible(true)}
+              className="absolute w-full h-full flex justify-center items-center"
+            >
+              <CameraIcon className=" w-10 h-10 mt-5 text-slate-200 bg-slate-900 p-2 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all" />
             </button>
             {liveData.avatar && (
               <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[126px] h-[126px] border-white border-4">
                 <img
-                  src={
-                    "data:image/png;base64," +
-                    Buffer.from(liveData.avatar).toString("base64")
-                  }
+                  src={liveData.avatar}
                   className="w-full h-full rounded-[50%]"
                 ></img>
               </div>
@@ -203,15 +187,20 @@ const ProfileEditor = ({ initialData, liveData, handleUpdateProfile }) => {
           </div>
         </div>
       </div>
+      {isProfileLoading && (
+        <div className="absolute flex justify-center items-center h-full w-full bg-[#cccccc30]">
+          <Spinner />
+        </div>
+      )}
       <AvatarModal
         modalVisible={avatarModalVisible}
         setModalVisible={setAvatarModalVisible}
-        handleSubmit={handleAvatarSubmit}
+        handleSubmit={handleSubmit}
       />
       <BannerModal
         modalVisible={bannerModalVisible}
         setModalVisible={setBannerModalVisible}
-        handleSubmit={handleBannerSubmit}
+        handleSubmit={handleSubmit}
       />
     </>
   );

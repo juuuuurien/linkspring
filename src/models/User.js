@@ -10,7 +10,7 @@ const ThemeSchema = new mongoose.Schema({
 const LinkSchema = new mongoose.Schema({
   url: { type: String },
   title: { type: String },
-  image: { type: Buffer },
+  image: { type: String },
 });
 
 const ProfileSchema = new mongoose.Schema({
@@ -22,8 +22,8 @@ const ProfileSchema = new mongoose.Schema({
     type: String,
     default: "Example bio",
   },
-  avatar: { type: Buffer },
-  banner: { type: Buffer },
+  avatar: { type: String },
+  banner: { type: String },
 });
 
 const UserSchema = new mongoose.Schema({

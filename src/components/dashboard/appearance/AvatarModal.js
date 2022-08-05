@@ -2,6 +2,7 @@ import React, { Fragment, useRef, useState } from "react";
 
 import { Dialog, Transition } from "@headlessui/react";
 import AvatarEditor from "react-avatar-editor";
+import { dataURLtoBlob } from "../../../util/common";
 
 const AvatarModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
   const [img, setImg] = useState(null);
@@ -15,6 +16,31 @@ const AvatarModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
       setImg(reader.result);
     };
     reader.readAsDataURL(e.target.files[0]);
+  };
+
+  const handleFormSubmit = async (dataURL) => {
+    // parse dataURL into blob
+    const blob = dataURLtoBlob(dataURL);
+    const formData = new FormData();
+
+    formData.append("avatar_image", blob, "avatar.png");
+
+    // hit api to upload blob
+    console.log("uploading...");
+    const res = await (
+      await fetch("/api/upload_avatar", {
+        method: "POST",
+        body: formData,
+      })
+    ).json();
+
+    console.log(res);
+
+    // now, with url Path, handle data submit normally
+    const formObj = {
+      avatar: res.path,
+    };
+    handleSubmit(formObj);
   };
 
   return (
@@ -90,6 +116,7 @@ const AvatarModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
                 <form>
                   <input
                     type="file"
+                    name="avatar_image"
                     multiple={false}
                     onChange={handleImageChange}
                   />
@@ -99,10 +126,9 @@ const AvatarModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={() => {
                         if (img) {
-                          const canvas =
-                            editorRef.current.getImageScaledToCanvas();
+                          const canvas = editorRef.current.getImage();
                           const dataURL = canvas.toDataURL("image/png");
-                          handleSubmit(dataURL);
+                          handleFormSubmit(dataURL);
                         }
                         setModalVisible(false);
                       }}

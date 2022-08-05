@@ -2,11 +2,10 @@ import { ShareIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import React from "react";
 
-const ProfileLinkTab = ({ children, url, key, tabColor }) => {
+const ProfileLinkTab = ({ children, url, tabColor }) => {
   return (
-    <a href={url} target="_new" key={key}>
+    <a href={url} target="_new">
       <div
-        key={key}
         style={{
           backgroundColor: tabColor,
         }}
@@ -20,13 +19,26 @@ const ProfileLinkTab = ({ children, url, key, tabColor }) => {
 
 const Profile = ({ userdata }) => {
   const { links, username, profile, theme } = userdata;
+  // console.log(links, username, profile, theme);
+
   return (
     <div
       style={{
         backgroundColor: theme.backgroundColor,
       }}
-      className={`flex flex-col w-full h-full justify-center items-center`}
+      className={`flex flex-col h-full justify-center items-center`}
     >
+      <div className="flex content-[''] bg-gray-500 w-full h-[25%] mb-4 ">
+        {profile?.banner && (
+          <img
+            src={profile?.banner}
+            className="object-cover w-full h-full"
+          ></img>
+        )}
+        {!profile?.banner && (
+          <div className="flex content-[''] h-[140px] bg-gray-500 w-full mb-4 " />
+        )}
+      </div>
       <div className="w-full lg:max-w-[36%] h-full">
         <div className="flex flex-row w-full p-3">
           <ShareIcon
@@ -41,10 +53,7 @@ const Profile = ({ userdata }) => {
             {profile.avatar && (
               <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px]">
                 <img
-                  src={
-                    "data:image/png;base64," +
-                    Buffer.from(profile.avatar).toString("base64")
-                  }
+                  src={profile?.avatar}
                   className="w-full h-full rounded-[50%]"
                 ></img>
               </div>
