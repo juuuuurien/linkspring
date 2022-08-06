@@ -83,7 +83,7 @@ const URLInput = ({ label, className, data, handleSubmit }) => {
     <div
       ref={wrapperRef}
       className={`flex flex-row items-center ${className} ${
-        isError ? "ring-2 ring-red-600" : null
+        isError ? "ring-2 ring-red-400 rounded-md" : null
       }`}
     >
       {editFocused === false ? (

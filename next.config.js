@@ -2,6 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    domains: [
+      "img.etimg.com",
+      "assets.vogue.com",
+      "m.media-amazon.com",
+      "upload.wikimedia.org",
+      "res.cloudinary.com",
+    ],
+  },
   async headers() {
     return [
       {
