@@ -1,6 +1,5 @@
 import { DotsVerticalIcon } from "@heroicons/react/outline";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 const ProfileLinkTab = ({ children, url, tabColor }) => {
@@ -24,7 +23,7 @@ const Profile = ({ userdata }) => {
 
   return (
     <div
-      className={`flex flex-col  w-screen h-screen justify-center items-center`}
+      className={`flex flex-col w-screen h-screen justify-center items-center`}
     >
       <div
         style={{
@@ -32,33 +31,32 @@ const Profile = ({ userdata }) => {
         }}
         className={`flex flex-col w-full xl:max-w-[66%] xl:rounded-[20px] xl:overflow-auto h-full justify-center items-center z-10`}
       >
-        <div className="flex content-[''] bg-gray-500 w-full h-[23%] mb-4 ">
-          <div className="relative">
+        <div className="relative flex bg-gray-500 w-full h-[23%] ">
+
             <button
-              onClick={() => setBannerModalVisible(true)}
-              className="absolute flex justify-center items-center top-2 right-2 w-8 h-8 bg-black p-1 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all"
+              className="absolute flex justify-center items-center top-2 right-2 w-8 h-8 bg-black p-1 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all z-[100]"
             >
               <DotsVerticalIcon className="text-slate-200" />
             </button>
-
             {profile?.banner && (
-              <img
+              <Image
                 src={profile?.banner}
+                layout='fill'
                 className="object-cover w-full h-full"
-              ></img>
+              />
             )}
             {!profile?.banner && (
               <div className="flex content-[''] h-[23%] bg-gray-500 w-full mb-4 " />
             )}
-          </div>
+      
         </div>
         <div className=" w-full md:max-w-[65%] px-3 h-full">
           <div
-            className={`PORTFOLIO-WRAPPER flex flex-col mt-[-98px] lg:mt-[-136px] m-2 mb-10`}
+            className={`PORTFOLIO-WRAPPER flex flex-col mt-[-98px] lg:mt-[-100px] m-2 mb-10`}
           >
             <div
               className="rounded-[50%] h-fit w-fit mb-5  hover:scale-[1.1] transition-all ease-[cubic-bezier(.11,-0.85,.75,1.83)] cursor-pointer"
-              style={{ border: `3px solid ${theme.backgroundColor}` }}
+              style={{ border: `4px solid ${theme.backgroundColor}` , zIndex: 2 }}
             >
               {profile.avatar && (
                 <div className="rounded-[50%] bg-gray-500 text-slate-100 w-[104px] h-[104px] lg:w-[148px] lg:h-[148px]">
@@ -82,7 +80,7 @@ const Profile = ({ userdata }) => {
             >
               <div className="flex flex-row items-center justify-between">
                 <span className="whitespace-nowrap font-bold text-2xl lg:text-3xl">
-                  {"Julien's Profile"}
+                  {profile.title}
                 </span>
                 <div className="flex justify-end w-full rounded-md gap-4 lg:gap-10 px-2">
                   <div className="lg:w-10 lg:h-10 h-6 w-6 rounded-md bg-slate-200" />
@@ -90,7 +88,7 @@ const Profile = ({ userdata }) => {
                   <div className="lg:w-10 lg:h-10 h-6 w-6 rounded-md bg-slate-200" />
                 </div>
               </div>
-              <span className="text-md lg:text-lg">This is a sample bio</span>
+              <span className="text-md lg:text-lg">{profile.bio}</span>
             </div>
           </div>
           <div className="LINKS-WRAPPER flex flex-col w-full px-2.5 gap-2">

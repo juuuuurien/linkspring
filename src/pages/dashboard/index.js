@@ -19,9 +19,7 @@ export default function Dashboard({ _session }) {
   const url = process.env.NEXT_PUBLIC_URL;
   const queryClient = useQueryClient();
 
-  const [parent] = useAutoAnimate();
-
-  console.log(parent);
+  const [linkAnimationRef] = useAutoAnimate();
 
   // get user data
   const { data: userdata, isLoading: userLoading } = useQuery(
@@ -186,7 +184,7 @@ export default function Dashboard({ _session }) {
                     </div>
                   </Button>
                   <div
-                    ref={parent}
+                    ref={linkAnimationRef}
                     className="flex flex-col w-full h-full gap-2 items-center"
                   >
                     {isLoading && <Spinner />}

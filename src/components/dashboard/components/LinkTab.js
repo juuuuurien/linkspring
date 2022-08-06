@@ -13,7 +13,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Dialog, Transition, Disclosure } from "@headlessui/react";
 
 const BottomBar = ({ isOpen, setIsOpen, handleDeleteLink, _id }) => {
-  const [parent] = useAutoAnimate();
+  const [disclosureAnimationRef] = useAutoAnimate();
 
   return (
     <Disclosure>
@@ -34,12 +34,12 @@ const BottomBar = ({ isOpen, setIsOpen, handleDeleteLink, _id }) => {
             // leaveFrom="transform translate-y-[0px] opacity-100"
             // leaveTo="transform translate-y-[-10px] opacity-0"
           > */}
-          <div ref={parent}>
+          <div ref={disclosureAnimationRef}>
             <Disclosure.Panel className="flex flex-col pt-4 pb-2 text-sm text-gray-900 text-center gap-4">
               <div className="DELETE HEAD flex flex-row justify-center items-center w-full bg-slate-200 text-lg text-center font-semibold">
                 Delete
                 <Disclosure.Button className="absolute right-3 h-4 w-4 text-slate-700 hover:text-slate-500 cursor-pointer">
-                  <XIcon onClick={close} />
+                  <XIcon />
                 </Disclosure.Button>
               </div>
               <span className="w-full">Delete forever?</span>
