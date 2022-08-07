@@ -27,7 +27,7 @@ body {
 
 @layer components {
   .jumbo-text {
-    @apply text-8xl  font-extrabold;
+    @apply text-7xl  font-extrabold;
   }
 
   .w-inherit {
