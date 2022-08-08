@@ -18,6 +18,7 @@ import { ChromePicker } from "react-color";
 import { usePopper } from "react-popper";
 import { Popover } from "@headlessui/react";
 
+
 const Appearance = ({ _session }) => {
   const [pickerOpen, setPickerOpen] = useState(false);
 
@@ -250,10 +251,9 @@ const Appearance = ({ _session }) => {
 
   return (
     userdata && (
-      <div className="main-wrapper flex flex-row h-screen w-screen overflow-y-auto">
+      <div className="main-wrapper flex flex-col md:flex-row h-screen w-screen overflow-y-auto">
         <Sidebar />
-        <div className="w-full">
-          <section className="flex flex-col items-center h-full bg-gray-100 overflow-y-auto">
+          <section className="flex flex-col items-center w-full h-full bg-gray-100 overflow-y-auto">
             <MainNavbar />
             <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px]">
               <section className="flex flex-col items-center h-full bg-gray-100">
@@ -416,7 +416,7 @@ const Appearance = ({ _session }) => {
               </section>
             </div>
           </section>
-        </div>
+  
         <RightPreviewSection
           initialData={userdata}
           liveData={{ profile: profileData, theme: themeData }}

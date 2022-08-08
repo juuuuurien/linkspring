@@ -35,8 +35,8 @@ const RightPreview = ({ initialData, liveData }) => {
   const themeData = liveData.theme || initialData.theme;
 
   return (
-    <div className="flex flex-col items-center max-w-[33%] w-full h-auto bg-gray-100 border border-gray-200 z-10">
-      <div className="flex flex-row gap-2 w-full p-3 bg-white">
+    <>
+      <div className="hidden md:flex flex-row gap-2 w-full p-3 bg-white">
         <h3 className="text-sm">My Linkspring:</h3>
         <span className="text-sm visited:text-blue-600">
           <Link
@@ -49,7 +49,7 @@ const RightPreview = ({ initialData, liveData }) => {
           style={{
             backgroundColor: themeData.backgroundColor,
           }}
-          className={`PHONE-WRAPPER flex flex-col scale-[0.75] xl:scale-100 h-[685px] max-w-[320px] w-[320px] items-center border-[.9rem] border-slate-900 rounded-[2.5rem] transition-all ease `}
+          className={`PHONE-WRAPPER flex flex-col scale-[0.85] xl:scale-100 h-[685px] max-w-[340px] w-[340px] items-center border-[.9rem] border-slate-900 rounded-[2.5rem] transition-all ease `}
         >
           {/* <div className="flex flex-row w-full">
             <ShareIcon
@@ -120,7 +120,7 @@ const RightPreview = ({ initialData, liveData }) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
