@@ -7,6 +7,9 @@ import Brand from "../../public/assets/linkspring_brand.svg";
 
 export default function Home() {
   const { data, status } = useSession();
+
+  console.log(status);
+
   return (
     <div>
       <Head>
@@ -34,17 +37,26 @@ export default function Home() {
               Create, learn, share.
             </h1> */}
           </div>
-          <div className="flex flex-row gap-3">
-            {!data && (
+          {!(status === "loading") && !data && (
+            <div className="flex flex-row gap-3">
               <Link href="/login">
                 <a>
-                  <div className="lg:py-4 lg:px-6 py-2 px-2  w-full  rounded-lg font-semibold flex-nowrap">
+                  <div className="md:py-4 md:px-6 py-2 px-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold cursor-pointer">
                     Log in
                   </div>
                 </a>
               </Link>
-            )}
-            {data && (
+              <Link href="/signup">
+                <a>
+                  <div className="md:py-4 md:px-6 py-2 px-2 bg-gray-900 hover:bg-gray-600 rounded-[10000px] text-white font-semibold flex-nowrap">
+                    Sign Up
+                  </div>
+                </a>
+              </Link>
+            </div>
+          )}
+          {!(status === "loading") && data && (
+            <div className="flex flex-row gap-3">
               <div
                 onClick={() =>
                   signOut({ callbackUrl: process.env.NEXT_PUBLIC_URL })
@@ -53,15 +65,15 @@ export default function Home() {
               >
                 Sign Out
               </div>
-            )}
-            <Link href="/signup">
-              <a>
-                <div className="md:py-4 md:px-6 py-2 px-2 bg-gray-900 hover:bg-gray-600 rounded-[10000px] text-white font-semibold flex-nowrap">
-                  Sign Up
-                </div>
-              </a>
-            </Link>
-          </div>
+              <Link href="/dashboard">
+                <a>
+                  <div className="md:py-4 md:px-6 py-2 px-2 bg-gray-900 hover:bg-gray-600 rounded-[10000px] text-white font-semibold flex-nowrap">
+                    Dashboard
+                  </div>
+                </a>
+              </Link>
+            </div>
+          )}
         </div>
         {/* Hero Page */}
         {/* <div className="flex flex-col h-full w-full text-center justify-center md:justify-start md:text-left pt-[10vh] sm:pt-[14vh] md:pt-[18vh] px-[15vw] ">

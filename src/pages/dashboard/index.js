@@ -5,7 +5,7 @@ import Sidebar from "../../components/dashboard/Sidebar";
 import MainNavbar from "../../components/dashboard/MainNavbar";
 import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
 
-import { XIcon } from "@heroicons/react/solid";
+import { XIcon, PlusIcon } from "@heroicons/react/solid";
 
 import Head from "next/head";
 
@@ -180,11 +180,6 @@ export default function Dashboard({ _session }) {
             <MainNavbar userdata={userdata} />
             <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px]">
               <div className="flex flex-col items-center py-10 gap-12">
-                <Button pill onClick={() => handleAddLink.mutate()}>
-                  <div className="text-lg font-bold w-full">
-                    {handleAddLink.isLoading ? <Spinner /> : "Add New Link"}
-                  </div>
-                </Button>
                 <div
                   ref={linkAnimationRef}
                   className="flex flex-col w-full h-full gap-2 items-center"
@@ -206,6 +201,19 @@ export default function Dashboard({ _session }) {
                       {"You have no links yet! Click the '+' to add some."}
                     </div>
                   )}
+                  <button
+                    className="text-lg font-semibold self-end bg-[#3395FF] rounded-[1000px] text-white px-8 py-2"
+                    onClick={() => handleAddLink.mutate()}
+                  >
+                    {handleAddLink.isLoading ? (
+                      <Spinner />
+                    ) : (
+                      <div className="w-fit flex flex-row items-center gap-2">
+                        {"Add Link"}
+                        <PlusIcon className="h-85 w-5" />
+                      </div>
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
