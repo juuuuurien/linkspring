@@ -11,6 +11,10 @@ body {
 }
 
 @layer base {
+  body {
+    @apply bg-gray-100;
+  }
+
   h1,
   h2,
   h3,
@@ -27,7 +31,11 @@ body {
 
 @layer components {
   .jumbo-text {
-    @apply text-8xl  font-extrabold;
+    @apply text-7xl  font-extrabold;
+  }
+
+  .hero-slanted-container {
+    clip-path: polygon(0% 0%, 44% 0, 54% 50%, 44% 100%, 0% 100%);
   }
 
   .w-inherit {
