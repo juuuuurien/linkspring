@@ -87,7 +87,8 @@ export default function Home() {
             </p>
           </section>
         </div> */}
-        <section className="relative h-fit max-h-[720px] w-full bg-slate-400 overflow-hidden shadow-xl">
+        <section className="relative h-full
+ max-h-[720px] w-full bg-slate-400 overflow-hidden shadow-xl">
           <div className="absolute flex justify-start items-center h-full w-full bg-[#dde8f3cc]">
             <div className="md:hero-slanted-container flex justify-start items-center h-full w-full md:bg-slate-200">
               <div className="flex flex-col gap-5 lg:max-w-[36%] mx-[10%] ">
