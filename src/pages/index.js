@@ -22,7 +22,7 @@ export default function Home() {
         {/* navbar */}
         <div className="flex flex-row px-5  justify-between items-center w-full bg-gray-100 p-2">
           <div className="flex flex-row items-center gap-10 ">
-            <button className="mx-5 lg:w-[200px] w-[100px]">
+            <button className="mx-5  lg:w-[200px] w-[140px]">
               <Link href="/dashboard">
                 <Image
                   src={Brand}
@@ -61,7 +61,7 @@ export default function Home() {
                 onClick={() =>
                   signOut({ callbackUrl: process.env.NEXT_PUBLIC_URL })
                 }
-                className="md:py-4 md:px-6 py-2 px-2 hover:bg-gray-200 rounded-lg font-semibold cursor-pointer"
+                className="md:py-4 md:px-6 py-2 px-2 whitespace-nowrap hover:bg-gray-200 rounded-lg font-semibold cursor-pointer"
               >
                 Sign Out
               </div>
@@ -87,12 +87,25 @@ export default function Home() {
             </p>
           </section>
         </div> */}
-        <section className="relative h-full
- max-h-[720px] w-full bg-slate-400 overflow-hidden shadow-xl">
+        <section className="relative h-fit max-h-[720px] min-h-[480px] w-full bg-slate-400 overflow-hidden shadow-xl">
+          <video
+            autoPlay
+            loop
+            width="100%"
+            height={"100%"}
+            className="absolute object-cover h-full"
+          >
+            <source
+              src={
+                "https://res.cloudinary.com/linkspring-me/video/upload/v1659810286/hero_background_video_jjqlvu.mp4"
+              }
+              type="video/mp4"
+            />
+          </video>
           <div className="absolute flex justify-start items-center h-full w-full bg-[#dde8f3cc]">
             <div className="md:hero-slanted-container flex justify-start items-center h-full w-full md:bg-slate-200">
-              <div className="flex flex-col gap-5 lg:max-w-[36%] mx-[10%] ">
-                <p className="xl:jumbo-text font-bold text-5xl md:text-6xl lg:text-8xl text-gray-800">
+              <div className="flex flex-col gap-5 md:max-w-[36%] mx-[10%] ">
+                <p className="xl:jumbo-text font-bold text-5xl md:text-5xl lg:6xl xl:text-7xl text-gray-800">
                   All of who you are in{" "}
                   <span className="text-[#3395FF]">one simple link.</span>
                 </p>
@@ -103,20 +116,14 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <video autoPlay loop className="object-cover height-[200%]">
-            <source
-              src={
-                "https://res.cloudinary.com/linkspring-me/video/upload/v1659810286/hero_background_video_jjqlvu.mp4"
-              }
-              type="video/mp4"
-            />
-          </video>
         </section>
         <section className="h-96 w-full flex justify-center items-center ">
-          <div className="flex flex-row justify-between items-center w-full max-w-[80%] md:max-w-[45%] h-full p-10">
-            <h1 className="text-4xl text-slate-900">Easy, simple, and free.</h1>
+          <div className="flex flex-col md:flex-row justify-center text-center md:text-left gap-6 md:justify-between items-center w-full max-w-[80%] md:max-w-[45%] h-full p-10">
+            <h1 className="text-3xl md:text-4xl text-slate-900">
+              Easy, simple, and free.
+            </h1>
             <Link href="/signup">
-              <a className="px-10 py-6 bg-gray-900 text-white rounded-[10000px] text-xl font-semibold">
+              <a className="px-6 py-3 md:px-10 md:py-6 bg-gray-900 text-white rounded-[10000px] text-lg md:text-xl font-semibold">
                 Get Started
               </a>
             </Link>
