@@ -253,7 +253,7 @@ export default function Dashboard({ _session }) {
                     <Dialog.Panel className="flex flex-col justify-center w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all">
                       <button
                         onClick={() => setIsOpen(false)}
-                        className="self-center w-10 h-10 bg-gray-400 p-2 hover:scale-[1.1] text-lg font-medium leading-6 text-gray-900 rounded-[100%]"
+                        className="self-end w-10 h-10 bg-gray-200 text-slate-600 p-2 hover:scale-[1.1] text-lg font-medium leading-6 rounded-[100%]"
                       >
                         <XIcon />
                       </button>

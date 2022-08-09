@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import ProfileEditor from "../../components/dashboard/appearance/ProfileEditor";
 
 // import DashboardLayout from "../../components/layouts/DashboardLayout";
@@ -16,11 +16,13 @@ import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ChromePicker } from "react-color";
 import { usePopper } from "react-popper";
-import { Popover } from "@headlessui/react";
+import { Popover, Transition, Dialog } from "@headlessui/react";
 
+import { XIcon } from "@heroicons/react/solid";
 
 const Appearance = ({ _session }) => {
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const themes = [
     {
@@ -253,174 +255,229 @@ const Appearance = ({ _session }) => {
     userdata && (
       <div className="main-wrapper flex flex-col md:flex-row h-screen w-screen overflow-y-auto">
         <Sidebar />
-          <section className="flex flex-col items-center w-full h-full bg-gray-100 overflow-y-auto">
-            <MainNavbar />
-            <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px]">
-              <section className="flex flex-col items-center h-full bg-gray-100">
-                <div className="mx-auto w-full max-w-[640px]">
-                  <div className="flex flex-col items-center py-10 gap-12">
-                    <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3 gap-10">
-                      <div className="profile-wrapper">
-                        <h2 className="text-xl font-semibold mb-6">Profile</h2>
-                        <ProfileEditor
-                          isProfileLoading={isProfileLoading}
-                          initialData={userdata}
-                          liveData={profileData}
-                          handleUpdateProfile={handleUpdateProfile}
-                        />
-                      </div>
-                      <div className="theme-wrapper">
-                        <h2 className="text-xl font-semibold mb-6">Theme</h2>
-                        <div className=" flex flex-col bg-white p-5 gap-4 rounded-xl">
-                          <h2 className="text-md font-semibold">
-                            Background Color
-                          </h2>
-                          <div className="flex gap-6">
-                            <Popover className="relative">
-                              <Popover.Button
-                                style={{
-                                  backgroundColor: themeData.backgroundColor,
+        <section className="flex flex-col items-center w-full h-full bg-gray-100 overflow-y-auto">
+          <MainNavbar />
+          <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px]">
+            <section className="flex flex-col items-center h-full bg-gray-100">
+              <div className="mx-auto w-full max-w-[640px]">
+                <div className="flex flex-col items-center py-10 gap-12">
+                  <div className="wrapper flex flex-col min-w-[50%] w-full h-auto p-3 gap-10">
+                    <div className="profile-wrapper">
+                      <h2 className="text-xl font-semibold mb-6">Profile</h2>
+                      <ProfileEditor
+                        isProfileLoading={isProfileLoading}
+                        initialData={userdata}
+                        liveData={profileData}
+                        handleUpdateProfile={handleUpdateProfile}
+                      />
+                    </div>
+                    <div className="theme-wrapper">
+                      <h2 className="text-xl font-semibold mb-6">Theme</h2>
+                      <div className=" flex flex-col bg-white p-5 gap-4 rounded-xl">
+                        <h2 className="text-md font-semibold">
+                          Background Color
+                        </h2>
+                        <div className="flex gap-6">
+                          <Popover className="relative">
+                            <Popover.Button
+                              style={{
+                                backgroundColor: themeData.backgroundColor,
+                              }}
+                              className={`h-10 w-10 rounded-lg border-2 border-black`}
+                            />
+                            <Popover.Panel className="absolute left-6 top-6 z-10">
+                              <ChromePicker
+                                color={bgColorPicker}
+                                onChange={(color, event) =>
+                                  setBgColorPicker(color.hex)
+                                }
+                                onChangeComplete={(color, event) => {
+                                  const updateObj = {
+                                    backgroundColor: color.hex,
+                                  };
+                                  handleChangeBackroundColor(updateObj);
+                                  setBgColorPicker(color.hex);
                                 }}
-                                className={`h-10 w-10 rounded-lg border-2 border-black`}
                               />
-                              <Popover.Panel className="absolute left-6 top-6 z-10">
-                                <ChromePicker
-                                  color={bgColorPicker}
-                                  onChange={(color, event) =>
-                                    setBgColorPicker(color.hex)
-                                  }
-                                  onChangeComplete={(color, event) => {
-                                    const updateObj = {
-                                      backgroundColor: color.hex,
-                                    };
-                                    handleChangeBackroundColor(updateObj);
-                                    setBgColorPicker(color.hex);
-                                  }}
-                                />
-                              </Popover.Panel>
-                            </Popover>
-                            <Popover className="relative">
-                              <Popover.Button
-                                style={{
-                                  backgroundColor: themeData.profileTextColor,
+                            </Popover.Panel>
+                          </Popover>
+                          <Popover className="relative">
+                            <Popover.Button
+                              style={{
+                                backgroundColor: themeData.profileTextColor,
+                              }}
+                              className={`h-10 w-10 rounded-lg border-2 border-black`}
+                            />
+                            <Popover.Panel className="absolute left-6 top-6 z-10">
+                              <ChromePicker
+                                color={profileTextColorPicker}
+                                onChange={(color, event) =>
+                                  setProfileTextColor(color.hex)
+                                }
+                                onChangeComplete={(color, event) => {
+                                  const updateObj = {
+                                    profileTextColor: color.hex,
+                                  };
+                                  handleChangeBackroundColor(updateObj);
+                                  setProfileTextColor(color.hex);
                                 }}
-                                className={`h-10 w-10 rounded-lg border-2 border-black`}
                               />
-                              <Popover.Panel className="absolute left-6 top-6 z-10">
-                                <ChromePicker
-                                  color={profileTextColorPicker}
-                                  onChange={(color, event) =>
-                                    setProfileTextColor(color.hex)
-                                  }
-                                  onChangeComplete={(color, event) => {
-                                    const updateObj = {
-                                      profileTextColor: color.hex,
-                                    };
-                                    handleChangeBackroundColor(updateObj);
-                                    setProfileTextColor(color.hex);
-                                  }}
-                                />
-                              </Popover.Panel>
-                            </Popover>
-                          </div>
-                          <h2 className="text-md font-semibold">
-                            Tab <span className="text-sm">&</span> Text Color
-                          </h2>
-                          <div className="flex gap-6">
-                            <Popover className="relative">
-                              <Popover.Button
-                                style={{
-                                  backgroundColor: themeData.tabColor,
-                                }}
-                                className={`h-10 w-10 rounded-lg border-2 border-black`}
-                              />
+                            </Popover.Panel>
+                          </Popover>
+                        </div>
+                        <h2 className="text-md font-semibold">
+                          Tab <span className="text-sm">&</span> Text Color
+                        </h2>
+                        <div className="flex gap-6">
+                          <Popover className="relative">
+                            <Popover.Button
+                              style={{
+                                backgroundColor: themeData.tabColor,
+                              }}
+                              className={`h-10 w-10 rounded-lg border-2 border-black`}
+                            />
 
-                              <Popover.Panel className="absolute left-6 top-6 z-10">
-                                <ChromePicker
-                                  color={tabColorPicker}
-                                  onChange={(color, event) =>
-                                    setTabColorPicker(color.hex)
-                                  }
-                                  onChangeComplete={(color, event) => {
-                                    const updateObj = {
-                                      tabColor: color.hex,
-                                    };
-                                    handleChangeTabColor(updateObj);
-                                    setTabColorPicker(color.hex);
-                                  }}
-                                />
-                              </Popover.Panel>
-                            </Popover>
-                            <Popover className="relative">
-                              <Popover.Button
-                                style={{
-                                  backgroundColor: themeData.tabTextColor,
+                            <Popover.Panel className="absolute left-6 top-6 z-10">
+                              <ChromePicker
+                                color={tabColorPicker}
+                                onChange={(color, event) =>
+                                  setTabColorPicker(color.hex)
+                                }
+                                onChangeComplete={(color, event) => {
+                                  const updateObj = {
+                                    tabColor: color.hex,
+                                  };
+                                  handleChangeTabColor(updateObj);
+                                  setTabColorPicker(color.hex);
                                 }}
-                                className={`h-10 w-10 rounded-lg border-2 border-black`}
                               />
+                            </Popover.Panel>
+                          </Popover>
+                          <Popover className="relative">
+                            <Popover.Button
+                              style={{
+                                backgroundColor: themeData.tabTextColor,
+                              }}
+                              className={`h-10 w-10 rounded-lg border-2 border-black`}
+                            />
 
-                              <Popover.Panel className="absolute left-6 top-6 z-10">
-                                <ChromePicker
-                                  color={tabTextColorPicker}
-                                  onChange={(color, event) =>
-                                    setTabTextColorPicker(color.hex)
-                                  }
-                                  onChangeComplete={(color, event) => {
-                                    const updateObj = {
-                                      tabTextColor: color.hex,
-                                    };
-                                    handleChangeTabColor(updateObj);
-                                    setTabTextColorPicker(color.hex);
-                                  }}
-                                />
-                              </Popover.Panel>
-                            </Popover>
-                          </div>
-                          <h2 className="text-md font-semibold">Templates</h2>
-                          <div className="inline-grid w-full grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] gap-4">
-                            {themes.map((theme, index) => (
-                              <button
-                                onClick={() => handleUpdateTheme.mutate(theme)}
-                                key={index}
-                                style={{
-                                  backgroundColor: theme.backgroundColor,
+                            <Popover.Panel className="absolute left-6 top-6 z-10">
+                              <ChromePicker
+                                color={tabTextColorPicker}
+                                onChange={(color, event) =>
+                                  setTabTextColorPicker(color.hex)
+                                }
+                                onChangeComplete={(color, event) => {
+                                  const updateObj = {
+                                    tabTextColor: color.hex,
+                                  };
+                                  handleChangeTabColor(updateObj);
+                                  setTabTextColorPicker(color.hex);
                                 }}
-                                className={`flex gap-2 pb-6 justify-center min-h-[200px] flex-shrink-0 grow min-w-[80px] rounded-lg flex-col items-center focus:outline-none self-stretch ${theme.tabTextColor} border-[1px] border-gray-300 hover:scale-105 transition-all duration-200 ease-[cubic-bezier(1,-0.32,0,1.59)]`}
-                              >
-                                <span
-                                  style={{
-                                    backgroundColor: theme.tabColor,
-                                  }}
-                                  className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
-                                />
-                                <span
-                                  style={{
-                                    backgroundColor: theme.tabColor,
-                                  }}
-                                  className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
-                                />
-                                <span
-                                  style={{
-                                    backgroundColor: theme.tabColor,
-                                  }}
-                                  className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
-                                />
-                              </button>
-                            ))}
-                          </div>
+                              />
+                            </Popover.Panel>
+                          </Popover>
+                        </div>
+                        <h2 className="text-md font-semibold">Templates</h2>
+                        <div className="inline-grid w-full grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] gap-4">
+                          {themes.map((theme, index) => (
+                            <button
+                              onClick={() => handleUpdateTheme.mutate(theme)}
+                              key={index}
+                              style={{
+                                backgroundColor: theme.backgroundColor,
+                              }}
+                              className={`flex gap-2 pb-6 justify-center min-h-[200px] flex-shrink-0 grow min-w-[80px] rounded-lg flex-col items-center focus:outline-none self-stretch ${theme.tabTextColor} border-[1px] border-gray-300 hover:scale-105 transition-all duration-200 ease-[cubic-bezier(1,-0.32,0,1.59)]`}
+                            >
+                              <span
+                                style={{
+                                  backgroundColor: theme.tabColor,
+                                }}
+                                className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
+                              />
+                              <span
+                                style={{
+                                  backgroundColor: theme.tabColor,
+                                }}
+                                className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
+                              />
+                              <span
+                                style={{
+                                  backgroundColor: theme.tabColor,
+                                }}
+                                className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
+                              />
+                            </button>
+                          ))}
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </section>
+              </div>
+            </section>
+          </div>
+        </section>
+        <div className="hidden md:flex flex-col items-center max-w-[33%] w-full h-auto bg-gray-100 border border-gray-200 z-10 ">
+          <RightPreviewSection
+            initialData={userdata}
+            liveData={{ profile: profileData, theme: themeData }}
+          />
+        </div>
+        <Transition appear show={previewOpen} as={Fragment}>
+          <Dialog
+            as="div"
+            className="relative z-10"
+            onClose={() => setPreviewOpen(false)}
+          >
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel className="flex flex-col justify-center w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all">
+                    <button
+                      onClick={() => setPreviewOpen(false)}
+                      className="self-end w-10 h-10 bg-gray-200 text-slate-600 p-2 hover:scale-[1.1] text-lg font-medium leading-6 rounded-[100%]"
+                    >
+                      <XIcon />
+                    </button>
+                    <div>
+                      <RightPreviewSection
+                        initialData={userdata}
+                        liveData={{ profile: profileData, theme: themeData }}
+                      />
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
             </div>
-          </section>
-  
-        <RightPreviewSection
-          initialData={userdata}
-          liveData={{ profile: profileData, theme: themeData }}
-        />
+          </Dialog>
+        </Transition>
+        <button
+          onClick={() => setPreviewOpen(true)}
+          className="md:hidden fixed self-center bottom-10 rounded-[10000px] text-slate-900 font-bold text-xl z-10 bg-indigo-300 px-4 py-2"
+        >
+          Preview
+        </button>
       </div>
     )
   );

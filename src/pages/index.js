@@ -123,7 +123,7 @@ export default function Home() {
               Easy, simple, and free.
             </h1>
             <Link href="/signup">
-              <a className="px-6 py-3 md:px-10 md:py-6 bg-gray-900 text-white rounded-[10000px] text-lg md:text-xl font-semibold">
+              <a className="px-6 py-3 md:px-10 md:py-6 whitespace-nowrap bg-gray-900 text-white rounded-[10000px] text-lg md:text-xl font-semibold">
                 Get Started
               </a>
             </Link>
