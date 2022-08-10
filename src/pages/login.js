@@ -5,6 +5,7 @@ import { unstable_getServerSession } from "next-auth/next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { authOptions } from "./api/auth/[...nextauth]";
+import Image from "next/image";
 
 const Login = ({ session }) => {
   const url = `${process.env.NEXT_PUBLIC_URL}/dashboard`;
@@ -51,27 +52,36 @@ const Login = ({ session }) => {
   };
 
   return (
-    <section className="flex flex-col h-screen w-screen bg-slate-100">
-      <div className="p-20">
-        <h1>
-          <Link href="/">Linkspring</Link>
-        </h1>
+    <section className="flex flex-col h-screen w-screen p-6 bg-slate-100">
+      <div className="flex justify-center items-center md:block md:p-4">
+        <button className="flex justify-center items-center md:mx-5  lg:w-[180px] max-w-[180px]">
+          <Link href="/dashboard">
+            <Image
+              src={"/assets/linkspring_brand.svg"}
+              height={220}
+              width={666}
+              alt="Logo"
+            />
+          </Link>
+        </button>
       </div>
-      <div className="flex flex-col gap-5 justify-center items-center mx-auto w-full max-w-[640px] min-w-[30%]">
-        <h1 className="text-5xl font-extrabold">Log in to your Linkspring</h1>
+      <div className="flex flex-col gap-5 justify-center items-center mx-auto w-full h-full max-w-[640px] min-w-[30%] pb-10">
+        <h1 className="text-4xl md:text-5xl font-extrabold">
+          Log in to your Linkspring
+        </h1>
         <form
           className="flex flex-col gap-4 my-5 w-full"
           autoComplete="on"
           onSubmit={handleLogin}
         >
           <div
-            className={`block w-full border disabled:cursor-not-allowed disabled:opacity-50 px-2.5 bg-gray-50 text-gray-900 rounded-lg text-sm ${
+            className={`flex flex-row items-center whitespace-nowrap w-full border disabled:cursor-not-allowed disabled:opacity-50 pl-2.5 bg-gray-50 text-gray-900 rounded-lg text-sm ${
               usernameFocus
                 ? "border-blue-500 ring-blue-500 ring-1"
                 : " border-gray-300 "
             }`}
           >
-            <span className={`text-gray-500`}>linkspring.me/</span>
+            <div className={`text-gray-500`}>linkspring.me/</div>
 
             <input
               autoComplete={"on"}
@@ -85,7 +95,7 @@ const Login = ({ session }) => {
               }}
               onChange={(e) => handleUsernameChange(e.target.value)}
               className={
-                "bg-transparent focus:ring-0 focus:outline-none py-3 text-sm ml-1 w-[80%] h-full"
+                "bg-transparent focus:ring-0 focus:outline-none py-3 text-sm ml-1 w-full h-full"
               }
               placeholder="Username"
             ></input>
@@ -105,7 +115,7 @@ const Login = ({ session }) => {
           </div> */}
           <button
             type="submit"
-            className="bg-purple-600 text-white rounded-[10000px] p-3"
+            className="bg-[#3395FF] text-white rounded-[10000px] p-3"
             // onClick={handleLogin}
           >
             {loading ? <Spinner /> : "Log In"}

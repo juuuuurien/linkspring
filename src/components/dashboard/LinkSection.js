@@ -138,9 +138,30 @@ const LinkSection = ({ initialData }) => {
     return (
       <div className="flex flex-col h-full justify-center items-center py-10 gap-12">
         <div className="flex flex-col w-full h-full gap-2 items-center">
-          <div className="w-full h-32 rounded-2xl bg-gray-200 animate-pulse" />
-          <div className="w-full h-32 rounded-2xl bg-gray-200 animate-pulse" />
-          <div className="w-full h-32 rounded-2xl bg-gray-200 animate-pulse" />
+          <div className="flex flex-col justify-evenly w-full h-32 rounded-2xl bg-gray-200 animate-pulse p-4">
+            <div className="w-[33%] h-5 rounded-lg    bg-gray-100" />
+            <div className="w-[66%] h-5 rounded-lg    bg-gray-100" />
+            <div className="flex flex-row justify-between">
+              <div className="w-5 h-5 rounded-lg    bg-gray-100" />
+              <div className="w-5 h-5 rounded-lg    bg-gray-100" />
+            </div>
+          </div>
+          <div className="flex flex-col justify-evenly w-full h-32 rounded-2xl bg-gray-200 animate-pulse p-4">
+            <div className="w-[33%] h-5 rounded-lg    bg-gray-100" />
+            <div className="w-[66%] h-5 rounded-lg    bg-gray-100" />
+            <div className="flex flex-row justify-between">
+              <div className="w-5 h-5 rounded-lg    bg-gray-100" />
+              <div className="w-5 h-5 rounded-lg    bg-gray-100" />
+            </div>
+          </div>
+          <div className="flex flex-col justify-evenly w-full h-32 rounded-2xl bg-gray-200 animate-pulse p-4">
+            <div className="w-[33%] h-5 rounded-lg    bg-gray-100" />
+            <div className="w-[66%] h-5 rounded-lg    bg-gray-100" />
+            <div className="flex flex-row justify-between">
+              <div className="w-5 h-5 rounded-lg    bg-gray-100" />
+              <div className="w-5 h-5 rounded-lg    bg-gray-100" />
+            </div>
+          </div>
         </div>
       </div>
     );
