@@ -27,28 +27,24 @@ const Profile = ({ userdata }) => {
     >
       <div
         style={{
-          backgroundColor: theme.backgroundColor,
+          background: theme.backgroundColor,
         }}
         className={`flex flex-col w-full xl:max-w-[66%] xl:rounded-[20px] xl:overflow-auto h-full justify-center items-center z-10`}
       >
         <div className="relative flex bg-gray-500 w-full h-[23%] ">
-
-            <button
-              className="absolute flex justify-center items-center top-2 right-2 w-8 h-8 bg-black p-1 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all z-[100]"
-            >
-              <DotsVerticalIcon className="text-slate-200" />
-            </button>
-            {profile?.banner && (
-              <Image
-                src={profile?.banner}
-                layout='fill'
-                className="object-cover w-full h-full"
-              />
-            )}
-            {!profile?.banner && (
-              <div className="flex content-[''] h-[23%] bg-gray-500 w-full mb-4 " />
-            )}
-      
+          <button className="absolute flex justify-center items-center top-2 right-2 w-8 h-8 bg-black p-1 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all z-[100]">
+            <DotsVerticalIcon className="text-slate-200" />
+          </button>
+          {profile?.banner && (
+            <Image
+              src={profile?.banner}
+              layout="fill"
+              className="object-cover w-full h-full"
+            />
+          )}
+          {!profile?.banner && (
+            <div className="flex content-[''] h-[23%] bg-gray-500 w-full mb-4 " />
+          )}
         </div>
         <div className=" w-full md:max-w-[65%] px-3 h-full">
           <div
@@ -56,7 +52,10 @@ const Profile = ({ userdata }) => {
           >
             <div
               className="rounded-[50%] h-fit w-fit mb-5  hover:scale-[1.1] transition-all ease-[cubic-bezier(.11,-0.85,.75,1.83)] cursor-pointer"
-              style={{ border: `4px solid ${theme.backgroundColor}` , zIndex: 2 }}
+              style={{
+                border: `4px solid ${theme.backgroundColor}`,
+                zIndex: 2,
+              }}
             >
               {profile.avatar && (
                 <div className="rounded-[50%] bg-gray-500 text-slate-100 w-[104px] h-[104px] lg:w-[148px] lg:h-[148px]">

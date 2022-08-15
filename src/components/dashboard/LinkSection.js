@@ -169,13 +169,12 @@ const LinkSection = ({ initialData }) => {
   return (
     initialData && (
       <div className="flex flex-col items-center py-10 gap-12">
-        <div
-          ref={linkAnimationRef}
-          className="flex flex-col w-full h-full gap-2 items-center"
-        >
-          {isLoading && <Spinner />}
-          {linkData &&
-            linkData?.links?.map((e, i) => (
+        {linkData && (
+          <div
+            ref={linkAnimationRef}
+            className="flex flex-col w-full h-full gap-2 items-center"
+          >
+            {linkData?.links?.map((e, i) => (
               <LinkTab
                 key={e._id}
                 _id={e._id}
@@ -185,25 +184,26 @@ const LinkSection = ({ initialData }) => {
                 handleDeleteLink={handleDeleteLink}
               />
             ))}
-          {linkData?.links?.length === 0 && (
-            <div className="flex w-full h-full justify-center items-center text-slate-500">
-              {"You have no links yet! Click the '+' to add some."}
-            </div>
-          )}
-          <button
-            className="text-lg font-semibold self-end bg-[#3395FF] rounded-[14px] text-white px-8 py-2"
-            onClick={() => handleAddLink.mutate()}
-          >
-            {handleAddLink.isLoading ? (
-              <Spinner />
-            ) : (
-              <div className="w-fit flex flex-row items-center gap-2">
-                {"New Link"}
-                <PlusIcon className="h-85 w-5" />
+            {linkData?.links?.length === 0 && (
+              <div className="flex w-full h-full justify-center items-center text-slate-500">
+                {"You have no links yet! Click the '+' to add some."}
               </div>
             )}
-          </button>
-        </div>
+            <button
+              className="text-lg font-semibold self-end bg-[#3395FF] rounded-[14px] text-white px-8 py-2"
+              onClick={() => handleAddLink.mutate()}
+            >
+              {handleAddLink.isLoading ? (
+                <Spinner />
+              ) : (
+                <div className="w-fit flex flex-row items-center gap-2">
+                  {"New Link"}
+                  <PlusIcon className="h-85 w-5" />
+                </div>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     )
   );
