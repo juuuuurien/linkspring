@@ -131,12 +131,12 @@ const Login = ({ session }) => {
 
           <button
             type="submit"
-            className="bg-[#3395FF] text-white rounded-[10000px] p-3"
+            className="button hover:bg-[#56a8ff] bg-[#3395FF] text-white font-semibold rounded-[10000px] p-3"
           >
             {loading ? <Spinner /> : "Log in"}
           </button>
           <button
-            className="relative flex items-center justify-center bg-white text-gray-900 rounded-[10000px] p-3"
+            className="button relative flex items-center font-semibold justify-center bg-white hover:bg-gray-100 text-gray-900 rounded-[10000px] p-3"
             onClick={handleLoginWithGoogle}
           >
             <FcGoogle className="absolute left-6 self-start h-6 w-6" />

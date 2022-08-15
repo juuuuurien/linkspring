@@ -37,7 +37,7 @@ export default function Home() {
       <div className="flex flex-col h-full w-full ">
         {/* navbar */}
         <div className="fixed flex flex-row px-5 justify-between items-center w-full bg-gray-100 p-2 z-10">
-          <button className="button flex justify-center items-center mr-5 md:mx-5  lg:w-[140px] max-w-[140px]">
+          <button className="flex justify-center items-center mr-5 md:mx-5  lg:w-[140px] max-w-[140px] hover:translate-x-[-5px] hover:translate-y-[-5px] transition-all ease-linear duration-75">
             <Link href="/dashboard">
               <Image
                 src={"/assets/linkspring_brand.svg"}

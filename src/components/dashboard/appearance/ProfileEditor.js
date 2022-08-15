@@ -1,12 +1,8 @@
-import React, { Fragment, useRef, useState } from "react";
-import dataUriToBuffer from "data-uri-to-buffer";
+import React, { useState } from "react";
 
-import { XIcon } from "@heroicons/react/solid";
 import { CameraIcon } from "@heroicons/react/outline";
 import { UserIcon } from "@heroicons/react/solid";
 
-import { Dialog, Transition } from "@headlessui/react";
-import AvatarEditor from "react-avatar-editor";
 import BannerModal from "./BannerModal";
 import AvatarModal from "./AvatarModal";
 
