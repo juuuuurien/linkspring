@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-import { ShareIcon } from "@heroicons/react/outline";
+import { UserIcon } from "@heroicons/react/solid";
 import Profile from "../profile/Profile";
 
 const PVLinkTab = ({ children, url, tabColor }) => {
@@ -95,8 +95,8 @@ const RightPreview = ({ initialData, liveData }) => {
                   </div>
                 )}
                 {!profileData?.avatar && (
-                  <div className="left-2 rounded-[50%] bg-gray-500 text-slate-100 w-[96px] h-[96px] m-2 shadow-md">
-                    <h1>JL</h1>
+                  <div className="flex justify-center items-center left-2 rounded-[50%] bg-gray-400 text-slate-100 w-[96px] h-[96px] m-2 shadow-md">
+                    <UserIcon className="w-10 h-10 text-gray-100" />
                   </div>
                 )}
               </div>

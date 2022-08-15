@@ -3,6 +3,7 @@ import dataUriToBuffer from "data-uri-to-buffer";
 
 import { XIcon } from "@heroicons/react/solid";
 import { CameraIcon } from "@heroicons/react/outline";
+import { UserIcon } from "@heroicons/react/solid";
 
 import { Dialog, Transition } from "@headlessui/react";
 import AvatarEditor from "react-avatar-editor";
@@ -38,7 +39,7 @@ const ProfileEditor = ({
   //   setCache(e.target.value);
   // };
 
-  const handleSubmit = (formObj) => {
+  const handleSubmit = async (formObj) => {
     // bundle any data coming from the form into a single object
     const updatedProfile = { bio, title, avatar, banner };
 
@@ -48,7 +49,7 @@ const ProfileEditor = ({
     updatedProfile.bio = formObj.bio === "" ? "" : formObj.bio || bio; // if url passed is empty, update as empty string, otherwise it will just use the old bio
 
     // finally make api call to update with object of data
-    handleUpdateProfile.mutate(updatedProfile);
+    await handleUpdateProfile.mutate(updatedProfile);
   };
 
   const handleBlur = (e) => {
@@ -108,18 +109,13 @@ const ProfileEditor = ({
                   ></img>
                 </div>
               )}
-              {!liveData.banner && (
-                <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[126px] h-[126px] border-white border-4">
-                  <h1>JL</h1>
-                </div>
-              )}
             </div>
           </div>
 
           <div className="relative flex justify-center items-center w-fit h-auto mt-[-96px] px-5">
             <button
               onClick={() => setAvatarModalVisible(true)}
-              className="absolute w-full h-full flex justify-center items-center"
+              className="absolute mt-10 w-full h-full flex justify-center items-center"
             >
               <CameraIcon className=" w-10 h-10 mt-5 text-slate-200 bg-slate-900 p-2 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all" />
             </button>
@@ -133,7 +129,7 @@ const ProfileEditor = ({
             )}
             {!liveData.avatar && (
               <div className="flex justify-center items-center rounded-[50%] bg-gray-500 text-slate-100 w-[126px] h-[126px] border-white border-4">
-                <h1>JL</h1>
+                <UserIcon className="w-10 h-10 text-gray-100" />
               </div>
             )}
           </div>
@@ -196,11 +192,13 @@ const ProfileEditor = ({
         modalVisible={avatarModalVisible}
         setModalVisible={setAvatarModalVisible}
         handleSubmit={handleSubmit}
+        handleUpdateProfile={handleUpdateProfile}
       />
       <BannerModal
         modalVisible={bannerModalVisible}
         setModalVisible={setBannerModalVisible}
         handleSubmit={handleSubmit}
+        handleUpdateProfile={handleUpdateProfile}
       />
     </>
   );

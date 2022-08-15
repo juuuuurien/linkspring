@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const usernameExists = await User.exists({ username: username });
   const emailExists = await User.exists({ email: email });
 
-  if (!email || !username || !password) {
+  if (!email || !username) {
     res.status(500).send({ error: "Please enter all fields" });
   }
 

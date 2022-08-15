@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   await dbConnect();
 
   const user = await User.exists({ username: username });
-  if (!user) res.send({ error: "User does not exist" });
+  if (!user) res.send({ status: 404, error: "User does not exist" });
 
   if (user) {
     // Any object returned will be saved in `user` property of the JWT

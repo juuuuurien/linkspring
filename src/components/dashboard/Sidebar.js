@@ -34,18 +34,29 @@ const Sidebar = ({ initialData }) => {
               </div>
             </a>
           </Link>
-          <Link href="/dashboard">
-            <a>
-              <div className="flex justify-center items-center rounded-[100%] overflow-hidden h-[48px] w-[48px] bg-gray-600">
-                <Image
-                  alt="avatar"
-                  src={initialData?.profile.avatar}
-                  height={48}
-                  width={48}
-                />
-              </div>
-            </a>
-          </Link>
+          {!initialData?.profile?.avatar && (
+            <Link href="/dashboard">
+              <a>
+                <div className="flex justify-center items-center rounded-[100%] overflow-hidden h-[48px] w-[48px] bg-gray-600">
+                  <h1>JL</h1>
+                </div>
+              </a>
+            </Link>
+          )}
+          {initialData?.profile?.avatar && (
+            <Link href="/dashboard">
+              <a>
+                <div className="flex justify-center items-center rounded-[100%] overflow-hidden h-[48px] w-[48px] bg-gray-600">
+                  <Image
+                    alt="avatar"
+                    src={initialData?.profile.avatar}
+                    height={48}
+                    width={48}
+                  />
+                </div>
+              </a>
+            </Link>
+          )}
         </>
       )}
     </section>

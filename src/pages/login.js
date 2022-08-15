@@ -7,6 +7,8 @@ import React, { useState } from "react";
 import { authOptions } from "./api/auth/[...nextauth]";
 import Image from "next/image";
 
+import { FcGoogle } from "react-icons/fc";
+
 const Login = ({ session }) => {
   const url = `${process.env.NEXT_PUBLIC_URL}/dashboard`;
   const [error, setError] = useState(null);
@@ -41,12 +43,25 @@ const Login = ({ session }) => {
       callbackUrl: url,
     });
 
-    if (res.error) {
+    if (res.status === 401) {
       setLoading(false);
       console.log(res);
-      setError(res.error);
+      setError("Invalid username or password");
       return;
     }
+
+    router.push("/dashboard");
+  };
+
+  const handleLoginWithGoogle = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    // returns a promise since redirect is custom handled
+    await signIn("google", {
+      callbackUrl: url,
+    });
 
     router.push("/dashboard");
   };
@@ -55,7 +70,7 @@ const Login = ({ session }) => {
     <section className="flex flex-col h-screen w-screen p-6 bg-slate-100">
       <div className="flex justify-center items-center md:block md:p-4">
         <button className="flex justify-center items-center md:mx-5  lg:w-[180px] max-w-[180px]">
-          <Link href="/dashboard">
+          <Link href="/">
             <Image
               src={"/assets/linkspring_brand.svg"}
               height={220}
@@ -113,12 +128,19 @@ const Login = ({ session }) => {
             <Checkbox id="remember" />
             <Label htmlFor="remember">Remember me</Label>
           </div> */}
+
           <button
             type="submit"
             className="bg-[#3395FF] text-white rounded-[10000px] p-3"
-            // onClick={handleLogin}
           >
-            {loading ? <Spinner /> : "Log In"}
+            {loading ? <Spinner /> : "Log in"}
+          </button>
+          <button
+            className="relative flex items-center justify-center bg-white text-gray-900 rounded-[10000px] p-3"
+            onClick={handleLoginWithGoogle}
+          >
+            <FcGoogle className="absolute left-6 self-start h-6 w-6" />
+            {loading ? <Spinner /> : "Log in with Google"}
           </button>
         </form>
         <span className="text-red-700">{error ? `${error}` : null}</span>

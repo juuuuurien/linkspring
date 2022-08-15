@@ -127,7 +127,7 @@ const Signup = () => {
             disabled={
               username.length < 1 || email.length < 1 || password.length < 1
             }
-            className="bg-purple-600 text-white rounded-[10000px] p-3 disabled:bg-slate-200 disabled:text-slate-400"
+            className="bg-[#3395FF] text-white rounded-[10000px] p-3 disabled:bg-slate-200 disabled:text-slate-400"
           >
             {isLoading ? <Spinner /> : "Sign Up With Email"}
           </button>
