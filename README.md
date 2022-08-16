@@ -17,10 +17,12 @@
   - [ ] Logout popover
 - [ ] General animations
 - [ ] Tab animations
+- [ ] Tab images
 - [ ] More theme choices
+  - [ ] Theme feature that changes into a grid rather than list?
 
 ### Back
 
-- [ ] Update image upload flow to delete the old picture after successful image upload to free cloudinary space
-- [ ] Refactor color picker to update on popper close and not while choosing. (It hits endpoint on EACH drag, e- w)
+- [x] Update image upload flow to delete the old picture after successful image upload to free cloudinary space
+- [?] Refactor color picker to update on popper close and not while choosing. (It hits endpoint on EACH drag, e- w)
 - [ ] Mini analytics feature?

@@ -3,7 +3,9 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+import PlausibleProvider from "next-plausible";
+
+function Home() {
   const { data, status } = useSession();
 
   return (
@@ -32,6 +34,11 @@ export default function Home() {
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
+        <script
+          defer
+          data-domain="linkspring.me"
+          src="https://plausible.io/js/plausible.js"
+        ></script>
       </Head>
 
       <div className="flex flex-col h-full w-full ">
@@ -147,5 +154,13 @@ export default function Home() {
         </section>
       </div>
     </>
+  );
+}
+
+export default function HomeWithPlausible() {
+  return (
+    <PlausibleProvider domain="www.linkspring.me">
+      <Home />
+    </PlausibleProvider>
   );
 }
