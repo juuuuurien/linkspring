@@ -23,7 +23,7 @@ const NavItem = ({ title, href, selected }) => {
 };
 
 const MainNavbar = () => {
-  const navTitles = ["Links", "Appearance"];
+  const navTitles = ["Links", "Styles"];
 
   const router = useRouter();
 

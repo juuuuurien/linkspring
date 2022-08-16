@@ -30,6 +30,11 @@ body {
 }
 
 @layer components {
+  /* GLOBAL */
+  .button {
+    @apply focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 rounded-[10000px] px-6 py-3 shadow-md;
+  }
+
   .jumbo-text {
     @apply text-7xl  font-extrabold;
   }

@@ -3,75 +3,98 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
-import Brand from "../../public/assets/linkspring_brand.svg";
+import PlausibleProvider from "next-plausible";
 
-export default function Home() {
+function Home() {
   const { data, status } = useSession();
 
-  console.log(status);
-
   return (
-    <div>
+    <>
       <Head>
         <title>Linkspring</title>
-        <meta name="description" content="Your link resume" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content="Your brief summary of who you are." />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="theme-color" content="#ffffff" />
+        <script
+          defer
+          data-domain="linkspring.me"
+          src="https://plausible.io/js/plausible.js"
+        ></script>
       </Head>
 
       <div className="flex flex-col h-full w-full ">
         {/* navbar */}
-        <div className="flex flex-row px-5  justify-between items-center w-full bg-gray-100 p-2">
-          <div className="flex flex-row items-center gap-10 ">
-            <button className="mx-5  lg:w-[200px] w-[140px]">
-              <Link href="/dashboard">
-                <Image
-                  src={Brand}
-                  height={36}
-                  width={164}
-                  layout="responsive"
-                  alt="Logo"
-                />
-              </Link>
-            </button>
-            {/* <h1 className="text-gray-400 font-semibold text-lg whitespace-nowrap lg:text-2xl hidden sm:block">
+        <div className="fixed flex flex-row px-5 justify-between items-center w-full bg-gray-100 p-2 z-10">
+          <button
+            className="flex justify-center items-center mr-5 md:mx-5  lg:w-[140px] max-w-[140px] hover:translate-x-[-5px] hover:translate-y-[-5px] transition-all
+              ease-linear duration-75"
+          >
+            <Link href="/dashboard">
+              <Image
+                src={"/assets/linkspring_brand.svg"}
+                height={220}
+                width={666}
+                alt="Logo"
+              />
+            </Link>
+          </button>
+          {/* <h1 className="text-gray-400 font-semibold text-lg whitespace-nowrap lg:text-2xl hidden sm:block">
               Create, learn, share.
             </h1> */}
-          </div>
           {!(status === "loading") && !data && (
             <div className="flex flex-row gap-3">
               <Link href="/login">
                 <a>
-                  <div className="md:py-4 md:px-6 py-2 px-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold cursor-pointer">
+                  <button className="button md:py-4 md:px-6 py-2 px-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold cursor-pointer">
                     Log in
-                  </div>
+                  </button>
                 </a>
               </Link>
               <Link href="/signup">
                 <a>
-                  <div className="md:py-4 md:px-6 py-2 px-2 bg-gray-900 hover:bg-gray-600 rounded-[10000px] text-white font-semibold flex-nowrap">
+                  <button className="button md:py-4 md:px-6 py-2 px-2 bg-gray-900 hover:bg-gray-600 rounded-[10000px] text-white font-semibold flex-nowrap">
                     Sign Up
-                  </div>
+                  </button>
                 </a>
               </Link>
             </div>
           )}
           {!(status === "loading") && data && (
             <div className="flex flex-row gap-3">
-              <div
-                onClick={() =>
-                  signOut({ callbackUrl: process.env.NEXT_PUBLIC_URL })
-                }
-                className="md:py-4 md:px-6 py-2 px-2 whitespace-nowrap hover:bg-gray-200 rounded-lg font-semibold cursor-pointer"
-              >
-                Sign Out
-              </div>
               <Link href="/dashboard">
                 <a>
-                  <div className="md:py-4 md:px-6 py-2 px-2 bg-gray-900 hover:bg-gray-600 rounded-[10000px] text-white font-semibold flex-nowrap">
+                  <div className="md:py-4 md:px-6 py-2 px-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold cursor-pointer">
                     Dashboard
                   </div>
                 </a>
               </Link>
+              <button
+                onClick={() =>
+                  signOut({ callbackUrl: process.env.NEXT_PUBLIC_URL })
+                }
+                className="button md:py-4 md:px-6 py-2 px-2 bg-gray-900 hover:bg-gray-600 rounded-[10000px] text-white font-semibold flex-nowrap"
+              >
+                Sign Out
+              </button>
             </div>
           )}
         </div>
@@ -87,7 +110,7 @@ export default function Home() {
             </p>
           </section>
         </div> */}
-        <section className="relative h-fit max-h-[720px] min-h-[480px] w-full bg-slate-400 overflow-hidden shadow-xl">
+        <section className="relative h-screen min-h-[480px] w-full bg-slate-400 overflow-hidden shadow-xl">
           <video
             autoPlay
             loop
@@ -105,7 +128,7 @@ export default function Home() {
           <div className="absolute flex justify-start items-center h-full w-full bg-[#dde8f3cc]">
             <div className="md:hero-slanted-container flex justify-start items-center h-full w-full md:bg-slate-200">
               <div className="flex flex-col gap-5 md:max-w-[36%] mx-[10%] ">
-                <p className="xl:jumbo-text font-bold text-5xl md:text-5xl lg:6xl xl:text-7xl text-gray-800">
+                <p className="xl:jumbo-text font-bold text-5xl md:text-5xl lg:6xl text-gray-800">
                   All of who you are in{" "}
                   <span className="text-[#3395FF]">one simple link.</span>
                 </p>
@@ -119,17 +142,25 @@ export default function Home() {
         </section>
         <section className="h-96 w-full flex justify-center items-center ">
           <div className="flex flex-col md:flex-row justify-center text-center md:text-left gap-6 md:justify-between items-center w-full max-w-[80%] md:max-w-[45%] h-full p-10">
-            <h1 className="text-3xl md:text-4xl text-slate-900">
+            <h1 className="whitespace-nowrap text-3xl md:text-4xl text-slate-900">
               Easy, simple, and free.
             </h1>
             <Link href="/signup">
-              <a className="px-6 py-3 md:px-10 md:py-6 bg-gray-900 text-white rounded-[10000px] text-lg md:text-xl font-semibold">
+              <a className="px-6 py-3 md:px-10 md:py-6 whitespace-nowrap bg-gray-900 text-white rounded-[10000px] text-lg md:text-xl font-semibold">
                 Get Started
               </a>
             </Link>
           </div>
         </section>
       </div>
-    </div>
+    </>
+  );
+}
+
+export default function HomeWithPlausible() {
+  return (
+    <PlausibleProvider domain="www.linkspring.me">
+      <Home />
+    </PlausibleProvider>
   );
 }

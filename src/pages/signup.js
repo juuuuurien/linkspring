@@ -1,8 +1,12 @@
 import { TextInput, Spinner } from "flowbite-react";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
+
+import { FcGoogle } from "react-icons/fc";
 
 const Signup = () => {
   const url = `${process.env.NEXT_PUBLIC_URL}/dashboard`;
@@ -55,27 +59,45 @@ const Signup = () => {
     mutate({ username, email, password });
   };
 
+  const handleRegisterWithGoogle = async (e) => {
+    e.preventDefault();
+
+    // returns a promise since redirect is custom handled
+    await signIn("google", {
+      callbackUrl: url,
+    });
+
+    router.push("/dashboard");
+  };
+
   return (
-    <section className="flex flex-col  h-screen w-screen bg-slate-100">
-      <div className="p-20">
-        <h1>
-          <Link href="/">Linkspring</Link>
-        </h1>
+    <section className="flex flex-col h-screen w-screen p-6 gap-20 bg-slate-100">
+      <div className="flex justify-center items-center md:block p-4">
+        <button className="flex justify-center items-center md:mx-5  lg:w-[180px] max-w-[180px]">
+          <Link href="/dashboard">
+            <Image
+              src={"/assets/linkspring_brand.svg"}
+              height={220}
+              width={666}
+              alt="Logo"
+            />
+          </Link>
+        </button>
       </div>
-      <div className="flex flex-col gap-5 mx-auto w-full max-w-[800px]">
+      <div className="flex flex-col gap-5 justify-center items-center mx-auto w-full max-w-[640px] min-w-[30%] pb-10">
         <h1 className="text-5xl font-extrabold">Create an account for free</h1>
         <h2 className="font-normal text-gray-500">
           Free forever. No payment needed.
         </h2>
-        <form className="flex flex-col gap-4 my-5">
+        <form className="flex flex-col gap-4 my-5 w-full">
           <div
-            className={`block w-full border disabled:cursor-not-allowed disabled:opacity-50 px-2.5 bg-gray-50 text-gray-900 rounded-lg text-sm ${
+            className={`flex flex-row items-center whitespace-nowrap w-full border disabled:cursor-not-allowed disabled:opacity-50 pl-2.5 bg-gray-50 text-gray-900 rounded-lg text-sm ${
               usernameFocus
                 ? "border-blue-500 ring-blue-500 ring-1"
                 : " border-gray-300 "
             }`}
           >
-            <span className={`text-gray-500`}>linkspring.me/</span>
+            <div className={`text-gray-500`}>linkspring.me/</div>
             <input
               autofill={"true"}
               required
@@ -119,9 +141,16 @@ const Signup = () => {
             disabled={
               username.length < 1 || email.length < 1 || password.length < 1
             }
-            className="bg-purple-600 text-white rounded-[10000px] p-3 disabled:bg-slate-200 disabled:text-slate-400"
+            className="button bg-[#3395FF] text-white rounded-[10000px] p-3 disabled:bg-slate-200 disabled:text-slate-400 font-semibold"
           >
             {isLoading ? <Spinner /> : "Sign Up With Email"}
+          </button>
+          <button
+            className="button relative flex items-center font-semibold justify-center bg-white hover:bg-gray-100 text-gray-900 rounded-[10000px] p-3"
+            onClick={handleRegisterWithGoogle}
+          >
+            <FcGoogle className="absolute left-6 self-start h-6 w-6" />
+            {"Sign up with Google"}
           </button>
           <span className="text-red-700">{isError ? `${error}` : null}</span>
           <span className="text-gray-500">

@@ -12,6 +12,9 @@ const banner_storage = new CloudinaryStorage({
   params: {
     folder: "banners",
     allowedFormats: ["jpg", "png"],
+    public_id: (req, file) => {
+      return file.originalname; //fileName is the email@email.com-banner --> this is set from client at BannerModal.js
+    },
   },
 });
 
@@ -20,6 +23,9 @@ const avatar_storage = new CloudinaryStorage({
   params: {
     folder: "avatars",
     allowedFormats: ["jpg", "png"],
+    public_id: (req, file) => {
+      return file.originalname; //fileName is the email@email.com-avatar --> this is set from client at AvatarModal.js
+    },
   },
 });
 

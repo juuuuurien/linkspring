@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import ProfileEditor from "../../components/dashboard/appearance/ProfileEditor";
 
 // import DashboardLayout from "../../components/layouts/DashboardLayout";
@@ -16,13 +16,49 @@ import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ChromePicker } from "react-color";
 import { usePopper } from "react-popper";
-import { Popover } from "@headlessui/react";
+import { Popover, Transition, Dialog } from "@headlessui/react";
 
+import { XIcon } from "@heroicons/react/solid";
+import Head from "next/head";
 
 const Appearance = ({ _session }) => {
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const themes = [
+    {
+      backgroundColor: "#111111",
+      profileTextColor: "#eeeeee",
+      tabColor: "#53d9a4",
+      tabTextColor: "#ffffff",
+    },
+    {
+      backgroundColor:
+        "#000000 linear-gradient(45deg, #f7bb97, #dd5e89, #f7bb97, #dd5e89) repeat scroll 0% 0% / 400% 400%",
+      profileTextColor: "#eeeeee",
+      tabColor: "#ffffff",
+      tabTextColor: "#111111",
+    },
+    {
+      backgroundColor:
+        "#000000 linear-gradient(45deg, #ee7752,#e73c7e, #23a6d5, #23d5ab) repeat scroll 0% 0% / 400% 400%",
+      profileTextColor: "#eeeeee",
+      tabColor: "#11111199",
+      tabTextColor: "#ffffff",
+    },
+    {
+      backgroundColor:
+        "#000000 linear-gradient(45deg, #4ac2f4,#1e0f46, #132da8, #ec5696) repeat scroll 0% 0% / 400% 400%",
+      profileTextColor: "#ec5696",
+      tabColor: "#4ac2f422",
+      tabTextColor: "#ffffff",
+    },
+    {
+      backgroundColor: "#23a6d5",
+      profileTextColor: "#eeeeee",
+      tabColor: "#2a2a2a",
+      tabTextColor: "#ffffff",
+    },
     {
       backgroundColor: "#E11D48",
       profileTextColor: "#ffffff",
@@ -30,22 +66,22 @@ const Appearance = ({ _session }) => {
       tabTextColor: "#ffffff",
     },
     {
-      backgroundColor: "#4338CA",
-      profileTextColor: "#ffffff",
-      tabColor: "#475569",
-      tabTextColor: "#ffffff",
+      backgroundColor: "#01a1ff",
+      profileTextColor: "#ffdf5d",
+      tabColor: "#ffffff",
+      tabTextColor: "#2398db",
     },
     {
       backgroundColor: "#ECFCCB",
-      profileTextColor: "#ffffff",
+      profileTextColor: "#EA580C",
       tabColor: "#10B981",
-      tabTextColor: "#EA580C",
+      tabTextColor: "#ffffff",
     },
     {
-      backgroundColor: "#5B21B6",
-      profileTextColor: "#ffffff",
-      tabColor: "#9D174D",
-      tabTextColor: "#F0ABFC",
+      backgroundColor: "#ffeeee",
+      profileTextColor: "#9D174D",
+      tabColor: "#fc3360",
+      tabTextColor: "#ffffff",
     },
     {
       backgroundColor: "#0F172A",
@@ -55,14 +91,13 @@ const Appearance = ({ _session }) => {
     },
     {
       backgroundColor: "#F1F5F9",
-      profileTextColor: "#ffffff",
+      profileTextColor: "#475569",
       tabColor: "#475569",
       tabTextColor: "#ffffff",
     },
   ];
 
   const queryClient = useQueryClient();
-
   const { data: userdata, isLoading: isUserLoading } = useQuery(
     ["userdata"],
     async () => {
@@ -209,7 +244,7 @@ const Appearance = ({ _session }) => {
   const [bgColorPicker, setBgColorPicker] = useState(
     userdata?.backgroundColor || themeData?.backgroundColor
   );
-  const [profileTextColorPicker, setProfileTextColor] = useState(
+  const [profileTextColorPicker, setProfileTextColorPicker] = useState(
     userdata?.profileTextColor || themeData?.profileTextColor
   );
   const [tabColorPicker, setTabColorPicker] = useState(
@@ -221,9 +256,12 @@ const Appearance = ({ _session }) => {
 
   useEffect(() => {
     setBgColorPicker(userdata?.backgroundColor || themeData?.backgroundColor);
+    setProfileTextColorPicker(
+      userdata?.profileTextColor || themeData?.profileTextColor
+    );
     setTabColorPicker(userdata?.tabColor || themeData?.tabColor);
     setTabTextColorPicker(userdata?.tabTextColor || themeData.tabTextColor);
-  }, [userdata]);
+  }, [userdata, themeData]);
 
   const handleChangeBackroundColor = (updateObj) => {
     // obj is either { backgroundColor: color.hex} or { profileTextColor: color.hex}
@@ -251,8 +289,34 @@ const Appearance = ({ _session }) => {
 
   return (
     userdata && (
-      <div className="main-wrapper flex flex-col md:flex-row h-screen w-screen overflow-y-auto">
-        <Sidebar />
+      <>
+        <Head>
+          <title>Linkspring - Styling</title>
+          <meta name="description" content="Linkspring dashboard" />
+          <link rel="shortcut icon" href="/favicon.ico" />
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/favicon-32x32.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/favicon-16x16.png"
+          />
+          <link rel="manifest" href="/site.webmanifest" />
+          <meta name="msapplication-TileColor" content="#da532c" />
+          <meta name="theme-color" content="#ffffff" />
+        </Head>
+        <div className="main-wrapper flex flex-col md:flex-row h-screen w-screen overflow-y-auto">
+          <Sidebar initialData={userdata} />
           <section className="flex flex-col items-center w-full h-full bg-gray-100 overflow-y-auto">
             <MainNavbar />
             <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px]">
@@ -273,7 +337,7 @@ const Appearance = ({ _session }) => {
                         <h2 className="text-xl font-semibold mb-6">Theme</h2>
                         <div className=" flex flex-col bg-white p-5 gap-4 rounded-xl">
                           <h2 className="text-md font-semibold">
-                            Background Color
+                            Background Color & Title Color
                           </h2>
                           <div className="flex gap-6">
                             <Popover className="relative">
@@ -310,21 +374,21 @@ const Appearance = ({ _session }) => {
                                 <ChromePicker
                                   color={profileTextColorPicker}
                                   onChange={(color, event) =>
-                                    setProfileTextColor(color.hex)
+                                    setProfileTextColorPicker(color.hex)
                                   }
                                   onChangeComplete={(color, event) => {
                                     const updateObj = {
                                       profileTextColor: color.hex,
                                     };
                                     handleChangeBackroundColor(updateObj);
-                                    setProfileTextColor(color.hex);
+                                    setProfileTextColorPicker(color.hex);
                                   }}
                                 />
                               </Popover.Panel>
                             </Popover>
                           </div>
                           <h2 className="text-md font-semibold">
-                            Tab <span className="text-sm">&</span> Text Color
+                            Tab & Text Color
                           </h2>
                           <div className="flex gap-6">
                             <Popover className="relative">
@@ -383,27 +447,27 @@ const Appearance = ({ _session }) => {
                                 onClick={() => handleUpdateTheme.mutate(theme)}
                                 key={index}
                                 style={{
-                                  backgroundColor: theme.backgroundColor,
+                                  background: theme.backgroundColor,
                                 }}
-                                className={`flex gap-2 pb-6 justify-center min-h-[200px] flex-shrink-0 grow min-w-[80px] rounded-lg flex-col items-center focus:outline-none self-stretch ${theme.tabTextColor} border-[1px] border-gray-300 hover:scale-105 transition-all duration-200 ease-[cubic-bezier(1,-0.32,0,1.59)]`}
+                                className={`flex gap-2 pb-6 justify-center min-h-[200px] flex-shrink-0 grow min-w-[80px] rounded-lg flex-col items-center focus:outline-none self-stretch ${theme.tabTextColor} border-[1px] border-gray-300 hover:scale-105 transition-all duration-200 ease-[cubic-bezier(1,-0.32,0,1.59)] animate-bg-gradient`}
                               >
                                 <span
                                   style={{
                                     backgroundColor: theme.tabColor,
                                   }}
-                                  className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
+                                  className={`h-5 w-[80%] rounded-sm text-xs font-bold`}
                                 />
                                 <span
                                   style={{
                                     backgroundColor: theme.tabColor,
                                   }}
-                                  className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
+                                  className={`h-5 w-[80%] rounded-sm text-xs font-bold`}
                                 />
                                 <span
                                   style={{
                                     backgroundColor: theme.tabColor,
                                   }}
-                                  className={`h-4 w-[80%] rounded-lg text-xs font-bold`}
+                                  className={`h-5 w-[80%] rounded-sm text-xs font-bold`}
                                 />
                               </button>
                             ))}
@@ -416,12 +480,68 @@ const Appearance = ({ _session }) => {
               </section>
             </div>
           </section>
-  
-        <RightPreviewSection
-          initialData={userdata}
-          liveData={{ profile: profileData, theme: themeData }}
-        />
-      </div>
+          <div className="hidden md:flex flex-col items-center max-w-[33%] w-full h-auto bg-gray-100 border border-gray-200 z-10 ">
+            <RightPreviewSection
+              initialData={userdata}
+              liveData={{ profile: profileData, theme: themeData }}
+            />
+          </div>
+          <Transition appear show={previewOpen} as={Fragment}>
+            <Dialog
+              as="div"
+              className="relative z-10"
+              onClose={() => setPreviewOpen(false)}
+            >
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <div className="fixed inset-0 bg-black bg-opacity-25" />
+              </Transition.Child>
+
+              <div className="fixed inset-0 overflow-y-auto">
+                <div className="flex min-h-full items-center justify-center p-4 text-center">
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0 scale-95"
+                    enterTo="opacity-100 scale-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-95"
+                  >
+                    <Dialog.Panel className="flex flex-col justify-center w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all">
+                      <button
+                        onClick={() => setPreviewOpen(false)}
+                        className="self-end w-10 h-10 bg-gray-200 text-slate-600 p-2 hover:scale-[1.1] text-lg font-medium leading-6 rounded-[100%]"
+                      >
+                        <XIcon />
+                      </button>
+                      <div>
+                        <RightPreviewSection
+                          initialData={userdata}
+                          liveData={{ profile: profileData, theme: themeData }}
+                        />
+                      </div>
+                    </Dialog.Panel>
+                  </Transition.Child>
+                </div>
+              </div>
+            </Dialog>
+          </Transition>
+          <button
+            onClick={() => setPreviewOpen(true)}
+            className="md:hidden fixed self-center bottom-10 rounded-[10000px] text-slate-900 font-bold text-xl z-10 bg-indigo-300 px-4 py-2"
+          >
+            Preview
+          </button>
+        </div>
+      </>
     )
   );
 };
