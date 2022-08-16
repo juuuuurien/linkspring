@@ -10,10 +10,11 @@
 - [x] Update profile theme & include banner
 - [ ] General responsive mobile UI
   - [x] /username route
-  - [ ] dashboard
-  - [ ] landing page
+  - [x] dashboard
+  - [x] landing page
 - [ ] Sidebar functionality
-- [ ] Logout from sidebar lol
+  - [x] Show user avatar
+  - [ ] Logout popover
 - [ ] General animations
 - [ ] Tab animations
 - [ ] More theme choices

@@ -34,11 +34,15 @@ export const authOptions = {
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
         const { username, password } = credentials;
+        const stringifiedBody = JSON.stringify({
+          // did it this way because body wasn't being stringified in the fetch call
+          username: username,
+          password: password,
+        });
         // make db call here
         const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
           method: "POST",
-          body: JSON.stringify({ username, password }),
-          headers: { "Content-Type": "application/json" },
+          body: stringifiedBody,
         });
 
         const user = await res.json();
@@ -64,7 +68,9 @@ export const authOptions = {
         const res = await (
           await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
             method: "POST",
-            body: JSON.stringify({ username: user.email.slice(0, -10) }),
+            body: JSON.stringify({
+              email: user.email,
+            }),
           })
         ).json();
 

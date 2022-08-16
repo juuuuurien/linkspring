@@ -3,12 +3,19 @@ import React, { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import AvatarEditor from "react-avatar-editor";
 import { dataURLtoBlob } from "../../../util/common";
+import { getSession } from "next-auth/react";
 
 const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
   const [img, setImg] = useState(null);
   const [scale, setScale] = useState(1);
 
   const editorRef = useRef(null);
+
+  const getFilename = async () => {
+    const session = await getSession();
+    const fileName = `${session.user.email}-banner.png`;
+    return fileName;
+  };
 
   const handleImageChange = (e) => {
     let reader = new FileReader();
@@ -22,8 +29,8 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
     // parse dataURL into blob
     const blob = dataURLtoBlob(dataURL);
     const formData = new FormData();
-
-    formData.append("banner_image", blob, "banner.png");
+    const fileName = await getFilename();
+    formData.append("banner_image", blob, fileName); // emails should always be unique, so I append the email to the filename
 
     // hit api to upload blob
     console.log("uploading...");
