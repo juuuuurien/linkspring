@@ -59,7 +59,7 @@ const Login = ({ session }) => {
     setError(null);
 
     // returns a promise since redirect is custom handled
-    await signIn("google");
+    await signIn();
 
     router.push("/dashboard");
   };
