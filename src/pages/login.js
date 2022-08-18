@@ -45,7 +45,6 @@ const Login = ({ session }) => {
 
     if (res.status === 401) {
       setLoading(false);
-      console.log(res);
       setError("Invalid username or password");
       return;
     }
@@ -58,9 +57,7 @@ const Login = ({ session }) => {
     setLoading(true);
     setError(null);
 
-    // returns a promise since redirect is custom handled
     await signIn("google");
-
 
     router.push("/dashboard");
   };
