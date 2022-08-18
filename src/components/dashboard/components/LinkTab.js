@@ -66,17 +66,15 @@ const BottomBar = ({ isOpen, setIsOpen, handleDeleteLink, _id }) => {
 const LinkTab = ({ _id, handleDeleteLink, handleUpdateLink, url, title }) => {
   const handleSubmit = (formObj) => {
     const updateObj = { url, title };
-
     updateObj.url = formObj.url === "" ? "" : formObj.url || url; // if url is empty, update as empty string, otherwise it will just return the old title
     updateObj.title = formObj.title === "" ? "" : formObj.title || title;
-
     handleUpdateLink.mutate({ _id, updateObj });
   };
 
   return (
     <>
       <div
-        className={`flex flex-col w-full h-auto bg-white rounded-[33px] py-4 gap-3 justify-between transition-all ease-in-out duration-200 `}
+        className={`flex flex-col w-full h-auto bg-white rounded-[33px] py-4 gap-3 justify-between transition-all ease-in-out duration-200 shadow-md`}
       >
         <div className="flex flex-col py-1 px-6">
           <TitleInput
