@@ -15,10 +15,10 @@ export const authOptions = {
       authorization: {
         params: {
           prompt: "consent",
-          access_type: "online",
-          response_type: "code"
-        }
-      }
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
