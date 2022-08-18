@@ -42,7 +42,7 @@ const MainNavbar = () => {
               href={
                 title === "Links"
                   ? "/dashboard"
-                  : `dashboard/${title.toLowerCase()}`
+                  : `/dashboard/${title.toLowerCase()}`
               }
             />
           ))}
