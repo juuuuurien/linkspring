@@ -61,6 +61,7 @@ const Login = ({ session }) => {
     // returns a promise since redirect is custom handled
     await signIn("google");
 
+
     router.push("/dashboard");
   };
 
