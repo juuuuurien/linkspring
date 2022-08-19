@@ -45,7 +45,7 @@ const RightPreview = ({ initialData, liveData }) => {
   return (
     initialData && (
       <>
-        <div className="hidden md:flex flex-row gap-2 w-full p-3 bg-white">
+        <div className="hidden md:flex flex-row gap-2 w-full p-3">
           <h3 className="text-sm">My Linkspring:</h3>
           <span className="text-sm visited:text-blue-600">
             <Link
@@ -87,7 +87,7 @@ const RightPreview = ({ initialData, liveData }) => {
               style={{ color: themeData?.profileTextColor }}
               className={`PORTFOLIO-WRAPPER flex flex-col items-start w-full mb-10`}
             >
-              <div className="flex justify-start w-full mt-[-104px] px-1">
+              <div className="flex justify-start w-full mt-[-104px] px-2 ">
                 {profileData?.avatar && (
                   <div className="left-2 rounded-[50%] bg-gray-500 text-slate-100 w-[102px] h-[102px] m-2 shadow-md">
                     <img
