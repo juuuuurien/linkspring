@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 import { UserIcon } from "@heroicons/react/solid";
+import { ShareIcon } from "@heroicons/react/outline";
 import Profile from "../profile/Profile";
 
 const PVLinkTab = ({ children, url, tabColor }) => {
@@ -57,7 +58,7 @@ const RightPreview = ({ initialData, liveData }) => {
             style={{
               background: themeData?.backgroundColor,
             }}
-            className={`PHONE-WRAPPER flex flex-col scale-[0.85] xl:scale-100 h-[685px] max-w-[340px] w-[340px] items-center border-[.9rem] border-slate-900 rounded-[2.5rem] transition-all ease animate-bg-gradient`}
+            className={`PHONE-WRAPPER flex flex-col scale-[0.85] xl:scale-100 h-[685px] max-w-[340px] w-[340px] items-center border-[.9rem] border-black rounded-[2.5rem] transition-all ease animate-bg-gradient`}
           >
             {/* <div className="flex flex-row w-full">
             <ShareIcon
@@ -65,7 +66,13 @@ const RightPreview = ({ initialData, liveData }) => {
               className="flex justify-center items-center h-8 w-8 self-end bg-slate-300 p-2 rounded-[100%] text-slate-800 hover:text-slate-400 cursor-pointer"
             />
           </div> */}
-            <div className="flex content-[''] bg-gray-500 w-full h-[25%] mb-4 rounded-t-3xl">
+            <div className="flex content-[''] bg-gray-500 w-full h-[22%] mb-4 rounded-t-3xl">
+              <button className="absolute top-2 right-2 flex self-end h-fit w-fit justify-center items-center p-2 rounded-[100%] hover:bg-[#ffffff22] transition-all">
+                <ShareIcon
+                  style={{ color: themeData?.profileTextColor }}
+                  className="w-4 h-4"
+                />
+              </button>
               {profileData.banner && (
                 <img
                   src={profileData.banner}
@@ -80,12 +87,7 @@ const RightPreview = ({ initialData, liveData }) => {
               style={{ color: themeData?.profileTextColor }}
               className={`PORTFOLIO-WRAPPER flex flex-col items-start w-full mb-10`}
             >
-              <div className="flex justify-end w-full rounded-md px-3 gap-2">
-                <div className="w-4 h-4 rounded-md bg-slate-200" />
-                <div className="w-4 h-4 rounded-md bg-slate-200" />
-                <div className="w-4 h-4 rounded-md bg-slate-200" />
-              </div>
-              <div className="flex w-full mt-[-104px] px-1">
+              <div className="flex justify-start w-full mt-[-104px] px-1">
                 {profileData?.avatar && (
                   <div className="left-2 rounded-[50%] bg-gray-500 text-slate-100 w-[102px] h-[102px] m-2 shadow-md">
                     <img
@@ -100,12 +102,14 @@ const RightPreview = ({ initialData, liveData }) => {
                   </div>
                 )}
               </div>
-              <div className="flex flex-col px-3 gap-1">
+              <div className="relative flex flex-col w-full px-3 gap-1">
                 <span className="font-bold text-xl">{profileData?.title}</span>
-                <span className="text-sm">{profileData?.bio}</span>
+                <span className="text-sm font-semibold">
+                  {profileData?.bio}
+                </span>
               </div>
             </div>
-            <div className="LINKS-WRAPPER flex flex-col w-[90%] gap-2">
+            <div className="LINKS-WRAPPER flex flex-col w-full gap-3 max-h-[55%] overflow-y-scroll no-scrollbar px-4">
               {linkData?.map((e) => {
                 if (!e.url || !e.title) return;
                 return (
