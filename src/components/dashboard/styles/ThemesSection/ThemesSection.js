@@ -18,6 +18,8 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
   const [tabTextColorPicker, setTabTextColorPicker] = useState(
     userdata?.tabTextColor || themeData.tabTextColor
   );
+  const [avatarLayout, setAvatarLayout] = useState("left");
+  const [tabLayout, setTabLayout] = useState("list");
 
   useEffect(() => {
     setBgColorPicker(userdata?.backgroundColor || themeData?.backgroundColor);
@@ -48,26 +50,44 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
     handleUpdateTheme.mutate(newTheme);
   };
 
+  const handleChangeAvatarLayout = (avatarLayoutVal) => {
+    setAvatarLayout(avatarLayoutVal);
+  };
+
+  const handleChangeTabLayout = (tabLayoutVal) => {
+    setTabLayout(tabLayoutVal);
+  };
+
   return (
     <div className=" flex flex-col bg-white p-5 gap-10 rounded-xl">
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Layout</h2>
         <div className="flex flex-row gap-4">
-          <button className="flex flex-col justify-center items-center w-fit  bg-sky-200 rounded-xl p-2">
+          <button
+            onClick={() => handleChangeAvatarLayout("left")}
+            className={`flex flex-col justify-center items-center w-fit  ${
+              avatarLayout === "left" ? "bg-sky-200" : null
+            } rounded-xl p-2`}
+          >
             <div className=" hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
               <span className="text-[0.8rem] text-gray-500">Avatar Left</span>
-              <div className="flex gap-2">
+              <div className="flex justify-center gap-2">
                 <div className="flex flex-col justify-start h-[6rem] w-[4.3rem] border-4 bg-gray-200 border-gray-400 rounded-2xl overflow-hidden">
                   <div className="w-full h-[28%] bg-gray-300"></div>
-                  <div className="bg-gray-400 h-[1.55rem] w-[1.55rem] rounded-[100%] mt-[-20%] mx-1"></div>
+                  <div className="self-start bg-gray-400 h-[1.55rem] w-[1.55rem] rounded-[100%] mt-[-20%] mx-1"></div>
                 </div>
               </div>
             </div>
           </button>
-          <button className="flex flex-col justify-center items-center w-fit border-4rounded-xl p-2">
+          <button
+            onClick={() => handleChangeAvatarLayout("center")}
+            className={`flex flex-col justify-center items-center w-fit  ${
+              avatarLayout === "center" ? "bg-sky-200" : null
+            } rounded-xl p-2`}
+          >
             <div className=" hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
               <span className="text-[0.8rem] text-gray-500">Avatar Center</span>
-              <div className="flex gap-2">
+              <div className="flex justify-center gap-2">
                 <div className="flex flex-col h-[6rem] w-[4.3rem] border-4 bg-gray-200 border-gray-400 rounded-2xl overflow-hidden">
                   <div className=" w-full h-[28%] bg-gray-300"></div>
                   <div className="self-center bg-gray-400 h-[1.55rem] w-[1.55rem] rounded-[100%] mt-[-20%] mx-1"></div>
@@ -75,9 +95,30 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
               </div>
             </div>
           </button>
+          <button
+            onClick={() => handleChangeAvatarLayout("right")}
+            className={`flex flex-col justify-center items-center w-fit  ${
+              avatarLayout === "right" ? "bg-sky-200" : null
+            } rounded-xl p-2`}
+          >
+            <div className=" hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
+              <span className="text-[0.8rem] text-gray-500">Avatar Right</span>
+              <div className="flex justify-center gap-2">
+                <div className="flex flex-col h-[6rem] w-[4.3rem] border-4 bg-gray-200 border-gray-400 rounded-2xl overflow-hidden">
+                  <div className=" w-full h-[28%] bg-gray-300"></div>
+                  <div className="self-end bg-gray-400 h-[1.55rem] w-[1.55rem] rounded-[100%] mt-[-20%] mx-1"></div>
+                </div>
+              </div>
+            </div>
+          </button>
         </div>
         <div className="flex flex-row gap-4">
-          <button className="flex flex-col justify-center items-center w-fit bg-sky-200 rounded-xl p-2">
+          <button
+            onClick={() => handleChangeTabLayout("list")}
+            className={`flex flex-col justify-center items-center w-fit  ${
+              tabLayout === "list" ? "bg-sky-200" : null
+            } rounded-xl p-2`}
+          >
             <div className="flex flex-col gap-2 hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
               <span className="text-[0.8rem] text-gray-500">Tab List</span>
               <div className="flex justify-center items-center w-[4.3rem] h-[6rem] gap-2">
@@ -89,7 +130,12 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
               </div>
             </div>
           </button>
-          <button className="flex flex-col justify-center items-center w-fit rounded-xl p-2">
+          <button
+            onClick={() => handleChangeTabLayout("grid")}
+            className={`flex flex-col justify-center items-center w-fit  ${
+              tabLayout === "grid" ? "bg-sky-200" : null
+            } rounded-xl p-2`}
+          >
             <div className="flex flex-col gap-2 hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
               <span className="text-[0.8rem] text-gray-500">Tab Grid</span>
               <div className="flex justify-center items-center w-[4.3rem] h-[6rem] gap-2">
@@ -104,6 +150,19 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
                   <div className="w-full h-full bg-gray-400" />
                   <div className="w-full h-full bg-gray-400" />
                 </div>
+              </div>
+            </div>
+          </button>
+          <button
+            onClick={() => handleChangeTabLayout("hybrid")}
+            className={`flex flex-col justify-center items-center w-fit  ${
+              tabLayout === "hybrid" ? "bg-sky-200" : null
+            } rounded-xl p-2`}
+          >
+            <div className="flex flex-col gap-2 hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
+              <span className="text-[0.8rem] text-gray-500">Hybrid</span>
+              <div className="flex justify-center items-center w-[4.3rem] h-[6rem] gap-2">
+                {/* make 3 squares on top then a normal list on bottom */}
               </div>
             </div>
           </button>

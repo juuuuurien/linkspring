@@ -58,7 +58,7 @@ const RightPreview = ({ initialData, liveData }) => {
             style={{
               background: themeData?.backgroundColor,
             }}
-            className={`PHONE-WRAPPER flex flex-col scale-[0.85] xl:scale-100 h-[685px] max-w-[340px] w-[340px] items-center border-[.9rem] border-black rounded-[2.5rem] transition-all ease animate-bg-gradient`}
+            className={`PHONE-WRAPPER flex flex-col scale-[0.85] xl:scale-100 h-[685px] max-w-[340px] w-[340px] items-center border-[.9rem] border-black rounded-[2.5rem] transition-all ease animate-bg-gradient overflow-hidden`}
           >
             {/* <div className="flex flex-row w-full">
             <ShareIcon
@@ -76,7 +76,7 @@ const RightPreview = ({ initialData, liveData }) => {
               {profileData.banner && (
                 <img
                   src={profileData.banner}
-                  className="object-cover w-full h-full rounded-t-3xl"
+                  className="object-cover w-full h-full"
                 ></img>
               )}
               {!profileData.banner && (
