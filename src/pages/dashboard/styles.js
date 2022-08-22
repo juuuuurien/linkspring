@@ -119,6 +119,7 @@ const Appearance = ({ _session }) => {
   };
 
   const updateTheme = async (updatedTheme) => {
+    // accepts a new theme object
     return await (
       await fetch(`/api/theme`, {
         method: "POST",
@@ -143,18 +144,12 @@ const Appearance = ({ _session }) => {
         await queryClient.cancelQueries(["theme"]);
         const previousValue = queryClient.getQueryData(["theme"]);
 
-        console.log(profileTextColor, "profileTextColor");
-
-        const { backgroundColor, profileTextColor, tabColor, tabTextColor } =
-          updatedTheme;
+        // extract data from passed object
 
         queryClient.setQueryData(["theme"], (old) => {
           return {
             ...old,
-            backgroundColor,
-            profileTextColor,
-            tabColor,
-            tabTextColor,
+            ...updatedTheme, // append with new updated theme object
           };
         });
 

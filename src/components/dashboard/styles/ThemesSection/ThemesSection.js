@@ -30,18 +30,8 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
     setTabTextColorPicker(userdata?.tabTextColor || themeData.tabTextColor);
   }, [userdata, themeData]);
 
-  const handleChangeBackroundColor = (updateObj) => {
-    // obj is either { backgroundColor: color.hex} or { profileTextColor: color.hex}
-
-    const newTheme = {
-      ...themeData,
-      ...updateObj,
-    };
-
-    handleUpdateTheme.mutate(newTheme);
-  };
-  const handleChangeTabColor = (updateObj) => {
-    // obj is either { tabColor: color.hex} or { tabTextColor: color.hex}
+  const mergeThemeAndUpdate = (updateObj) => {
+    // updateObject is going to be {updatedValue: color or position etc...}
     const newTheme = {
       ...themeData,
       ...updateObj,
@@ -122,10 +112,10 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
             <div className="flex flex-col gap-2 hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
               <span className="text-[0.8rem] text-gray-500">Tab List</span>
               <div className="flex justify-center items-center w-[4.3rem] h-[6rem] gap-2">
-                <div className="grid grid-rows-3 grid-cols-3 w-full aspect-square gap-2 px-2 py-3">
-                  <div className="bg-gray-400 w-full h-full row-span-1 col-span-3" />
-                  <div className="bg-gray-400 w-full h-full row-span-1 col-span-3" />
-                  <div className="bg-gray-400 w-full h-full row-span-1 col-span-3" />
+                <div className="flex flex-col w-[4.3rem] gap-2">
+                  <div className="w-full h-2 bg-gray-400" />
+                  <div className="w-full h-2 bg-gray-400" />
+                  <div className="w-full h-2 bg-gray-400" />
                 </div>
               </div>
             </div>
@@ -139,16 +129,16 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
             <div className="flex flex-col gap-2 hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
               <span className="text-[0.8rem] text-gray-500">Tab Grid</span>
               <div className="flex justify-center items-center w-[4.3rem] h-[6rem] gap-2">
-                <div className="grid grid-rows-3 grid-cols-3 w-full gap-2 px-2 py-3">
-                  <div className="w-full aspect-square bg-gray-400" />
-                  <div className="w-full aspect-square bg-gray-400" />
-                  <div className="w-full aspect-square bg-gray-400" />
-                  <div className="w-full aspect-square bg-gray-400" />
-                  <div className="w-full aspect-square bg-gray-400" />
-                  <div className="w-full aspect-square bg-gray-400" />
-                  <div className="w-full aspect-square bg-gray-400" />
-                  <div className="w-full aspect-square bg-gray-400" />
-                  <div className="w-full aspect-square bg-gray-400" />
+                <div className="grid grid-rows-3 grid-cols-3 w-[3rem] h-[3rem] gap-2">
+                  <div className="w-full h-full bg-gray-400" />
+                  <div className="w-full h-full bg-gray-400" />
+                  <div className="w-full h-full bg-gray-400" />
+                  <div className="w-full h-full bg-gray-400" />
+                  <div className="w-full h-full bg-gray-400" />
+                  <div className="w-full h-full bg-gray-400" />
+                  <div className="w-full h-full bg-gray-400" />
+                  <div className="w-full h-full bg-gray-400" />
+                  <div className="w-full h-full bg-gray-400" />
                 </div>
               </div>
             </div>
@@ -162,14 +152,7 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
             <div className="flex flex-col gap-2 hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
               <span className="text-[0.8rem] text-gray-500">Hybrid</span>
               <div className="flex justify-center items-center w-[4.3rem] h-[6rem] gap-2">
-                <div className="grid grid-rows-3 grid-cols-3 w-full gap-2.5 px-2 py-3">
-                  {/* make 3 squares on top then a normal list on bottom */}
-                  <div className="bg-gray-400 w-full aspect-square" />
-                  <div className="bg-gray-400 w-full aspect-square" />
-                  <div className="bg-gray-400 w-full aspect-square" />
-                  <div className="bg-gray-400 w-full h-full row-span-1 col-span-3" />
-                  <div className="bg-gray-400 w-full h-full row-span-1 col-span-3" />
-                </div>
+                {/* make 3 squares on top then a normal list on bottom */}
               </div>
             </div>
           </button>
@@ -191,7 +174,7 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
                   const updateObj = {
                     backgroundColor: color.hex,
                   };
-                  handleChangeBackroundColor(updateObj);
+                  mergeThemeAndUpdate(updateObj);
                   setBgColorPicker(color.hex);
                 }}
               />
@@ -212,7 +195,7 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
                   const updateObj = {
                     profileTextColor: color.hex,
                   };
-                  handleChangeBackroundColor(updateObj);
+                  mergeThemeAndUpdate(updateObj);
                   setProfileTextColorPicker(color.hex);
                 }}
               />
@@ -229,7 +212,7 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
                   const updateObj = {
                     tabColor: color.hex,
                   };
-                  handleChangeTabColor(updateObj);
+                  mergeThemeAndUpdate(updateObj);
                   setTabColorPicker(color.hex);
                 }}
               />
@@ -248,7 +231,7 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
                   const updateObj = {
                     tabTextColor: color.hex,
                   };
-                  handleChangeTabColor(updateObj);
+                  mergeThemeAndUpdate(updateObj);
                   setTabTextColorPicker(color.hex);
                 }}
               />

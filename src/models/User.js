@@ -7,7 +7,7 @@ const ThemeSchema = new mongoose.Schema({
   tabTextColor: { type: String, default: "text-white" },
   // backgroundType --> 'animation | static' etc...
   tabLayout: {type: String, default: 'list'},
-  headerLayout: {type: String, default: 'list'}
+  headerLayout: {type: String, default: 'left'}
 });
 
 const LinkSchema = new mongoose.Schema({
