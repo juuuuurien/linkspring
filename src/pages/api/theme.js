@@ -25,7 +25,7 @@ export default async function handler(req, res) {
       tabColor,
       tabTextColor,
       tabLayout,
-      avatarLayout,
+      headerLayout,
     } = updatedTheme;
 
     const user = await User.findOneAndUpdate(
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
           "theme.tabColor": tabColor,
           "theme.tabTextColor": tabTextColor,
           "theme.tabLayout": tabLayout,
-          "theme.avatarLayout": avatarLayout,
+          "theme.headerLayout": headerLayout,
         },
         new: true,
         upsert: true,

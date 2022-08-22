@@ -42,6 +42,20 @@ const RightPreview = ({ initialData, liveData }) => {
   const profileData = liveData.profile || initialData.profile;
   const themeData = liveData.theme || initialData.theme;
 
+  const getHeaderLayout = () => {
+    if (themeData.headerLayout === "left") return "justify-start";
+    if (themeData.headerLayout === "center") return "justify-center";
+
+    return "justify-end";
+  };
+
+  const getBioLayout = () => {
+    if (themeData.headerLayout === "left") return "text-start";
+    if (themeData.headerLayout === "center") return "text-center";
+
+    return "text-end";
+  };
+
   return (
     initialData && (
       <>
@@ -87,7 +101,9 @@ const RightPreview = ({ initialData, liveData }) => {
               style={{ color: themeData?.profileTextColor }}
               className={`PORTFOLIO-WRAPPER flex flex-col items-start w-full mb-10`}
             >
-              <div className="flex justify-start w-full mt-[-104px] px-2 ">
+              <div
+                className={`flex ${getHeaderLayout()} w-full mt-[-104px] px-2 `}
+              >
                 {profileData?.avatar && (
                   <div className="left-2 rounded-[50%] bg-gray-500 text-slate-100 w-[102px] h-[102px] m-2 shadow-md">
                     <img
@@ -102,7 +118,9 @@ const RightPreview = ({ initialData, liveData }) => {
                   </div>
                 )}
               </div>
-              <div className="relative flex flex-col w-full px-3 gap-1">
+              <div
+                className={`relative flex ${getBioLayout()} flex-col w-full px-3 gap-1`}
+              >
                 <span className="font-bold text-xl">{profileData?.title}</span>
                 <span className="text-sm font-semibold">
                   {profileData?.bio}
