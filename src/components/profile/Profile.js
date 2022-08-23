@@ -24,6 +24,13 @@ const Profile = ({ userdata }) => {
     return "text-end";
   };
 
+  const handleShare = async () =>
+    await navigator.share({
+      title: `${username}'s Linkspring`,
+      text: `Checkout all my links on Linkspring!`,
+      url: `https://linkspring.me/${username}`,
+    });
+
   return (
     <>
       <Head>
@@ -45,13 +52,7 @@ const Profile = ({ userdata }) => {
         >
           <div className="relative flex bg-gray-500 w-full h-[23%] ">
             <button
-              onClick={async () =>
-                await navigator.share({
-                  title: `${username}'s Linkspring`,
-                  text: `Checkout all my links on Linkspring!`,
-                  url: `https://linkspring.me/${username}`,
-                })
-              }
+              onClick={handleShare}
               className="absolute flex justify-center items-center top-2 right-2 w-8 h-8 bg-black p-1 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all z-[100]"
             >
               <ShareIcon className="text-slate-200" />
