@@ -56,6 +56,12 @@ body {
     @apply flex bg-gray-800 rounded-xl justify-center items-center text-center text-white text-sm font-semibold w-full py-[1.33rem];
   }
 
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
   iframe {
     -moz-transform: scale(0.78, 0.78);
     -webkit-transform: scale(0.78, 0.78);
@@ -72,4 +78,15 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }

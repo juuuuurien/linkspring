@@ -2,7 +2,10 @@ import Link from "next/link";
 import React from "react";
 
 import { UserIcon } from "@heroicons/react/solid";
+import { ShareIcon } from "@heroicons/react/outline";
 import Profile from "../profile/Profile";
+import TabList from "../PreviewSection/TabList";
+import TabGrid from "../PreviewSection/TabGrid";
 
 const PVLinkTab = ({ children, url, tabColor }) => {
   return (
@@ -41,10 +44,24 @@ const RightPreview = ({ initialData, liveData }) => {
   const profileData = liveData.profile || initialData.profile;
   const themeData = liveData.theme || initialData.theme;
 
+  const getHeaderLayout = () => {
+    if (themeData.headerLayout === "left") return "justify-start";
+    if (themeData.headerLayout === "center") return "justify-center";
+
+    return "justify-end";
+  };
+
+  const getBioLayout = () => {
+    if (themeData.headerLayout === "left") return "text-start";
+    if (themeData.headerLayout === "center") return "text-center";
+
+    return "text-end";
+  };
+
   return (
     initialData && (
       <>
-        <div className="hidden md:flex flex-row gap-2 w-full p-3 bg-white">
+        <div className="hidden md:flex flex-row gap-2 w-full p-3">
           <h3 className="text-sm">My Linkspring:</h3>
           <span className="text-sm visited:text-blue-600">
             <Link
@@ -57,7 +74,7 @@ const RightPreview = ({ initialData, liveData }) => {
             style={{
               background: themeData?.backgroundColor,
             }}
-            className={`PHONE-WRAPPER flex flex-col scale-[0.85] xl:scale-100 h-[685px] max-w-[340px] w-[340px] items-center border-[.9rem] border-slate-900 rounded-[2.5rem] transition-all ease animate-bg-gradient`}
+            className={`PHONE-WRAPPER flex flex-col scale-[0.85] xl:scale-100 h-[685px] max-w-[340px] w-[340px] items-center border-[.9rem] border-black rounded-[2.5rem] transition-all ease animate-bg-gradient overflow-hidden`}
           >
             {/* <div className="flex flex-row w-full">
             <ShareIcon
@@ -65,11 +82,17 @@ const RightPreview = ({ initialData, liveData }) => {
               className="flex justify-center items-center h-8 w-8 self-end bg-slate-300 p-2 rounded-[100%] text-slate-800 hover:text-slate-400 cursor-pointer"
             />
           </div> */}
-            <div className="flex content-[''] bg-gray-500 w-full h-[25%] mb-4 rounded-t-3xl">
+            <div className="flex content-[''] bg-gray-500 w-full h-[22%] mb-4 rounded-t-3xl">
+              <button className="absolute top-2 right-2 flex self-end h-fit w-fit justify-center items-center p-2 rounded-[100%] hover:bg-[#ffffff22] transition-all">
+                <ShareIcon
+                  style={{ color: themeData?.profileTextColor }}
+                  className="w-4 h-4"
+                />
+              </button>
               {profileData.banner && (
                 <img
                   src={profileData.banner}
-                  className="object-cover w-full h-full rounded-t-3xl"
+                  className="object-cover w-full h-full"
                 ></img>
               )}
               {!profileData.banner && (
@@ -80,12 +103,9 @@ const RightPreview = ({ initialData, liveData }) => {
               style={{ color: themeData?.profileTextColor }}
               className={`PORTFOLIO-WRAPPER flex flex-col items-start w-full mb-10`}
             >
-              <div className="flex justify-end w-full rounded-md px-3 gap-2">
-                <div className="w-4 h-4 rounded-md bg-slate-200" />
-                <div className="w-4 h-4 rounded-md bg-slate-200" />
-                <div className="w-4 h-4 rounded-md bg-slate-200" />
-              </div>
-              <div className="flex w-full mt-[-104px] px-1">
+              <div
+                className={`flex ${getHeaderLayout()} w-full mt-[-104px] px-2 `}
+              >
                 {profileData?.avatar && (
                   <div className="left-2 rounded-[50%] bg-gray-500 text-slate-100 w-[102px] h-[102px] m-2 shadow-md">
                     <img
@@ -95,32 +115,25 @@ const RightPreview = ({ initialData, liveData }) => {
                   </div>
                 )}
                 {!profileData?.avatar && (
-                  <div className="flex justify-center items-center left-2 rounded-[50%] bg-gray-400 text-slate-100 w-[96px] h-[96px] m-2 shadow-md">
+                  <div className="flex justify-center items-center left-2 rounded-[50%] bg-gray-400 text-slate-100 w-[102px] h-[102px] m-2 shadow-md">
                     <UserIcon className="w-10 h-10 text-gray-100" />
                   </div>
                 )}
               </div>
-              <div className="flex flex-col px-3 gap-1">
+              <div
+                className={`relative flex ${getBioLayout()} flex-col w-full px-3 gap-1`}
+              >
                 <span className="font-bold text-xl">{profileData?.title}</span>
-                <span className="text-sm">{profileData?.bio}</span>
+                <span className="text-sm font-semibold">
+                  {profileData?.bio}
+                </span>
               </div>
             </div>
-            <div className="LINKS-WRAPPER flex flex-col w-[90%] gap-2">
-              {linkData?.map((e) => {
-                if (!e.url || !e.title) return;
-                return (
-                  <PVLinkTab
-                    tabColor={themeData?.tabColor}
-                    url={e.url}
-                    key={e.title.concat(e.url)}
-                  >
-                    <span style={{ color: themeData.tabTextColor }}>
-                      {e.title}
-                    </span>
-                  </PVLinkTab>
-                );
-              })}
-            </div>
+            {themeData.tabLayout === "grid" ? (
+              <TabGrid linkData={linkData} themeData={themeData} />
+            ) : (
+              <TabList linkData={linkData} themeData={themeData} />
+            )}
           </div>
         </div>
       </>
