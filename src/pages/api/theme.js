@@ -28,6 +28,15 @@ export default async function handler(req, res) {
       headerLayout,
     } = updatedTheme;
 
+    console.table({
+      backgroundColor,
+      profileTextColor,
+      tabColor,
+      tabTextColor,
+      tabLayout,
+      headerLayout,
+    });
+
     const user = await User.findOneAndUpdate(
       {
         email: _email,

@@ -104,9 +104,9 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
         </div>
         <div className="flex flex-row gap-4">
           <button
-            onClick={() => handleChangeTabLayout("list")}
+            onClick={() => mergeThemeAndUpdate({ tabLayout: "list" })}
             className={`flex flex-col justify-center items-center w-fit  ${
-              tabLayout === "list" ? "bg-sky-200" : null
+              themeData?.tabLayout === "list" ? "bg-sky-200" : null
             } rounded-xl p-2`}
           >
             <div className="flex flex-col gap-2 hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
@@ -123,9 +123,9 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
             </div>
           </button>
           <button
-            onClick={() => handleChangeTabLayout("grid")}
+            onClick={() => mergeThemeAndUpdate({ tabLayout: "grid" })}
             className={`flex flex-col justify-center items-center w-fit  ${
-              tabLayout === "grid" ? "bg-sky-200" : null
+              themeData?.tabLayout === "grid" ? "bg-sky-200" : null
             } rounded-xl p-2`}
           >
             <div className="flex flex-col gap-2 hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
@@ -141,26 +141,6 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
                   <div className="w-full aspect-square bg-gray-400" />
                   <div className="w-full aspect-square bg-gray-400" />
                   <div className="w-full aspect-square bg-gray-400" />
-                </div>
-              </div>
-            </div>
-          </button>
-          <button
-            onClick={() => handleChangeTabLayout("hybrid")}
-            className={`flex flex-col justify-center items-center w-fit  ${
-              tabLayout === "hybrid" ? "bg-sky-200" : null
-            } rounded-xl p-2`}
-          >
-            <div className="flex flex-col gap-2 hover:scale-[1.1] transition-all hover:ease-[cubic-bezier(.11,-0.85,.75,1.83)]">
-              <span className="text-[0.8rem] text-gray-500">Hybrid</span>
-              <div className="flex justify-center items-center w-[4.3rem] h-[6rem] gap-2">
-                <div className="grid grid-rows-3 grid-cols-3 w-full gap-2.5 px-2 py-3">
-                  {/* make 3 squares on top then a normal list on bottom */}
-                  <div className="bg-gray-400 w-full aspect-square" />
-                  <div className="bg-gray-400 w-full aspect-square" />
-                  <div className="bg-gray-400 w-full aspect-square" />
-                  <div className="bg-gray-400 w-full h-full row-span-1 col-span-3" />
-                  <div className="bg-gray-400 w-full h-full row-span-1 col-span-3" />
                 </div>
               </div>
             </div>

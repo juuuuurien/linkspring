@@ -4,6 +4,8 @@ import React from "react";
 import { UserIcon } from "@heroicons/react/solid";
 import { ShareIcon } from "@heroicons/react/outline";
 import Profile from "../profile/Profile";
+import TabList from "../PreviewSection/TabList";
+import TabGrid from "../PreviewSection/TabGrid";
 
 const PVLinkTab = ({ children, url, tabColor }) => {
   return (
@@ -113,7 +115,7 @@ const RightPreview = ({ initialData, liveData }) => {
                   </div>
                 )}
                 {!profileData?.avatar && (
-                  <div className="flex justify-center items-center left-2 rounded-[50%] bg-gray-400 text-slate-100 w-[96px] h-[96px] m-2 shadow-md">
+                  <div className="flex justify-center items-center left-2 rounded-[50%] bg-gray-400 text-slate-100 w-[102px] h-[102px] m-2 shadow-md">
                     <UserIcon className="w-10 h-10 text-gray-100" />
                   </div>
                 )}
@@ -127,22 +129,11 @@ const RightPreview = ({ initialData, liveData }) => {
                 </span>
               </div>
             </div>
-            <div className="LINKS-WRAPPER flex flex-col w-full gap-3 max-h-[55%] overflow-y-scroll no-scrollbar px-4">
-              {linkData?.map((e) => {
-                if (!e.url || !e.title) return;
-                return (
-                  <PVLinkTab
-                    tabColor={themeData?.tabColor}
-                    url={e.url}
-                    key={e.title.concat(e.url)}
-                  >
-                    <span style={{ color: themeData.tabTextColor }}>
-                      {e.title}
-                    </span>
-                  </PVLinkTab>
-                );
-              })}
-            </div>
+            {themeData.tabLayout === "grid" ? (
+              <TabGrid linkData={linkData} themeData={themeData} />
+            ) : (
+              <TabList linkData={linkData} themeData={themeData} />
+            )}
           </div>
         </div>
       </>
