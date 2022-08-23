@@ -17,7 +17,7 @@ const PVLinkTab = ({ children, url, tabColor }) => {
 
 const TabLayout = ({ linkData, themeData }) => {
   return (
-    <div className="LINKS-WRAPPER flex flex-col w-full gap-3 max-h-[55%] overflow-y-scroll no-scrollbar px-4">
+    <div className="LINKS-WRAPPER flex flex-col w-full gap-3 max-h-[65%] overflow-y-scroll no-scrollbar px-4">
       {linkData?.map((e) => {
         if (!e.url || !e.title) return;
         return (
