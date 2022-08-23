@@ -1,26 +1,10 @@
-import { DotsVerticalIcon } from "@heroicons/react/outline";
+import { ShareIcon } from "@heroicons/react/outline";
 import Head from "next/head";
 import Image from "next/image";
 import React from "react";
-import TabGrid from "../PreviewSection/TabGrid";
-import TabList from "../PreviewSection/TabList";
+
 import ProfileTabGrid from "./ProfileTabGrid";
 import ProfileTabList from "./ProfileTabList";
-
-const ProfileLinkTab = ({ children, url, tabColor }) => {
-  return (
-    <a href={url} target="_new">
-      <div
-        style={{
-          backgroundColor: tabColor,
-        }}
-        className={`normal-right-preview-tab xs:xs-right-preview-tab hover:scale-[1.05] transition-all ease-[cubic-bezier(.11,-0.85,.75,1.83)] `}
-      >
-        {children}
-      </div>
-    </a>
-  );
-};
 
 const Profile = ({ userdata }) => {
   const { links, username, profile, theme } = userdata;
@@ -60,8 +44,17 @@ const Profile = ({ userdata }) => {
           className={`flex flex-col w-full xl:max-w-[66%] xl:rounded-[20px] xl:overflow-auto h-full justify-center items-center z-10`}
         >
           <div className="relative flex bg-gray-500 w-full h-[23%] ">
-            <button className="absolute flex justify-center items-center top-2 right-2 w-8 h-8 bg-black p-1 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all z-[100]">
-              <DotsVerticalIcon className="text-slate-200" />
+            <button
+              onClick={async () =>
+                await navigator.share({
+                  title: `${username}'s Linkspring`,
+                  text: `Checkout all my links on Linkspring!`,
+                  url: `https://linkspring.me/${username}`,
+                })
+              }
+              className="absolute flex justify-center items-center top-2 right-2 w-8 h-8 bg-black p-1 rounded-[100%] opacity-60 hover:opacity-50 hover:bg-slate-600 transition-all z-[100]"
+            >
+              <ShareIcon className="text-slate-200" />
             </button>
             {profile?.banner && (
               <Image
