@@ -10,6 +10,7 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
   const [scale, setScale] = useState(1);
 
   const editorRef = useRef(null);
+  const avatarEditorContainer = useRef(null);
 
   const getFilename = async () => {
     const session = await getSession();
@@ -32,7 +33,7 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
     const fileName = await getFilename();
     formData.append("banner_image", blob, fileName); // emails should always be unique, so I append the email to the filename
 
-    // hit api to upload blob
+    // hit api to upload blob and retrieve cloudinary img url
     console.log("uploading...");
     const res = await (
       await fetch("/api/upload_banner", {
@@ -40,8 +41,6 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
         body: formData,
       })
     ).json();
-
-    console.log(res);
 
     // now, with url Path, handle data submit normally
     const formObj = {
@@ -70,7 +69,7 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div className="flex min-h-full items-center justify-center text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -80,27 +79,32 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="flex flex-col w-auto px-[6rem] justify-center transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all gap-4">
+              <Dialog.Panel className="flex flex-col w-auto md:px-[6rem] justify-center transform overflow-hidden rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all gap-4">
                 <Dialog.Title
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
                   Profile photo
                 </Dialog.Title>
-                <div className="flex flex-col w-full justify-center mt-2">
+                <div
+                  ref={avatarEditorContainer}
+                  className="flex flex-col w-full justify-center items-center mt-2"
+                >
                   {!img && (
-                    <div className="flex justify-center items-center h-[200px] w-[600px] text-gray-400 bg-gray-100 rounded-2xl border-2 border-gray-400 border-dashed">
+                    <div className="flex justify-center items-center h-[300px] w-[600px] text-gray-400 bg-gray-100 rounded-2xl border-2 border-gray-400 border-dashed">
                       Browse to select a picture...
                     </div>
                   )}
                   {img && (
                     <AvatarEditor
                       ref={editorRef}
-                      className="w-full h-full"
+                      className="flex w-full h-full justify-center items-center"
                       image={img}
-                      width={600}
-                      height={300}
-                      border={[100, 25]}
+                      width={avatarEditorContainer.current?.offsetWidth}
+                      height={
+                        (avatarEditorContainer.current?.offsetWidth - 48) / 2
+                      }
+                      border={[0, 0]}
                       color={[255, 255, 255, 0.6]} // RGBA
                       scale={scale}
                       rotate={0}
