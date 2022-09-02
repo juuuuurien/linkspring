@@ -3,26 +3,20 @@ import { unstable_getServerSession } from "next-auth/next";
 import RightPreviewSection from "../../components/dashboard/RightPreviewSection";
 import Sidebar from "../../components/dashboard/Sidebar";
 import MainNavbar from "../../components/dashboard/MainNavbar";
-import DashboardSkeleton from "../../components/dashboard/DashboardSkeleton";
 
 import { XIcon, PlusIcon } from "@heroicons/react/solid";
 
 import Head from "next/head";
 
-import { Button, Spinner } from "flowbite-react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import LinkTab from "../../components/dashboard/components/LinkTab";
+import { useQuery, useQueryClient } from "react-query";
+
 import { authOptions } from "../api/auth/[...nextauth]";
 
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Dialog, Transition } from "@headlessui/react";
 import LinkSection from "../../components/dashboard/LinkSection";
 
 export default function Dashboard({ _session }) {
   // data contains  username, links, profile of the user
-  const url = process.env.NEXT_PUBLIC_URL;
-  const queryClient = useQueryClient();
-
   let [isOpen, setIsOpen] = useState(false);
 
   // get user data
@@ -51,16 +45,32 @@ export default function Dashboard({ _session }) {
     initialData: userdata?.links || [],
   });
 
-  // if (userLoading) {
-  //   return <DashboardSkeleton />;
-  // }
-
   return (
     <>
       <Head>
-        <title>Linkspring | Dashboard</title>
+        <title>Linkspring - Dashboard</title>
         <meta name="description" content="Linkspring dashboard" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="theme-color" content="#ffffff" />
       </Head>
       <div className="main-wrapper flex flex-col md:flex-row h-screen w-screen overflow-y-auto">
         <Sidebar initialData={userdata} />

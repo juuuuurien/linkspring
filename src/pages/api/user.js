@@ -8,7 +8,9 @@ export default async function handler(req, res) {
   const _email = body.email;
   await dbConnect();
 
-  const user = await User.findOne({ email: _email });
+  const user = await User.findOne({
+    email: { $regex: new RegExp(_email, "i") },
+  });
   const { username, email, links, profile, theme } = user;
   res.json({ username, email, links, profile, theme });
 }

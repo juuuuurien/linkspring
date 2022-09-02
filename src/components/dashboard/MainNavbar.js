@@ -23,7 +23,7 @@ const NavItem = ({ title, href, selected }) => {
 };
 
 const MainNavbar = () => {
-  const navTitles = ["Links", "Style"];
+  const navTitles = ["Links", "Styles"];
 
   const router = useRouter();
 
@@ -42,7 +42,7 @@ const MainNavbar = () => {
               href={
                 title === "Links"
                   ? "/dashboard"
-                  : `dashboard/${title.toLowerCase()}`
+                  : `/dashboard/${title.toLowerCase()}`
               }
             />
           ))}

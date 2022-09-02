@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const usernameExists = await User.exists({ username: username });
   const emailExists = await User.exists({ email: email });
 
-  if (!email || !username || !password) {
+  if (!email || !username) {
     res.status(500).send({ error: "Please enter all fields" });
   }
 
@@ -22,7 +22,11 @@ export default async function handler(req, res) {
   } else {
     // create if no existing user
     const hash = await createHash(password);
-    User.create({ username, email, password: hash });
+    User.create({
+      username: username.toLowerCase(),
+      email: email.toLowerCase(),
+      password: hash,
+    });
     res.status(201).json({ success: true });
   }
 }

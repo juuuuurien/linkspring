@@ -3,21 +3,46 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+import PlausibleProvider from "next-plausible";
+
+function Home() {
   const { data, status } = useSession();
 
   return (
-    <div>
+    <>
       <Head>
         <title>Linkspring</title>
-        <meta name="description" content="Your link resume" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content="Your brief summary of who you are." />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="theme-color" content="#ffffff" />
       </Head>
 
       <div className="flex flex-col h-full w-full ">
         {/* navbar */}
         <div className="fixed flex flex-row px-5 justify-between items-center w-full bg-gray-100 p-2 z-10">
-          <button className="flex justify-center items-center mr-5 md:mx-5  lg:w-[140px] max-w-[140px]">
+          <button
+            className="flex justify-center items-center mr-5 md:mx-5  lg:w-[140px] max-w-[140px] hover:translate-x-[-5px] hover:translate-y-[-5px] transition-all
+              ease-linear duration-75"
+          >
             <Link href="/dashboard">
               <Image
                 src={"/assets/linkspring_brand.svg"}
@@ -34,16 +59,16 @@ export default function Home() {
             <div className="flex flex-row gap-3">
               <Link href="/login">
                 <a>
-                  <div className="md:py-4 md:px-6 py-2 px-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold cursor-pointer">
+                  <button className="button md:py-4 md:px-6 py-2 px-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold cursor-pointer">
                     Log in
-                  </div>
+                  </button>
                 </a>
               </Link>
               <Link href="/signup">
                 <a>
-                  <div className="md:py-4 md:px-6 py-2 px-2 bg-gray-900 hover:bg-gray-600 rounded-[10000px] text-white font-semibold flex-nowrap">
+                  <button className="button md:py-4 md:px-6 py-2 px-2 bg-gray-900 hover:bg-gray-600 rounded-[10000px] text-white font-semibold flex-nowrap">
                     Sign Up
-                  </div>
+                  </button>
                 </a>
               </Link>
             </div>
@@ -61,7 +86,7 @@ export default function Home() {
                 onClick={() =>
                   signOut({ callbackUrl: process.env.NEXT_PUBLIC_URL })
                 }
-                className="md:py-4 md:px-6 py-2 px-2 bg-gray-900 hover:bg-gray-600 rounded-[10000px] text-white font-semibold flex-nowrap"
+                className="button md:py-4 md:px-6 py-2 px-2 bg-gray-900 hover:bg-gray-600 rounded-[10000px] text-white font-semibold flex-nowrap"
               >
                 Sign Out
               </button>
@@ -123,6 +148,14 @@ export default function Home() {
           </div>
         </section>
       </div>
-    </div>
+    </>
+  );
+}
+
+export default function HomeWithPlausible() {
+  return (
+    <PlausibleProvider domain="www.linkspring.me">
+      <Home />
+    </PlausibleProvider>
   );
 }

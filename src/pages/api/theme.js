@@ -19,8 +19,23 @@ export default async function handler(req, res) {
 
   if (type === "update") {
     const updatedTheme = JSON.parse(req.body);
-    const { backgroundColor, profileTextColor, tabColor, tabTextColor } =
-      updatedTheme;
+    const {
+      backgroundColor,
+      profileTextColor,
+      tabColor,
+      tabTextColor,
+      tabLayout,
+      headerLayout,
+    } = updatedTheme;
+
+    console.table({
+      backgroundColor,
+      profileTextColor,
+      tabColor,
+      tabTextColor,
+      tabLayout,
+      headerLayout,
+    });
 
     const user = await User.findOneAndUpdate(
       {
@@ -32,6 +47,8 @@ export default async function handler(req, res) {
           "theme.profileTextColor": profileTextColor,
           "theme.tabColor": tabColor,
           "theme.tabTextColor": tabTextColor,
+          "theme.tabLayout": tabLayout,
+          "theme.headerLayout": headerLayout,
         },
         new: true,
         upsert: true,

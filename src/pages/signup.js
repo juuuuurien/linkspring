@@ -1,9 +1,12 @@
 import { TextInput, Spinner } from "flowbite-react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
+
+import { FcGoogle } from "react-icons/fc";
 
 const Signup = () => {
   const url = `${process.env.NEXT_PUBLIC_URL}/dashboard`;
@@ -54,6 +57,17 @@ const Signup = () => {
   const handleRegister = (e) => {
     e.preventDefault();
     mutate({ username, email, password });
+  };
+
+  const handleRegisterWithGoogle = async (e) => {
+    e.preventDefault();
+
+    // returns a promise since redirect is custom handled
+    await signIn("google", {
+      callbackUrl: url,
+    });
+
+    router.push("/dashboard");
   };
 
   return (
@@ -127,9 +141,16 @@ const Signup = () => {
             disabled={
               username.length < 1 || email.length < 1 || password.length < 1
             }
-            className="bg-purple-600 text-white rounded-[10000px] p-3 disabled:bg-slate-200 disabled:text-slate-400"
+            className="button bg-[#3395FF] text-white rounded-[10000px] p-3 disabled:bg-slate-200 disabled:text-slate-400 font-semibold"
           >
             {isLoading ? <Spinner /> : "Sign Up With Email"}
+          </button>
+          <button
+            className="button relative flex items-center font-semibold justify-center bg-white hover:bg-gray-100 text-gray-900 rounded-[10000px] p-3"
+            onClick={handleRegisterWithGoogle}
+          >
+            <FcGoogle className="absolute left-6 self-start h-6 w-6" />
+            {"Sign up with Google"}
           </button>
           <span className="text-red-700">{isError ? `${error}` : null}</span>
           <span className="text-gray-500">

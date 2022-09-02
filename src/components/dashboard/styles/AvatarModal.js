@@ -3,12 +3,19 @@ import React, { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import AvatarEditor from "react-avatar-editor";
 import { dataURLtoBlob } from "../../../util/common";
+import { getSession } from "next-auth/react";
 
-const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
+const AvatarModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
   const [img, setImg] = useState(null);
   const [scale, setScale] = useState(1);
 
   const editorRef = useRef(null);
+
+  const getFilename = async () => {
+    const session = await getSession();
+    const fileName = `${session.user.email}-avatar.png`;
+    return fileName;
+  };
 
   const handleImageChange = (e) => {
     let reader = new FileReader();
@@ -22,13 +29,13 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
     // parse dataURL into blob
     const blob = dataURLtoBlob(dataURL);
     const formData = new FormData();
-
-    formData.append("banner_image", blob, "banner.png");
+    const fileName = await getFilename();
+    formData.append("avatar_image", blob, fileName); // emails should always be unique, so I append the email to the filename
 
     // hit api to upload blob
     console.log("uploading...");
     const res = await (
-      await fetch("/api/upload_banner", {
+      await fetch("/api/upload_avatar", {
         method: "POST",
         body: formData,
       })
@@ -38,7 +45,7 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
 
     // now, with url Path, handle data submit normally
     const formObj = {
-      banner: res.path,
+      avatar: res.path,
     };
     handleSubmit(formObj);
   };
@@ -82,7 +89,7 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
                 </Dialog.Title>
                 <div className="flex flex-col w-full justify-center mt-2">
                   {!img && (
-                    <div className="flex justify-center items-center h-[200px] w-[600px] text-gray-400 bg-gray-100 rounded-2xl border-2 border-gray-400 border-dashed">
+                    <div className="flex justify-center items-center h-[300px] w-[500px] text-gray-400 bg-gray-100 rounded-2xl border-2 border-gray-400 border-dashed">
                       Browse to select a picture...
                     </div>
                   )}
@@ -91,9 +98,10 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
                       ref={editorRef}
                       className="w-full h-full"
                       image={img}
-                      width={600}
+                      width={300}
                       height={300}
                       border={[100, 25]}
+                      borderRadius={10000}
                       color={[255, 255, 255, 0.6]} // RGBA
                       scale={scale}
                       rotate={0}
@@ -115,7 +123,7 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
                 <form>
                   <input
                     type="file"
-                    name="banner_image"
+                    name="avatar_image"
                     multiple={false}
                     onChange={handleImageChange}
                   />
@@ -153,4 +161,5 @@ const BannerModal = ({ modalVisible, setModalVisible, handleSubmit }) => {
     </Transition>
   );
 };
-export default BannerModal;
+
+export default AvatarModal;

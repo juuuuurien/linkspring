@@ -23,7 +23,6 @@ apiRoute.use(upload.single("avatar_image"));
 
 // Process a POST request
 apiRoute.post((req, res) => {
-  console.log(req.file);
   res.status(200).json({ data: "success", path: req.file.path });
 });
 
