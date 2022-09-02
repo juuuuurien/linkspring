@@ -76,7 +76,7 @@ export default function Dashboard({ _session }) {
         <Sidebar initialData={userdata} />
         <section className="flex flex-col items-center w-full h-full bg-gray-100 overflow-y-auto">
           <MainNavbar userdata={userdata} />
-          <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px]">
+          <div className="MAINCONTENT WRAPPER mx-auto w-full h-full max-w-[640px] mb-20">
             <LinkSection initialData={userdata?.links} liveData={linkData} />
           </div>
         </section>
@@ -133,9 +133,22 @@ export default function Dashboard({ _session }) {
         </Transition>
         <button
           onClick={() => setIsOpen(true)}
-          className="md:hidden fixed self-center bottom-10 rounded-[10000px] text-slate-900 font-bold text-xl z-10 bg-indigo-300 px-4 py-2"
+          className="md:hidden fixed flex justify-center items-center self-center bottom-10 rounded-[10000px] text-slate-900 font-bold text-xl z-10 bg-indigo-300 px-4 w-[50%] py-2 whitespace-nowrap"
         >
           Preview
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="w-6 h-6 inline ml-2"
+          >
+            <path d="M10.5 18.75a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z" />
+            <path
+              fillRule="evenodd"
+              d="M8.625.75A3.375 3.375 0 005.25 4.125v15.75a3.375 3.375 0 003.375 3.375h6.75a3.375 3.375 0 003.375-3.375V4.125A3.375 3.375 0 0015.375.75h-6.75zM7.5 4.125C7.5 3.504 8.004 3 8.625 3H9.75v.375c0 .621.504 1.125 1.125 1.125h2.25c.621 0 1.125-.504 1.125-1.125V3h1.125c.621 0 1.125.504 1.125 1.125v15.75c0 .621-.504 1.125-1.125 1.125h-6.75A1.125 1.125 0 017.5 19.875V4.125z"
+              clipRule="evenodd"
+            />
+          </svg>
         </button>
       </div>
     </>

@@ -5,10 +5,7 @@ import Link from "next/link";
 import React from "react";
 import { signOut } from "next-auth/react";
 
-import {
-  ChevronRightIcon,
-  ArrowRightOnRectangleIcon,
-} from "@heroicons/react/solid";
+import { ChevronRightIcon } from "@heroicons/react/solid";
 
 import Logo from "../../../public/assets/linkspring_logo.svg";
 
@@ -72,7 +69,7 @@ const Sidebar = ({ initialData }) => {
               leaveTo="opacity-0 translate-y-1"
             >
               <Menu.Items>
-                <div className="absolute bg-white bottom-0 left-0 translate-y-[100%] translate-x-[-100%]  md:right-0 md:top-0 md:translate-x-[110%] md:translate-y-[-100%] p-5 shadow-md">
+                <div className="absolute bg-white bottom-0 left-0 translate-y-[100%] translate-x-[-100%] md:bottom-auto md:left-auto md:right-0 md:top-0 md:translate-x-[110%] md:translate-y-[-100%] p-5 shadow-md">
                   <Menu.Item>
                     {({ active }) => (
                       <button

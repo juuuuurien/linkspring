@@ -136,7 +136,7 @@ const LinkSection = ({ initialData }) => {
 
   if (!initialData)
     return (
-      <div className="flex flex-col h-full justify-center items-center py-10 gap-12">
+      <div className="flex flex-col h-full justify-center items-center py-10 gap-12 mb-20">
         <div className="flex flex-col w-full h-full gap-2 items-center">
           <div className="flex flex-col justify-evenly w-full h-32 rounded-2xl bg-gray-200 animate-pulse p-4">
             <div className="w-[33%] h-5 rounded-lg    bg-gray-100" />
@@ -167,7 +167,7 @@ const LinkSection = ({ initialData }) => {
     );
 
   return (
-    <div className="flex flex-col items-center py-10 gap-12">
+    <div className="flex flex-col items-center py-10 gap-12  mb-20">
       <div
         ref={linkAnimationRef}
         className="flex flex-col w-full h-full gap-2 items-center"
