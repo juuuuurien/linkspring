@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { CameraIcon } from "@heroicons/react/outline";
 import { UserIcon } from "@heroicons/react/solid";
@@ -19,6 +19,13 @@ const ProfileEditor = ({ initialData, handleUpdateProfile, getProfile }) => {
   const [banner, setBanner] = useState(initialData?.profile?.banner);
   const [title, setTitle] = useState(initialData?.profile?.title);
   const [bio, setBio] = useState(initialData?.profile?.bio);
+
+  useEffect(() => {
+    setAvatar(initialData?.profile?.avatar);
+    setBanner(initialData?.profile?.banner);
+    setTitle(initialData?.profile?.title);
+    setBio(initialData?.profile?.bio);
+  }, [initialData]);
 
   // const [cache, setCache] = useState(null); // used to use this to save data on input focus in case it needed to be restored
   const [bannerModalVisible, setBannerModalVisible] = useState(false);

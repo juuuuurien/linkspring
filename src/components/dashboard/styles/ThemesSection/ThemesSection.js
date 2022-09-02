@@ -149,83 +149,86 @@ const ThemesSection = ({ themeData, userdata, handleUpdateTheme }) => {
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Colors</h2>
-        <div className="flex gap-1">
-          <Popover className="relative">
-            <ColorPickerButton
-              label="Background"
-              color={themeData.backgroundColor}
-            />
-            <Popover.Panel className="absolute top-[100%] z-10">
-              <ChromePicker
-                color={bgColorPicker}
-                onChange={(color, event) => setBgColorPicker(color.hex)}
-                onChangeComplete={(color, event) => {
-                  const updateObj = {
-                    backgroundColor: color.hex,
-                  };
-                  mergeThemeAndUpdate(updateObj);
-                  setBgColorPicker(color.hex);
-                }}
+        <div className="flex gap-4 flex-col md:flex-row">
+          <div className="flex flex-row">
+            <Popover className="relative">
+              <ColorPickerButton
+                label="Background"
+                color={themeData.backgroundColor}
               />
-            </Popover.Panel>
-          </Popover>
-          <Popover className="relative">
-            <ColorPickerButton
-              label="Profile Text"
-              color={themeData.profileTextColor}
-            />
-            <Popover.Panel className="absolute top-[100%] z-10">
-              <ChromePicker
-                color={profileTextColorPicker}
-                onChange={(color, event) =>
-                  setProfileTextColorPicker(color.hex)
-                }
-                onChangeComplete={(color, event) => {
-                  const updateObj = {
-                    profileTextColor: color.hex,
-                  };
-                  mergeThemeAndUpdate(updateObj);
-                  setProfileTextColorPicker(color.hex);
-                }}
+              <Popover.Panel className="absolute top-[100%] z-10">
+                <ChromePicker
+                  color={bgColorPicker}
+                  onChange={(color, event) => setBgColorPicker(color.hex)}
+                  onChangeComplete={(color, event) => {
+                    const updateObj = {
+                      backgroundColor: color.hex,
+                    };
+                    mergeThemeAndUpdate(updateObj);
+                    setBgColorPicker(color.hex);
+                  }}
+                />
+              </Popover.Panel>
+            </Popover>
+            <Popover className="relative">
+              <ColorPickerButton
+                label="Profile Text"
+                color={themeData.profileTextColor}
               />
-            </Popover.Panel>
-          </Popover>
-
-          <Popover className="relative">
-            <ColorPickerButton label="Tab" color={themeData.tabColor} />
-            <Popover.Panel className="absolute top-[100%] z-10">
-              <ChromePicker
-                color={tabColorPicker}
-                onChange={(color, event) => setTabColorPicker(color.hex)}
-                onChangeComplete={(color, event) => {
-                  const updateObj = {
-                    tabColor: color.hex,
-                  };
-                  mergeThemeAndUpdate(updateObj);
-                  setTabColorPicker(color.hex);
-                }}
+              <Popover.Panel className="absolute top-[100%] z-10">
+                <ChromePicker
+                  color={profileTextColorPicker}
+                  onChange={(color, event) =>
+                    setProfileTextColorPicker(color.hex)
+                  }
+                  onChangeComplete={(color, event) => {
+                    const updateObj = {
+                      profileTextColor: color.hex,
+                    };
+                    mergeThemeAndUpdate(updateObj);
+                    setProfileTextColorPicker(color.hex);
+                  }}
+                />
+              </Popover.Panel>
+            </Popover>
+          </div>
+          <div className="flex flex-row">
+            <Popover className="relative">
+              <ColorPickerButton label="Tab" color={themeData.tabColor} />
+              <Popover.Panel className="absolute top-[100%] z-10">
+                <ChromePicker
+                  color={tabColorPicker}
+                  onChange={(color, event) => setTabColorPicker(color.hex)}
+                  onChangeComplete={(color, event) => {
+                    const updateObj = {
+                      tabColor: color.hex,
+                    };
+                    mergeThemeAndUpdate(updateObj);
+                    setTabColorPicker(color.hex);
+                  }}
+                />
+              </Popover.Panel>
+            </Popover>
+            <Popover className="relative">
+              <ColorPickerButton
+                label="Tab Text"
+                color={themeData.tabTextColor}
               />
-            </Popover.Panel>
-          </Popover>
-          <Popover className="relative">
-            <ColorPickerButton
-              label="Tab Text"
-              color={themeData.tabTextColor}
-            />
-            <Popover.Panel className="absolute top-[100%] z-10">
-              <ChromePicker
-                color={tabTextColorPicker}
-                onChange={(color, event) => setTabTextColorPicker(color.hex)}
-                onChangeComplete={(color, event) => {
-                  const updateObj = {
-                    tabTextColor: color.hex,
-                  };
-                  mergeThemeAndUpdate(updateObj);
-                  setTabTextColorPicker(color.hex);
-                }}
-              />
-            </Popover.Panel>
-          </Popover>
+              <Popover.Panel className="absolute top-[100%] z-10">
+                <ChromePicker
+                  color={tabTextColorPicker}
+                  onChange={(color, event) => setTabTextColorPicker(color.hex)}
+                  onChangeComplete={(color, event) => {
+                    const updateObj = {
+                      tabTextColor: color.hex,
+                    };
+                    mergeThemeAndUpdate(updateObj);
+                    setTabTextColorPicker(color.hex);
+                  }}
+                />
+              </Popover.Panel>
+            </Popover>
+          </div>
         </div>
       </div>
       <div className="flex flex-col gap-4">

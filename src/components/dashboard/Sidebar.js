@@ -5,7 +5,6 @@ import Link from "next/link";
 import React from "react";
 import { signOut } from "next-auth/react";
 
-
 import {
   ChevronRightIcon,
   ArrowRightOnRectangleIcon,
@@ -17,7 +16,7 @@ const Sidebar = ({ initialData }) => {
   const menu = ["Settings", "Log out"];
 
   return (
-    <section className="flex md:flex-col justify-between items-center py-5 h-[60px] w-full md:h-full md:w-[100px] bg-white border border-gray-200 z-10">
+    <section className="flex md:flex-col justify-between items-center py-5 px-5 md:px-0 h-[60px] w-full md:h-full md:w-[100px] bg-white border border-gray-200 z-10">
       {!initialData?.profile && (
         <>
           <div className="flex justify-center items-center rounded-[100%] h-[48px] w-[48px] bg-gray-300 animate-pulse">
@@ -73,7 +72,7 @@ const Sidebar = ({ initialData }) => {
               leaveTo="opacity-0 translate-y-1"
             >
               <Menu.Items>
-                <div className="absolute bg-white right-0 top-0 translate-x-[110%] translate-y-[-100%] p-5 shadow-md">
+                <div className="absolute bg-white bottom-0 left-0 translate-y-[100%] translate-x-[-100%]  md:right-0 md:top-0 md:translate-x-[110%] md:translate-y-[-100%] p-5 shadow-md">
                   <Menu.Item>
                     {({ active }) => (
                       <button
