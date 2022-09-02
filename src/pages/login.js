@@ -120,6 +120,11 @@ const Login = ({ session }) => {
           >
             {loading ? <Spinner /> : "Log In"}
           </button>
+          <Link href="/signup">
+            <button className="border-[#3395FF] border-2  text-[#3395FF] font-semibold rounded-[10000px] p-3">
+              Create an Account
+            </button>
+          </Link>
         </form>
         <span className="text-red-700">{error ? `${error}` : null}</span>
         <section className="flex flex-col justify-center items-center gap-10">
